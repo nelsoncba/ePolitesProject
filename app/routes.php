@@ -18,6 +18,8 @@ Route::get('/', function()
 
 Route::get('/api/allPosts', 'HomeController@getAllPosts');
 
+Route::get('/api/recentPosts', 'HomeController@recentPosts');
+
 Route::get('/api/post/{id}/{slug}', 'HomeController@getPost');
 
 Route::get('/api/allSections', function(){

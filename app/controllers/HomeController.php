@@ -22,9 +22,13 @@ class HomeController extends BaseController {
 
 	public function getAllPosts(){
 
-       // $posts['key'] = Posts::all();
         $posts['key'] = Posts::selectAll();
         return Response::json($posts, 200);
+	}
+
+	public function recentPosts(){
+		$posts = Posts::getRecent();
+		return Response::json($posts,200);
 	}
 
 	public function getPost($id){

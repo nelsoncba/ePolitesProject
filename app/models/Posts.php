@@ -43,19 +43,6 @@ class Posts extends Eloquent{
                                ->groupBy('Posts.id')
                                ->get();
         
-        /*foreach ($posts as  $post) {
-            
-            $data[] = array(  
-                            'id' => $post->id,      
-                            'titulo'=> $post->titulo,
-                            'slug' => $post->slug,
-                            'cuerpo' => $post->cuerpo,
-                            'tag'=> explode(',', $post->tag),
-                            'seccion' => $post->seccion,
-                            'usuario' => $post->usuario,
-                            );
-        }*/
-
         return $posts; 
     }
 
@@ -86,6 +73,18 @@ class Posts extends Eloquent{
         }
 
         return $data;
+    }
+
+    public static function getRecent(){
+        $posts = DB::table('Posts')
+                            ->leftJoin('Secciones','Secciones.id','=','Posts.seccion_id')
+                            ->leftJoin('Comentarios','Comentarios.post_id','=','Posts.id')
+                            ->select(DB::raw('COUNT(Comentarios.id) as count'),'Posts.id as id','Posts.titulo as titulo', 'Posts.slug as slug','Posts.created_at as created_at','Posts.imagen as imagen', 'Secciones.seccion as seccion')
+                            ->groupBy('Posts.id')
+                            ->orderBy('created_at','DESC')
+                            ->limit(10)
+                            ->get();
+        return $posts;
     }
 
     public static function crearPost($input){

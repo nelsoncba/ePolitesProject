@@ -1,9 +1,10 @@
 angular.module('Polites')
 		.factory('Posts', function(WebService) {
-			var allPosts;
 			return {
-				getPosts: function(){
-					return allPosts;
+				getRecentPosts: function(){
+					return WebService.get('recentPosts').success(function(data){
+						return data;
+					});
 				},
 				setPosts: function(posts){
 					this.allPosts = posts;

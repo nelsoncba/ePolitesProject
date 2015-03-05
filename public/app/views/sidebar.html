@@ -32,15 +32,16 @@
             <li><a href="#" class="tag2">tutorials</a></li>
         </ul>-->
         <section class="well">
-            <article class="comment" ng-repeat="post in sidebarPosts">
+            <div class="media-heading"><h4>Artículos recientes:</h4></div>
+            <article class="recent-post" ng-repeat="post in sidebarPosts">
                 <div class="media">
-                    <div class="pull-left" ng-if="post.photo">
-                        <img class="media-object img-comment" src="images/{{post.photo}}"/>
+                    <div class="pull-left" ng-if="post.imagen">
+                        <img class="media-object" src="images/{{post.imagen}}"/>
                     </div>
                 <div class="media-body">
-                    <div class="media-heading"><span class="label-comment">{{post.titulo}}</span>&nbsp;&nbsp;
+                    <div class="media-heading"><a href="#"><span class="label-title">{{post.titulo}}</span></a>&nbsp;&nbsp;
                     </div>
-                    <span class="glyphicon glyphicon-time"></span>&nbsp;<span class="time-ago" time-ago from-time="{{comment.created_at}}"></span>&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-comment"></span>&nbsp;<span>{{post.count}}</span>
+                    <span class="glyphicon glyphicon-time"></span>&nbsp;<span class="time-ago" time-ago from-time="{{post.created_at}}"></span>&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-comment"></span>&nbsp;<span class="comment-total">{{post.count}}</span>
                 </div>
                 </div>
             </article>

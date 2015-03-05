@@ -53,7 +53,7 @@ angular.module('politesControllers',[])
 		  		Posts.getSections().success(function(data){
 		  			$scope.secciones =  data;
 		  		});
-		  		data = Posts.getPosts();
-		  		$scope.sidebarPosts = data;
-					
+		  		Posts.getRecentPosts().success(function(data){
+		  			$scope.sidebarPosts = data;
+		  		});
 		  });

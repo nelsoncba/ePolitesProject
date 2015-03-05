@@ -126,7 +126,7 @@ hr.soften {
 .collapse-text-toggle:after {
     content: ')';
 }
-.label-comment{
+.label-comment, .label-title{
   font-weight: bold;
   font-size: 16px;
 }
@@ -162,6 +162,29 @@ hr.soften {
 
 .text-post{
   text-align: justify;
+}
+
+.recent-post{
+  border: 1px solid #dddddd;
+  box-shadow: 2px 1px 1px #dddddd;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin-top: 10px;
+}
+.recent-post .post-title{
+  color: black;
+}
+.recent-post img{
+  width: 50px;
+  height: 40px;
+}
+.recent-post span.glyphicon{
+  font-size: 0.8em;
+}
+.recent-post span.glyphicon .comment-total{
+  font-size: 10px;
 }
 /************
  Footer
