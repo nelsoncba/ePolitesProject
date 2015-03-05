@@ -1,0 +1,69 @@
+<div class="well sidebar-nav">
+            <ul class="nav nav-list list-group">
+              <li class="nav-header"><h3>Categories</h3></li>
+              <div ng-repeat="seccion in secciones">
+              <li class="list-group-item"><a href="#">{{seccion.seccion}}&nbsp;<span class="badge pull-right">{{seccion.count}}</span></a></li>
+              </div>
+            </ul>
+        </div>
+        <!--<ul class="tagcloud">
+            <li><a href="#" class="tag3">markup</a></li>
+            <li><a href="#" class="tag2">tools</a></li>
+            <li><a href="#" class="tag4">seo</a></li>
+            <li><a href="#" class="tag10">css3</a></li>
+            <li><a href="#" class="tag3">microformats</a></li>
+            <li><a href="#" class="tag2">w3c</a></li>
+            <li><a href="#" class="tag5">jQuery</a></li>
+            <li><a href="#" class="tag10">twitter bootstrap</a></li>
+            <li><a href="#" class="tag2">semantic</a></li>
+            <li><a href="#" class="tag7">layout</a></li>
+            <li><a href="#" class="tag4">design</a></li>
+            <li><a href="#" class="tag6">mobile</span></a></li>
+            <li><a href="#" class="tag1">php</a></li>
+            <li><a href="#" class="tag2">tips</a></li>
+            <li><a href="#" class="tag8">mysql</a></li>
+            <li><a href="#" class="tag1">menu</a></li>
+            <li><a href="#" class="tag3">icons</a></li>
+            <li><a href="#" class="tag5">grid</a></li>
+            <li><a href="#" class="tag2">templates</a></li>
+            <li><a href="#" class="tag5">javascript</a></li>
+            <li><a href="#" class="tag9">html5</a></li>
+            <li><a href="#" class="tag4">trends</a></li>
+            <li><a href="#" class="tag2">tutorials</a></li>
+        </ul>-->
+        <section class="well">
+            <article class="comment" ng-repeat="post in sidebarPosts">
+                <div class="media">
+                    <div class="pull-left" ng-if="post.photo">
+                        <img class="media-object img-comment" src="images/{{post.photo}}"/>
+                    </div>
+                <div class="media-body">
+                    <div class="media-heading"><span class="label-comment">{{post.titulo}}</span>&nbsp;&nbsp;
+                    </div>
+                    <span class="glyphicon glyphicon-time"></span>&nbsp;<span class="time-ago" time-ago from-time="{{comment.created_at}}"></span>&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-comment"></span>&nbsp;<span>{{post.count}}</span>
+                </div>
+                </div>
+            </article>
+        </section>
+        <!--<div class="well">
+            <form class="form login-form">
+              <h2>Sign in</h2>
+              <div>
+                <label>Username</label>
+                <input id="Username" name="Username" type="text" />
+
+                <label>Password</label>
+                <input id="Password" name="Password" type="password" />
+
+                <label class="checkbox inline">
+                  <input type="checkbox" id="RememberMe" value="option1"> Remember me
+                </label>
+
+                <br /><br />
+
+                <button type="submit" class="btn btn-success">Login</button>
+              </div>
+              <br />
+              <a href="#">register</a>&nbsp;&#124;&nbsp;<a href="#">forgot password?</a>
+            </form>
+        </div>-->
