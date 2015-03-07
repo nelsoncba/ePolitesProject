@@ -39,10 +39,10 @@ class Posts extends Eloquent{
                                ->leftJoin('Secciones','Secciones.id', '=' ,'Posts.seccion_id')
                                ->leftJoin('Usuarios', 'Usuarios.id', '=', 'Posts.usuario_id')
                                ->leftJoin('Comentarios','Comentarios.post_id','=','Posts.id')
-                               ->select(DB::raw('COUNT(Comentarios.id) as count'),'Posts.id as id','Posts.titulo as titulo', 'Posts.slug as slug','Posts.imagen as imagen', DB::raw('concat(SUBSTRING_INDEX(Posts.cuerpo," ",100),"...") as cuerpo'),'Secciones.seccion as seccion', 'Usuarios.usuario as usuario')
+                               ->select(DB::raw('COUNT(Comentarios.id) as count'),'Posts.id as id','Posts.titulo as titulo', 'Posts.slug as slug','Posts.imagen as imagen', 'Posts.cuerpo as cuerpo', 'Posts.created_at as created_at', 'Secciones.seccion as seccion', 'Usuarios.usuario as usuario')
                                ->groupBy('Posts.id')
                                ->get();
-        
+  
         return $posts; 
     }
 

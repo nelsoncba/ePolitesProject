@@ -1,9 +1,9 @@
 angular.module('politesControllers',[])
 		  .controller('allPostsController', function($scope, Posts) {
 				var data = Posts.getAllPosts().success(function(data){
-					$scope.posts = data.key;
-					Posts.setPosts(data.key);
+					$scope.posts = data;
 				});
+				$scope.algo = '<b><s>esto es texto</s></b>';
 		  })
 		  .controller('postController',function($scope, $state, $anchorScroll, Posts){
 		  	    $scope.convertToDate = function(stringDate){
@@ -47,7 +47,37 @@ angular.module('politesControllers',[])
 		  				input.reply = '';
 		  			});
 		  		};
-		  		
+		  		$scope.options = {
+		  			height: 300,
+		  			focus: true,
+		  			toolbar: [
+		  				['edit',['undo','redo']],
+		  				['headline', ['style']],
+			            ['style', ['bold', 'italic', 'underline']],
+			            ['fontface', ['fontname']],
+			            ['textsize', ['fontsize']],
+			            //['fontclr', ['color']],
+			            ['alignment', ['ul', 'ol', 'paragraph', 'lineheight']],
+			            //['height', ['height']],
+			            ['table', ['table']],
+			            ['insert', ['link','picture','video']],
+			            ['view', ['codeview']],
+		  			]
+		  		};
+		  		$scope.imageUpload = function(files, editor) {
+		  			/*Posts.loadImage(files).success(function(){
+
+		  			});*/
+				    console.log('image upload:', files, editor);
+				    console.log('image upload\'s editable:', $scope.editable);
+				    editor.insertImage($scope.editable, 'images/adolfybenito.jpg');
+				  };
+		  		$scope.createPost = function(input){
+		  			
+		  			/*Posts.createPost(input).success(function(data){
+		  				$scope.message =  data;
+		  			});*/
+		  		};
 		  })
 		  .controller('sidebarController',function($scope, Posts) {
 		  		Posts.getSections().success(function(data){
@@ -57,3 +87,4 @@ angular.module('politesControllers',[])
 		  			$scope.sidebarPosts = data;
 		  		});
 		  });
+		  

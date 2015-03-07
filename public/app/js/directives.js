@@ -29,7 +29,7 @@ angular.module('Polites')
                         var secondSpan = $compile('<span ng-if="collapsed">' + secondPart +'</span>')(scope);
                         var moreIndicatorSpan = $compile('<span ng-if="!collapsed">... </span>')(scope);
                         var lineBreak = $compile('<br ng-if="collapsed">')(scope);
-                        var toggleButton = $compile('<span class="collapse-text-toggle" ng-click="toggle()">{{collapsed ? "menos" : "mas"}}</span>')(scope);
+                        var toggleButton = $compile('<span class="collapse-text-toggle" ng-click="toggle()">{{collapsed ? "" : "ver mas"}}</span>')(scope);
 
                         // remove the current contents of the element
                         // and add the new ones we created

@@ -1,19 +1,10 @@
-$(window).scroll(function(){
-    if (window.scrollY !== 0) {
-        $('nav.navbar-fixed-top').addClass('transparent');
-    }else{
-        $('nav.navbar-fixed-top').removeClass('transparent');
-    }
-    
-});
-$('nav').mouseenter(function(){
-    $('nav.navbar-fixed-top').removeClass('transparent');
-});
-$('nav').mouseleave(function(){
-	if($(window).scrollTop() !== 0)
-       $('nav.navbar-fixed-top').addClass('transparent');  
-   
-});
+$(document).ready(function(){
+        $('#summernote').summernote({
+            height: 300,                 // set editor height
 
+              minHeight: null,             // set minimum height of editor
+              maxHeight: null,             // set maximum height of editor
 
-
+              focus: true,   
+        });
+    });

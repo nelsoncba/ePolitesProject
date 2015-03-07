@@ -22,7 +22,7 @@ class HomeController extends BaseController {
 
 	public function getAllPosts(){
 
-        $posts['key'] = Posts::selectAll();
+        $posts = Posts::selectAll();
         return Response::json($posts, 200);
 	}
 
@@ -34,6 +34,23 @@ class HomeController extends BaseController {
 	public function getPost($id){
 		$post = Posts::getPost($id);
 		return Response::json($post, 200);
+	}
+
+	public function createPost(){
+		$post = new Posts;
+		$text = '<p>'.Input::get('content').'</p>';
+		$post->usuario_id = '1';
+		$post->seccion_id ='1';
+		$post->titulo = Input::get('title');
+		$post->slug = Str::slug(Input::get('title'), '-');
+		$post->cuerpo = $text;
+		
+		if($post->save()){
+			$message = 'El artículo se a creado correctamente';
+		}else{
+			$message = 'Ha ocurrido un error';
+		}
+		return Response::json($message);
 	}
 
 	public function getComments($postId){

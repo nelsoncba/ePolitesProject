@@ -1,0 +1,15 @@
+<article class="well">
+   <div class="panel panel-header">
+   		<h4>Crear Post</h4>
+   </div>
+   <div class="panel panel-body">
+   		<form action="" name="formPost" role="form" ng-submit="createPost(input)">
+		   	 <h4>Título:</h4>
+		   	 <input type="text" ng-model="input.title" class="form-control input-md">
+		   	 <h4>Cuerpo:</h4>
+		   	 <summernote config="options" ng-model="input.content" on-image-upload="imageUpload(files, editor)" editable="editable"></summernote>
+		   	 <button class="btn btn-success pull-right" type="submit" ng-disabled="!formPost">Crear Post</button>
+	   </form>
+   </div>
+</article>
+

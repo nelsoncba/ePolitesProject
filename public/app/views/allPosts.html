@@ -1,6 +1,6 @@
 <div class="row">
                       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                          <article class="well">
+                          <article class="well" >
                               <h2>This is a Blog Post amet nulla ham qui sint.</h2>
                               <h5>Written by <a href="#">Me</a> on May 11, 2013.</h5>
                               <h5>
@@ -28,14 +28,14 @@
 <article>
           <h3>{{ post.titulo }}</h3>
           <h5>{{ post.seccion }}</h5>
-          <h6>Por <a href="#">{{post.usuario}}</a> on May 11, 2013.</h6>
+          <h6>Por <a href="#">{{post.usuario}}</a> {{post.created_at}}</h6>
           <h5>
             <a href="#comments"><i class="glyphicon glyphicon-comment"></i>&nbsp;{{post.count}} comentarios&nbsp;</a>
           </h5>
           <div ng-if="post.imagen">
             <img class="img-posts media-object pull-left" src="images/{{post.imagen}}" alt="" holder-fix>
           </div>
-          <p>{{ post.cuerpo }}</p>
+          <p>{{post.cuerpo | htmlToText | limitTo: 400 }}...</p>
           <a ui-sref="root.post({id: post.id, slug: post.slug})" class="btn btn-primary btn-xs pull-right">leer mas...</a>&nbsp;&nbsp;
 </article>
 <!--<hr class="soften">-->

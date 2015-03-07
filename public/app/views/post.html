@@ -5,7 +5,7 @@
           <div ng-if="post.imagen">
             <img class="img-post media-object" src="images/{{post.imagen}}" alt=""/>
           </div>  
-          <p data-dd-collapse-text="50"><h4 class="text-post">{{ post.cuerpo }}</h4></p>
+          <p data-dd-collapse-text="50"><p ng-bind-html="post.cuerpo|unsafe"></p></p>
           <h5>
             <i class="glyphicon glyphicon-tags"></i>
             &nbsp;Tags:&nbsp;

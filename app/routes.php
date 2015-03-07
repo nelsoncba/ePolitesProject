@@ -22,6 +22,10 @@ Route::get('/api/recentPosts', 'HomeController@recentPosts');
 
 Route::get('/api/post/{id}/{slug}', 'HomeController@getPost');
 
+Route::post('/api/createPost', 'HomeController@createPost');
+
+Route::post('/api/uploadImage', 'HomeController@uploadImage');
+
 Route::get('/api/allSections', function(){
 	$data = Secciones::getSections();
 	return Response::json($data,200);

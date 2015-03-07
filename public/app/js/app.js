@@ -1,4 +1,4 @@
-angular.module('Polites', ['ui.router', 'politesControllers', 'angular-timeago'])
+angular.module('Polites', ['ui.router', 'politesControllers', 'angular-timeago','summernote'])
 		.config(function($stateProvider, $urlRouterProvider) {
 			
 			$urlRouterProvider.otherwise('/');
@@ -32,7 +32,27 @@ angular.module('Polites', ['ui.router', 'politesControllers', 'angular-timeago']
 							controller: 'sidebarController'
 						}
 					}
+			})
+			.state('root.crear-post',{
+					url: '/crear-post',
+					views:{
+						'main@':{
+							templateUrl: 'app/views/crear-post.html',
+							controller: 'postController'
+						}
+					}
 			});
+		})
+		.filter('unsafe',function($sce){
+			return function(text){
+				return $sce.trustAsHtml(text);
+			}
+		})
+		.filter('htmlToText',function(){
+			return function(text){
+				var newText = angular.element(text).text();
+				return newText;
+			}
 		});
 		
 		

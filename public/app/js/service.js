@@ -20,6 +20,16 @@ angular.module('Polites')
 			    		return data;
 			    	});
 			    },
+			    createPost: function(input){
+			    	return WebService.post('createPost', input).success(function(data){
+			    		return data;
+			    	});
+			    },
+			    loadImage: function(){
+			    	return WebService.post('loadImage', image).success(function(data){
+			    		return data;
+			    	});
+			    },
 			    getComments: function(postId){
 			    	return WebService.get('comments/' + postId).success(function(data){
 			    		return data;

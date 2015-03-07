@@ -3,7 +3,7 @@
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
 <!--[if gt IE 8]><!--> 
-<html class="no-js" lang=""  ng-app="Polites"> <!--<![endif]-->
+<html class="no-js" lang="es"  ng-app="Polites"> <!--<![endif]-->
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -12,7 +12,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1; maximum-scale=1; minimum-scale=1; user-scalable=no;">
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc2/css/bootstrap-glyphicons.css">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
         <link rel="stylesheet" href="css/bootstrap.css">
+        <link rel="stylesheet" href="css/summernote.css">
+        <link rel="stylesheet" href="css/summernote-bs3.css">
         <style>
            /* body {
                 padding-top: 50px;
@@ -24,12 +27,12 @@
 
         </style>
         <link rel="stylesheet" href="css/main.css">
+        <script src="//code.jquery.com/jquery-1.9.1.min.js"></script>
        <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.12/angular.min.js"></script>-->
         <script src="app/lib/angular/angular.js"></script>
-        <!--  <script src="app/lib/angular/angular-ui-router.min.js"></script>-->
         <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.8/angular-ui-router.min.js"></script>-->
         <script src="app/lib/angular/angular-ui-router.min.js"></script>
-        <!--<script src="//code.jquery.com/jquery-1.10.0.min.js"></script>-->
+        <script src="js/summernote.js"></script>
     </head>
 
     <body>
@@ -96,10 +99,9 @@
             </div>
           </div>
         </footer>
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+      <!--  <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>-->
         <script src="js/vendor/bootstrap.js"></script>
-        <script src="js/main.js"></script>
+        
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <script>
             (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
@@ -115,8 +117,9 @@
         <script src="app/js/service.js"></script>
         <script src="app/js/webservice.js"></script>
         <script src="app/js/directives.js"></script>
-        <script src="js/jquery.timeago.js"></script>
+        <!--<script src="js/jquery.timeago.js"></script>-->
         <script src="app/lib/angular/angular-timeago.js"></script>
-        <script src="js/vendor/jquery-1.11.2.min.js"></script>
+        <!--<script src="js/vendor/jquery-1.11.2.min.js"></script>-->
+        <script src="app/js/angular-summernote.js"></script>
     </body>
 </html>

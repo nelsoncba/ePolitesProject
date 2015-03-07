@@ -3,7 +3,9 @@
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
-
+.modal-backdrop{
+  z-index: -1;
+}
 a:link{
     text-decoration: none;
 }
@@ -104,6 +106,7 @@ hr.soften {
     font-size: 14px;
     font-weight: bold;
 }
+
 .comment{
   border-top: 1px solid #dddddd;
   padding-top: 15px;
@@ -112,42 +115,52 @@ hr.soften {
 
 .collapse-text-toggle {
     font-size: 0.9em;
-    color: #666666;
+    color: #428bca;
 }
+
 .custom-link, .collapse-text-toggle{
    cursor: pointer;
 }
-.collapse-text-toggle:hover {
+
+/*.collapse-text-toggle:hover {
     color: #222222;
 }
+
 .collapse-text-toggle:before {
     content: '\00a0(';
 }
+
 .collapse-text-toggle:after {
     content: ')';
-}
+}*/
+
 .label-comment, .label-title{
   font-weight: bold;
   font-size: 16px;
 }
+
 .label-reply{
   font-weight: bold;
   font-size: 12px;
 }
+
 .timecomment{
   color: #adadae;
   font-size: 10px;
 }
+
 .img-comment{
   width: 64px; 
   height: 64px;
   border: #adadae 1px solid;
 }
+
 .img-reply{
   width: 50px; 
   height: 50px;
   border: #adadae 1px solid;
 }
+
 .img-posts{
   width: 150px; 
   height: 130px;
@@ -155,6 +168,7 @@ hr.soften {
   margin-bottom: 5px !important;
   margin-right: 10px !important;
 }
+
 .img-post{
   margin-right: auto;
   margin-left: auto;
@@ -166,26 +180,32 @@ hr.soften {
 
 .recent-post{
   border: 1px solid #dddddd;
-  box-shadow: 2px 1px 1px #dddddd;
+  box-shadow: 1px 1px 5px 1px #dddddd,
+              0px 1px 5px 0px #dddddd;
   padding-top: 5px;
   padding-bottom: 5px;
   padding-left: 5px;
   padding-right: 5px;
   margin-top: 10px;
 }
+
 .recent-post .post-title{
   color: black;
 }
+
 .recent-post img{
   width: 50px;
   height: 40px;
 }
+
 .recent-post span.glyphicon{
   font-size: 0.8em;
 }
+
 .recent-post span.glyphicon .comment-total{
   font-size: 10px;
 }
+
 /************
  Footer
  ***********/
