@@ -44,13 +44,17 @@ class HomeController extends BaseController {
 		$post->titulo = Input::get('title');
 		$post->slug = Str::slug(Input::get('title'), '-');
 		$post->cuerpo = $text;
-		
+
 		if($post->save()){
 			$message = 'El artículo se a creado correctamente';
 		}else{
 			$message = 'Ha ocurrido un error';
 		}
 		return Response::json($message);
+	}
+
+	public function uploadImage(){
+		$photo = Input::file('file')->getClientOriginalName();
 	}
 
 	public function getComments($postId){
