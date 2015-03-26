@@ -25,11 +25,6 @@ angular.module('Polites')
 			    		return data;
 			    	});
 			    },
-			    loadImage: function(){
-			    	return WebService.post('loadImage', image).success(function(data){
-			    		return data;
-			    	});
-			    },
 			    getComments: function(postId){
 			    	return WebService.get('comments/' + postId).success(function(data){
 			    		return data;
@@ -54,6 +49,11 @@ angular.module('Polites')
 			       return  WebService.get('allSections').success(function(data){
 			       		return data;
 			       });
+			    },
+			    uploadImage: function(image){
+			    	return WebService.sendFile('uploadImage', image).success(function(data){
+			    		return data;
+			    	});
 			    }
 			};
 		});

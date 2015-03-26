@@ -23,7 +23,7 @@ class Posts extends Eloquent{
     
     public function tags()
     {
-        return $this->belongsToMany('Posts_Tags');
+        return $this->belongsToMany('Tags','Posts_Tags','post_id','tag_id');
     }
     
     public function secciones(){

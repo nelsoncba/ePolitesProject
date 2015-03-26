@@ -4333,8 +4333,10 @@
           );
 
           $imageBtn.click(function (event) {
-            event.preventDefault();
+            event.preventDefault();   
+            //event.isDefaultPrevented();         
 
+            $('input[name=imgurl]').val($imageUrl.val());
             deferred.resolve($imageUrl.val());
             $imageDialog.modal('hide');
           });
@@ -4531,7 +4533,7 @@
               alert(options.langInfo.image.maximumFileSizeError);
             }
           } else {
-            async.readFileAsDataURL(file).then(function (sDataURL) {
+            async.uAsDataURL(file).then(function (sDataURL) {
               editor.insertImage($editable, sDataURL, filename);
             }).fail(function () {
               if (callbacks.onImageUploadError) {
@@ -5785,7 +5787,7 @@
                    '</div>' +
                    '<div class="form-group row-fluid">' +
                      '<label>' + lang.image.url + '</label>' +
-                     '<input class="note-image-url form-control span12" type="text" />' +
+                     '<input id="imageurl" class="note-image-url form-control span12" name="imageurl" type="text"/>' +
                    '</div>';
         var footer = '<button href="#" class="btn btn-primary note-image-btn disabled" disabled>' + lang.image.insert + '</button>';
         return tplDialog('note-image-dialog', lang.image.insert, body, footer);

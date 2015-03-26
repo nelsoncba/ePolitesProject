@@ -1,15 +1,64 @@
+<!DOCTYPE HTML>
 <article class="well">
-   <div class="panel panel-header">
-   		<h4>Crear Post</h4>
+   <div class="">
+   		<h3>&nbsp;Crear Post&nbsp;</h3>
    </div>
-   <div class="panel panel-body">
-   		<form action="" name="formPost" role="form" ng-submit="createPost(input)">
-		   	 <h4>Título:</h4>
-		   	 <input type="text" ng-model="input.title" class="form-control input-md">
-		   	 <h4>Cuerpo:</h4>
-		   	 <summernote config="options" ng-model="input.content" on-image-upload="imageUpload(files, editor)" editable="editable"></summernote>
-		   	 <button class="btn btn-success pull-right" type="submit" ng-disabled="!formPost">Crear Post</button>
+   <div class="y">
+   		<form action="" name="formPost" role="form"  ng-submit="createPost(input)">
+   			<div class="panel panel-body">
+   				 <div class="row">
+   				 <div class="col-lg-6">
+	   				 <h4>Elegir Mini-imágen</h4>
+	   				 <div ng-if="!imagemini">
+	   				    <a  role="button"  data-target="#image-mini-modal" data-toggle="modal" class="custom-link"><img src="images/mini-img.png"></a>	
+	   				 </div>
+	   				 <div ng-if="imagemini">
+	   				    <a  role="button"  data-target="#image-mini-modal" data-toggle="modal" class="custom-link" style="border: 1px solid ccc;"><img src="{{imagemini}}"  width="128" height="128" ></a>
+					 </div>
+					 <input id="image-mini" type="hidden" ng-model="input.image">
+   				 </div>
+   				 <div class="col-lg-6">
+   				  	 <h4>Seleccionar sección</h4>
+	   				 <select class="form-control" ng-model="input.seccion" ng-options="seccion as seccion.seccion for seccion in secciones track by seccion.id">
+	   				 </select>
+   				 </div>
+   				 </div>
+			   	 <h4>Título:</h4>
+			   	 <input type="text" id="title-post" ng-model="input.title" class="form-control input-lg">
+			   <!--	 <input type="text" id="imgurl"  name="imgurl"  ng-model="imgs" ng-change="change()" >-->
+			   	 <h4>Cuerpo:</h4>
+			    <!-- <div id="summernote"></div>-->
+			     <summernote config="options" ng-model="input.content" class="col-lg-12"></summernote>			   	 
+			     <h4 ng-if="imgs.length > 0">Elige imágen principal</h4>
+			   	 <div  ng-repeat="image in imgs track by $index" class="mini-images"><img  class="image-mini" src="{{image}}">&nbsp;<input type="radio" name="image" ng-value="image" ng-model="input.imagemini"/></div>
+			   	 <h4>Tags</h4><h6>(agrega hasta 4 etiquetas referentes al artículo):</h6>
+			   	 <input id="tagsinput" type="text" value="" data-role="tagsinput" ng-model="input.tags">
+			   	 <h4 width="50">Fuentes: </h4>&nbsp;&nbsp;
+			   	 <input type="radio" ng-model="input.fuente" name="fuente" id="fuenteId" ng-value="true">&nbsp;No&nbsp;
+			     <input type="radio" ng-model="input.fuente" name="fuente" id="fuenteId" ng-value="false">&nbsp;Si&nbsp;
+			    <input type="text"  id="urlFuente" ng-model="input.urlFuente" class="form-control input-md"/>
+		   	</div>
+		   	<div class="panel panel-footer">
+		   	 	<button class="btn btn-success pull-right" type="submit" ng-disabled="!formPost">Crear Post</button>
+		   	</div>
 	   </form>
    </div>
 </article>
-
+<div class="modal fade" id="image-mini-modal" >
+	<div class="modal-dialog">
+		<div class="class modal-content">
+			<div class="class modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<label for="" >Elegir mini-imágen</label>
+			</div>
+			<div class="class modal-body">
+				<input type="file" name="fileimagemini" ng-model="imagemini" onchange="angular.element(this).scope().uploadImagemini(this.files)" ng-keydown="this.uploadImagemini()" ng-keyup="this.uploadImagemini()">
+				<br><span>ó</span><br>
+				<input type="text" placeholder="URL de imagen" class="form-control input-md"  ng-model="imageminiurl">
+			</div>
+			<div class="class modal-footer">
+				<button type="button" ng-click="uploadImageminiUrl(imageminiurl)" class="btn btn-primary pull-right" class="close" data-dismiss="modal">Enviar</button>
+			</div>
+		</div>
+	</div>
+</div>

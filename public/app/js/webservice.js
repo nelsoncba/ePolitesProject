@@ -24,6 +24,19 @@ angular.module('Polites')
 				return $http.delete('./api/' + path, data).success(function(data){
 					return data;
 				});
+			},
+			sendFile: function(path, data){
+				return $.ajax({
+						method: 'POST',
+			    		url: './api/' + path,
+			    		data: data,
+			    		cache: false,
+		                contentType: false,
+		                processData: false,
+			    		success: function(data){
+			    			return data;
+			    		}
+				});
 			}
 		}
 	});

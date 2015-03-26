@@ -53,7 +53,16 @@ angular.module('Polites', ['ui.router', 'politesControllers', 'angular-timeago',
 				var newText = angular.element(text).text();
 				return newText;
 			}
-		});
+		})
+		.filter('strLimit', ['$filter', function($filter) {
+		   return function(input, limit) {
+		      if (input.length <= limit) {
+		          return input;
+		      }
+		    
+		      return $filter('limitTo')(input, limit) + '...';
+		   };
+		}]);
 		
 		
 /*angular.module('Polites', ['ui.state','ui.router'])

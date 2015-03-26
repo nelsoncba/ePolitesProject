@@ -3,7 +3,6 @@ angular.module('politesControllers',[])
 				var data = Posts.getAllPosts().success(function(data){
 					$scope.posts = data;
 				});
-				$scope.algo = '<b><s>esto es texto</s></b>';
 		  })
 		  .controller('postController',function($scope, $state, $anchorScroll, Posts){
 		  	    $scope.convertToDate = function(stringDate){
@@ -47,36 +46,127 @@ angular.module('politesControllers',[])
 		  				input.reply = '';
 		  			});
 		  		};
-		  		$scope.options = {
-		  			height: 300,
-		  			focus: true,
-		  			toolbar: [
-		  				['edit',['undo','redo']],
-		  				['headline', ['style']],
-			            ['style', ['bold', 'italic', 'underline']],
-			            ['fontface', ['fontname']],
-			            ['textsize', ['fontsize']],
-			            //['fontclr', ['color']],
-			            ['alignment', ['ul', 'ol', 'paragraph', 'lineheight']],
-			            //['height', ['height']],
-			            ['table', ['table']],
-			            ['insert', ['link','picture','video']],
-			            ['view', ['codeview']],
-		  			]
-		  		};
-		  		$scope.imageUpload = function(files, editor) {
-		  			/*Posts.loadImage(files).success(function(){
 
-		  			});*/
-				    console.log('image upload:', files, editor);
-				    console.log('image upload\'s editable:', $scope.editable);
-				    editor.insertImage($scope.editable, 'images/adolfybenito.jpg');
-				  };
+				//funcion para cargar imagen al servidor y luego renderizarla en el cuadro del editor
+				$scope.imgs = [];
+				    $('.note-image-url').on('value_changed',function(){
+						$scope.imgs.push($(this).val());
+						console.log('url: ', $(this).val());
+					});
+				
+				/*$('#summernote').summernote({
+					height: 500,
+					focus: true,
+					onImageUpload: function(files, editor, welEditable){
+						sendFiles(files[0], editor, welEditable);
+					},
+					toolbar: [
+					  	['edit',['undo','redo']],
+					  	['headline', ['style']],
+						['style', ['bold', 'italic', 'underline']],
+						['fontface', ['fontname']],
+						['textsize', ['fontsize']],
+							            //['fontclr', ['color']],
+						['alignment', ['ul', 'ol', 'paragraph', 'lineheight']],
+							            //['height', ['height']],
+						['table', ['table']],
+						['insert', ['link','picture','video']],
+						['view', ['codeview']],
+					]
+				});  */
+				
+				$scope.options = {
+					height: 500,
+					focus: true,
+					onImageUpload: function(files, editor, welEditable){
+						sendFiles(files[0], editor, welEditable);
+					},
+					toolbar: [
+					  	['edit',['undo','redo']],
+					  	['headline', ['style']],
+						['style', ['bold', 'italic', 'underline']],
+						['fontface', ['fontname']],
+						['textsize', ['fontsize']],
+							            //['fontclr', ['color']],
+						['alignment', ['ul', 'ol', 'paragraph', 'lineheight']],
+							            //['height', ['height']],
+						['table', ['table']],
+						['insert', ['link','picture','video']],
+						['view', ['codeview']],
+					]
+				}; 
+				/*$scope.imageUpload = function(files, editor){
+					data = new FormData();
+		            data.append("file", files[0]);
+					Posts.uploadImage(data).success(function(url){
+						editor.insertImage($scope.editable, 'images/temp/' + url);
+						path = 'images/temp/'+url;
+						$scope.imgs.push(path);
+					});
+				};*/
+
+				function sendFiles(files, editor, welEditable){
+		            data = new FormData();
+		            data.append("file", files);
+					Posts.uploadImage(data).success(function(url){
+						editor.insertImage(welEditable, 'images/post/' + url);
+						path = 'images/post/'+url;
+						$scope.imgs.push(path);
+					});
+				};
+
+				
+			
+				/*****tags***********/
+				var tags = new Bloodhound({
+				  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('tag'),
+				  queryTokenizer: Bloodhound.tokenizers.whitespace,
+				  prefetch: {
+				    url: './api/tags',
+				    filter: function(data) {
+				      return data;
+				    }
+				  }
+				});
+				tags.initialize();
+
+				$('#tagsinput').tagsinput({
+				   typeaheadjs: {
+				    name: 'tags',
+				    displayKey: 'tag',
+				    valueKey: 'tag',
+				    source: tags.ttAdapter()
+				  }
+				});
+				/***end-tags********/
+
+				Posts.getSections().success(function(data){
+					$scope.secciones = data;
+				});		
+
+				$scope.uploadImagemini = function(files){
+					data = new FormData();
+					data.append('file', files[0]);
+					Posts.uploadImage(data).success(function(url){
+						path = 'images/post/'+url;
+						$scope.imagemini = path;
+						$scope.input = {image:path};
+					});
+					console.log('url: ', files);
+					$('#image-mini-modal').modal('hide');
+				};
+
+				$scope.uploadImageminiUrl = function(file){
+				//	$('#image-mini').val(file);
+					$scope.input = {image: file};
+					$scope.imagemini = file;
+				};
+				
 		  		$scope.createPost = function(input){
 		  			
-		  			/*Posts.createPost(input).success(function(data){
+		  			Posts.createPost(input).success(function(data){
 		  				$scope.message =  data;
-		  			});*/
+		  			});
 		  		};
 		  })
 		  .controller('sidebarController',function($scope, Posts) {

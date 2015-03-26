@@ -3,9 +3,7 @@
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
-.modal-backdrop{
-  z-index: -1;
-}
+
 a:link{
     text-decoration: none;
 }
@@ -149,7 +147,7 @@ hr.soften {
   font-size: 10px;
 }
 
-.img-comment{
+.img-comment, .image-mini{
   width: 64px; 
   height: 64px;
   border: #adadae 1px solid;
@@ -205,7 +203,10 @@ hr.soften {
 .recent-post span.glyphicon .comment-total{
   font-size: 10px;
 }
-
+.mini-images{
+  margin: 5px;
+  display: inline-block;
+}
 /************
  Footer
  ***********/

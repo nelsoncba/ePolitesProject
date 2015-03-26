@@ -48,6 +48,7 @@ angular.module('Polites')
             }
         };
     }])
+    //ajustar input commentarios y respuestas
     .directive('elastic', function() {
         return {
             restrict: 'A',
@@ -62,7 +63,7 @@ angular.module('Polites')
             }
         };
     })
-    .directive("timeAgo", function($compile) {
+    .directive("timeago", function($compile) {
       return {  
         restrict: "C",
         link: function(scope, element, attrs) {

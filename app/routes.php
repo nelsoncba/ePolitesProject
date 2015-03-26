@@ -38,3 +38,8 @@ Route::post('/api/saveComment/{postId}', 'HomeController@saveComment');
 Route::get('/api/replies/{commentId}', 'HomeController@getReplies');
 
 Route::post('/api/saveReply/{commentId}', 'HomeController@postReply');
+
+Route::get('/api/tags', function(){
+	$tags = Tags::select('tag')->get();
+	return Response::json($tags->toArray(),200);
+});

@@ -11,11 +11,36 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1; maximum-scale=1; minimum-scale=1; user-scalable=no;">
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        
+          <!--jQuery-->
+        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+        <!--Bootstrap-->
+   <!--     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/css/bootstrap-theme.min.css"> -->
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc2/css/bootstrap-glyphicons.css">
         <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="css/bootstrap.css">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+        <!--<link rel="stylesheet" href="css/bootstrap.css"><script src="js/vendor/bootstrap.js"></script>-->
+
+         <!--Angular-->
+        <script src="app/lib/angular/angular.js"></script>
+        <script src="app/lib/angular/angular-ui-router.min.js"></script>
+        <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.12/angular.min.js"></script>-->
+
+        <!--Summernote-->
         <link rel="stylesheet" href="css/summernote.css">
         <link rel="stylesheet" href="css/summernote-bs3.css">
+        <script src="app/js/angular-summernote.js"></script>
+        <script src="js/summernote.js"></script>
+
+        
+        <!--ng-tags-input-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ng-tags-input/2.2.0/ng-tags-input.bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ng-tags-input/2.2.0/ng-tags-input.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ng-tags-input/2.2.0/ng-tags-input.js"></script>
+
+        <link rel="stylesheet" href="css/main.css">
         <style>
            /* body {
                 padding-top: 50px;
@@ -26,13 +51,17 @@
             }
 
         </style>
-        <link rel="stylesheet" href="css/main.css">
-        <script src="//code.jquery.com/jquery-1.9.1.min.js"></script>
-       <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.12/angular.min.js"></script>-->
-        <script src="app/lib/angular/angular.js"></script>
-        <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.8/angular-ui-router.min.js"></script>-->
-        <script src="app/lib/angular/angular-ui-router.min.js"></script>
-        <script src="js/summernote.js"></script>
+
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.10.4/typeahead.bundle.min.js"></script>
+
+        <!--Bootstrap-tagsinput-->
+        <link rel="stylesheet" href="app/lib/bootstrap-tagsinput/dist/bootstrap-tagsinput.css">
+        <script src="app/lib/bootstrap-tagsinput/dist/bootstrap-tagsinput.js"></script>
+       <!-- <script src="app/lib/bootstrap-tagsinput/dist/bootstrap-tagsinput-angular.js"></script>
+        <script src="app/lib/bootstrap-tagsinput/dist/typeahead.bundle.js"></script>-->
+        <script src="app/lib/bootstrap-tagsinput/examples/assets/app.js"></script>
+        <script src="app/lib/bootstrap-tagsinput/examples/assets/app_bs3.js"></script>
     </head>
 
     <body>
@@ -43,7 +72,7 @@
         <div class="container marketing">
             <!-- Example row of columns -->
             <div class="row">
-              <div class="col-lg-8">      
+              <div class="col-lg-8">  
                     <div ui-view="main" autoscroll="false"></div>       
               </div>
               <div class="col-lg-4 right">
@@ -83,9 +112,9 @@
 
                   <h5>Follow Us on Socials</h5>
                   <p>
-                    <a href="#"><img src="img/socials/facebook.png" alt="" /></a>
+                  <!--  <a href="#"><img src="img/socials/facebook.png" alt="" /></a>
                     <a href="#"><img src="img/socials/twitter.png" alt="" /></a>
-                    <a href="#"><img src="img/socials/youtube.png" alt="" /></a>
+                    <a href="#"><img src="img/socials/youtube.png" alt="" /></a>-->
                   </p>
                 </div>
             </div>
@@ -100,7 +129,7 @@
           </div>
         </footer>
       <!--  <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>-->
-        <script src="js/vendor/bootstrap.js"></script>
+        
         
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <script>
@@ -117,9 +146,13 @@
         <script src="app/js/service.js"></script>
         <script src="app/js/webservice.js"></script>
         <script src="app/js/directives.js"></script>
-        <!--<script src="js/jquery.timeago.js"></script>-->
+        <script src="js/jquery.timeago.js"></script>
         <script src="app/lib/angular/angular-timeago.js"></script>
         <!--<script src="js/vendor/jquery-1.11.2.min.js"></script>-->
-        <script src="app/js/angular-summernote.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/rainbow/1.2.0/js/rainbow.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/rainbow/1.2.0/js/language/generic.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/rainbow/1.2.0/js/language/html.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/rainbow/1.2.0/js/language/javascript.js"></script>
+       
     </body>
 </html>

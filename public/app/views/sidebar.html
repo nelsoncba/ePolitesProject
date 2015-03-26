@@ -36,7 +36,7 @@
             <article class="recent-post" ng-repeat="post in sidebarPosts">
                 <div class="media">
                     <div class="pull-left" ng-if="post.imagen">
-                        <img class="media-object" src="images/{{post.imagen}}"/>
+                        <img class="media-object" src="{{post.imagen}}"/>
                     </div>
                 <div class="media-body">
                     <div class="media-heading"><a href="#"><span class="label-title">{{post.titulo}}</span></a>&nbsp;&nbsp;

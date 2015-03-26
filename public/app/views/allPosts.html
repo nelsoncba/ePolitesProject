@@ -33,10 +33,10 @@
             <a href="#comments"><i class="glyphicon glyphicon-comment"></i>&nbsp;{{post.count}} comentarios&nbsp;</a>
           </h5>
           <div ng-if="post.imagen">
-            <img class="img-posts media-object pull-left" src="images/{{post.imagen}}" alt="" holder-fix>
+            <img class="img-posts media-object pull-left" src="{{post.imagen}}" alt="" holder-fix>
           </div>
-          <p>{{post.cuerpo | htmlToText | limitTo: 400 }}...</p>
-          <a ui-sref="root.post({id: post.id, slug: post.slug})" class="btn btn-primary btn-xs pull-right">leer mas...</a>&nbsp;&nbsp;
+          <p>{{post.cuerpo | htmlToText | strLimit: 400 }}...</p>
+          <a ui-sref="root.post({id: post.id, slug: post.slug})" class="btn btn-primary btn-xs pull-right">leer mas</a>&nbsp;&nbsp;
 </article>
 <!--<hr class="soften">-->
 </div>
