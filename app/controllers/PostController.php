@@ -33,41 +33,55 @@ class PostController extends \BaseController {
 	 */
 	public function store()
 	{
-		$post = new Posts;
-		$post->usuario_id = '1';
-		$post->imagen = Input::get('image');;
-		$post->seccion_id = Input::get('seccion.id');
-		$post->titulo = Input::get('title');
-		$post->slug = Str::slug(Input::get('title'), '-');
-		$post->cuerpo = Input::get('content');
+		$validator = Validator::make(Input::all(), Posts::$rules);
+		if($validator->fails()){
+			return Response::json($validator->messages(),403);
+		}
+		else{
+			$post = new Posts;
+			$cuerpo = Input::get('content');
+			$post->usuario_id = '1';
+			$post->imagen = Input::get('image');;
+			$post->seccion_id = Input::get('section.id');
+			$post->titulo = Input::get('title');
+			$post->slug = Str::slug(Input::get('title'), '-');
+							/*this condition will validate if the string $cuerpo going to saved with tags required <p> to display correctly in the view*/
+			$post->cuerpo = preg_match('%(<p[^>]*>.*?</p>)%i', $cuerpo) ? $cuerpo : '<p>'.$cuerpo.'</p>';
 
-		$tagsSave[] = '';
-		$newTags[] = '';
-		$oldTags = Tags::all();
-		$postTags = explode(',',Input::get('tags'));
-		foreach ($oldTags as $oldTag) {
+			$oldTags = Tags::selectValues();
+			$postTags = Input::get('tags');
+
+			//iterate tag values to determinate if exists in D.B.
 			foreach ($postTags as $postTag) {
-				if($oldTag->tag == $postTag){
-					$tagsSave[] = $oldTag->id;
-				}else{
-					$newTags[] = $postTag;
+				if(!in_array($postTag, $oldTags, true)){
+					$tag = new Tags;
+					$tag->tag = $postTag;
+					$tag->slug = Str::slug($postTag);
+					$tag->save();
 				}
 			}
-		}
-		$tag = new Tags; 
-		foreach ($newTags as $newTag) {
-			$tag->tag = $newTag;
-			$tagsSave[] = Tags::where('tag','=', $newTag)->get('id');
-		}
-		$post->tags()->sync($tagsSave);
+	        //iterate to compare new tags with old tags and add to $tagsPost matching id´s 
+			$tags = Tags::all();
+			$tagsPost = array();
+			foreach ($postTags as $pTag) {
+				foreach ($tags as $tag) {
+					if($pTag == $tag->tag){
+						$tagsPost[] = $tag->id;
+					}
+				}
+			}
 
+			//This is the condition to send success message or error message after save the new post and syncronize the matching $tagsPost 
+			// in the intermediate table Tags_Posts
+			if($post->save()){
+				$message = 'El artículo se a creado correctamente';
+				$post->tags()->sync($tagsPost);
+			}else{
+				$message = 'Ha ocurrido un error';
+			}
 
-		if($post->save()){
-			$message = 'El artículo se a creado correctamente';
-		}else{
-			$message = 'Ha ocurrido un error';
+			return Response::json($message,200);
 		}
-		return Response::json($message);
 	}
 
 	/**

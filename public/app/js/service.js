@@ -23,7 +23,9 @@ angular.module('Polites')
 			    createPost: function(input){
 			    	return WebService.post('createPost', input).success(function(data){
 			    		return data;
-			    	});
+			    	}).error(function(data){
+						return data;
+					});
 			    },
 			    getComments: function(postId){
 			    	return WebService.get('comments/' + postId).success(function(data){

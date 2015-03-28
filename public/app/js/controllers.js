@@ -4,7 +4,7 @@ angular.module('politesControllers',[])
 					$scope.posts = data;
 				});
 		  })
-		  .controller('postController',function($scope, $state, $anchorScroll, Posts){
+		  .controller('postController',function($scope, $state, $anchorScroll, Posts, $http){
 		  	    $scope.convertToDate = function(stringDate){
 		  	    	var dateOut = new Date(stringDate);
 		  	    	dateOut.setDate(dateOut.getDate()+1);
@@ -115,30 +115,24 @@ angular.module('politesControllers',[])
 					});
 				};
 
-				
 			
 				/*****tags***********/
-				var tags = new Bloodhound({
-				  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('tag'),
-				  queryTokenizer: Bloodhound.tokenizers.whitespace,
-				  prefetch: {
-				    url: './api/tags',
-				    filter: function(data) {
-				      return data;
-				    }
-				  }
-				});
-				tags.initialize();
-
-				$('#tagsinput').tagsinput({
-				   typeaheadjs: {
-				    name: 'tags',
-				    displayKey: 'tag',
-				    valueKey: 'tag',
-				    source: tags.ttAdapter()
-				  }
-				});
+				$scope.tagsOptions = {
+						maxTags: 4,
+						typeahead: {
+					          prefetch: './api/tags'
+					    }
+				};
 				/***end-tags********/
+
+				$scope.createPost = function(input){
+		  			
+		  			Posts.createPost(input).success(function(data){
+		  				$scope.message =  data;
+		  			}).error(function(data){
+						$scope.errors = data;
+					});
+		  		};
 
 				Posts.getSections().success(function(data){
 					$scope.secciones = data;
@@ -162,12 +156,7 @@ angular.module('politesControllers',[])
 					$scope.imagemini = file;
 				};
 				
-		  		$scope.createPost = function(input){
-		  			
-		  			Posts.createPost(input).success(function(data){
-		  				$scope.message =  data;
-		  			});
-		  		};
+		  		
 		  })
 		  .controller('sidebarController',function($scope, Posts) {
 		  		Posts.getSections().success(function(data){

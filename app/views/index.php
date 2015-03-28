@@ -26,7 +26,7 @@
          <!--Angular-->
         <script src="app/lib/angular/angular.js"></script>
         <script src="app/lib/angular/angular-ui-router.min.js"></script>
-        <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.12/angular.min.js"></script>-->
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.12/angular.min.js"></script>
 
         <!--Summernote-->
         <link rel="stylesheet" href="css/summernote.css">
@@ -52,16 +52,19 @@
 
         </style>
 
+        <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.10.4/typeahead.bundle.min.js"></script>-->
         
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.10.4/typeahead.bundle.min.js"></script>
-
+        
         <!--Bootstrap-tagsinput-->
         <link rel="stylesheet" href="app/lib/bootstrap-tagsinput/dist/bootstrap-tagsinput.css">
-        <script src="app/lib/bootstrap-tagsinput/dist/bootstrap-tagsinput.js"></script>
-       <!-- <script src="app/lib/bootstrap-tagsinput/dist/bootstrap-tagsinput-angular.js"></script>
-        <script src="app/lib/bootstrap-tagsinput/dist/typeahead.bundle.js"></script>-->
+        <script src="app/lib/bootstrap-tagsinput/dist/bootstrap-tagsinput.js"></script>   
+        <script src="app/js/bsTagsInput.js"></script>        
+        <script src="app/lib/bootstrap-tagsinput/dist/typeahead.min.js"></script>
+        <!--<script src="app/lib/bootstrap-tagsinput/dist/bloodhound.js"></script>-->
+        <!---<script src="app/lib/bootstrap-tagsinput/dist/bootstrap-tagsinput-angular.js"></script> -->
+        <!--<script src="app/lib/bootstrap-tagsinput/dist/app_bs3.js"></script>-->
         <script src="app/lib/bootstrap-tagsinput/examples/assets/app.js"></script>
-        <script src="app/lib/bootstrap-tagsinput/examples/assets/app_bs3.js"></script>
+        
     </head>
 
     <body>
@@ -146,6 +149,7 @@
         <script src="app/js/service.js"></script>
         <script src="app/js/webservice.js"></script>
         <script src="app/js/directives.js"></script>
+        <!--<script src="app/js/tags-autocomplete.js"></script>-->
         <script src="js/jquery.timeago.js"></script>
         <script src="app/lib/angular/angular-timeago.js"></script>
         <!--<script src="js/vendor/jquery-1.11.2.min.js"></script>-->

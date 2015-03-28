@@ -70,4 +70,32 @@ angular.module('Polites')
           jQuery(element).timeago();
         }
       };
+    })
+    .directive('tagsInput', function () {
+        return {
+            restrict: 'A',
+            link: function (scope, Element, Attrs) {
+                var tags = new Bloodhound({
+                  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('tag'),
+                  queryTokenizer: Bloodhound.tokenizers.whitespace,
+                  prefetch: {
+                    url: './api/tags',
+                    filter: function(data) {
+                      return data;
+                    }
+                  }
+                });
+                tags.initialize();
+
+                jQuery(Element).tagsinput({
+                   maxTags:4,
+                   typeaheadjs: {
+                    name: 'tags',
+                    displayKey: 'tag',
+                    valueKey: 'tag',
+                    source: tags.ttAdapter()
+                  }
+                });
+            }
+        };
     });

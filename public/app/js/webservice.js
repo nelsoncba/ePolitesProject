@@ -5,11 +5,15 @@ angular.module('Polites')
 			{
 				return $http.get('./api/' + path, data).success(function(data){
 					return data;
+				}).error(function(data){
+					return data;
 				});
 			},
 			post: function(path, data)
 			{	
 				return $http.post('./api/' + path, data).success(function(data){
+					return data;
+				}).error(function(data){
 					return data;
 				});
 			},
@@ -17,11 +21,15 @@ angular.module('Polites')
 			{
 				return $http.put('./api/' + path, data).success(function(data){
 					return data;
+				}).error(function(data){
+					return data;
 				});
 			},
 			delete: function(path, data)
 			{
 				return $http.delete('./api/' + path, data).success(function(data){
+					return data;
+				}).error(function(data){
 					return data;
 				});
 			},

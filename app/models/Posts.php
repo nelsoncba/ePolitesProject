@@ -15,6 +15,12 @@ class Posts extends Eloquent{
                                 );
     //protected $with = array('secciones','usuarios');
 
+    public static $rules = array(
+                                'title' => 'required|max:100',
+                                'section' => 'required',
+                                'content' => 'required|min:200',
+                                'tags' => 'required',
+                                );
 
     public function comentarios()
     {

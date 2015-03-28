@@ -32,26 +32,27 @@ class HomeController extends BaseController {
 	}
 
 	public function getPost($id){
-		$post = Posts::getPost($id);
+		$post = Posts::getPost($id);   
 		return Response::json($post, 200);
 	}
 
 	public function createPost(){
+
 		$post = new Posts;
 		$cuerpo = Input::get('content');
-	
 		$post->usuario_id = '1';
 		$post->imagen = Input::get('image');;
 		$post->seccion_id = Input::get('seccion.id');
 		$post->titulo = Input::get('title');
 		$post->slug = Str::slug(Input::get('title'), '-');
+						/*this condition will validate if the string $cuerpo going to saved with tags required <p> to display correctly in the view*/
 		$post->cuerpo = preg_match('%(<p[^>]*>.*?</p>)%i', $cuerpo) ? $cuerpo : '<p>'.$cuerpo.'</p>';
 
 		
 		$oldTags = Tags::selectValues();
 		$postTags = explode(',', Input::get('tags'));
 
-		//iterate values post to determinate if exists in D.B.
+		//iterate tag values to determinate if exists in D.B.
 		foreach ($postTags as $postTag) {
 			if(!in_array($postTag, $oldTags, true)){
 				$tag = new Tags;
@@ -60,7 +61,7 @@ class HomeController extends BaseController {
 				$tag->save();
 			}
 		}
-
+        //iterate to compare new tags with old tags and add to $tagsPost matching id´s 
 		$tags = Tags::all();
 		$tagsPost = array();
 		foreach ($postTags as $pTag) {
@@ -71,7 +72,8 @@ class HomeController extends BaseController {
 			}
 		}
 
-
+		//This is the condition to send success message or error message after save the new post and syncronize the matching $tagsPost 
+		// in the intermediate table Tags_Posts
 		if($post->save()){
 			$message = 'El artículo se a creado correctamente';
 			$post->tags()->sync($tagsPost);
@@ -81,20 +83,29 @@ class HomeController extends BaseController {
 
 		return Response::json($message);
 	}
-
+    
+    /**
+     * function to create a images directory and upload images by users  
+     */
 	public function uploadImage(){
 		$userId = 1;
-		File::makeDirectory('images/temp/user'.$userId, 0777, true, true);
+		File::makeDirectory('images/post/user'.$userId, 0777, true, true);
         $photo = Input::file('file');
         $photo->move('images/post/user'.$userId, $photo->getClientOriginalName());
         return Response::json('user'.$userId.'/'.$photo->getClientOriginalName(),200);
 	}
 
+	/**
+	 * get Coments
+	 */
 	public function getComments($postId){
 		$comments = Comentarios::findComments($postId);
 		return Response::json($comments, 200);
 	}
 
+	/**
+	 * save Comments
+	 */
 	public function saveComment($postId){
 		$comment = new Comentarios;
 
@@ -108,12 +119,18 @@ class HomeController extends BaseController {
 
 		return Response::json($message,200);
 	}
-
+	
+	/**
+	 * get Replies
+	 */	
 	public function getReplies($commentId){
 		$respuestas = Respuestas::with('Usuarios')->where('Respuestas.comentario_id','=', $commentId)->get();
 		return Response::json($respuestas, 200);
 	}
-
+	
+	/**
+	 * save Replies
+	 */
 	public function postReply($id){
 
 		$reply = new Respuestas;

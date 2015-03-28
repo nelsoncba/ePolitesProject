@@ -16,30 +16,34 @@ Route::get('/', function()
 	return View::make('index');
 });
 
-Route::get('/api/allPosts', 'HomeController@getAllPosts');
+Route::get('/api/allPosts', 'PostController@index');
 
-Route::get('/api/recentPosts', 'HomeController@recentPosts');
+Route::get('/api/recentPosts', 'PostController@recentPosts');
 
-Route::get('/api/post/{id}/{slug}', 'HomeController@getPost');
+Route::get('/api/post/{id}/{slug}', 'PostController@show');
 
-Route::post('/api/createPost', 'HomeController@createPost');
+Route::post('/api/createPost', 'PostController@store');
 
-Route::post('/api/uploadImage', 'HomeController@uploadImage');
+Route::post('/api/uploadImage', 'FilesController@uploadImage');
 
 Route::get('/api/allSections', function(){
 	$data = Secciones::getSections();
 	return Response::json($data,200);
 });
 
-Route::get('/api/comments/{postId}', 'HomeController@getComments');
+Route::get('/api/comments/{postId}', 'CommentController@indexComment');
 
-Route::post('/api/saveComment/{postId}', 'HomeController@saveComment');
+Route::post('/api/saveComment/{postId}', 'CommentController@storeComment');
 
-Route::get('/api/replies/{commentId}', 'HomeController@getReplies');
+Route::get('/api/replies/{commentId}', 'CommentController@indexReply');
 
-Route::post('/api/saveReply/{commentId}', 'HomeController@postReply');
+Route::post('/api/saveReply/{commentId}', 'CommentController@storeReply');
 
 Route::get('/api/tags', function(){
 	$tags = Tags::select('tag')->get();
-	return Response::json($tags->toArray(),200);
+	$tagList = array();
+	foreach ($tags as $key => $value) {
+		$tagList[] = $value->tag;
+	}
+	return Response::json($tagList,200);
 });

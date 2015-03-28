@@ -1,4 +1,4 @@
-angular.module('Polites', ['ui.router', 'politesControllers', 'angular-timeago','summernote'])
+angular.module('Polites', ['ui.router', 'politesControllers', 'angular-timeago','summernote', 'bsTagsInput'])
 		.config(function($stateProvider, $urlRouterProvider) {
 			
 			$urlRouterProvider.otherwise('/');
