@@ -71,7 +71,7 @@
         <!--[if lt IE 8]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-        <div ui-view="header"></div>
+        <nav id="nav" class="navbar navbar-inverse navbar-fixed-top" ui-view="header"></nav>
         <div class="container marketing">
             <!-- Example row of columns -->
             <div class="row">

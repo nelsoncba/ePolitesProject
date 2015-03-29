@@ -20,6 +20,7 @@ class CreateCuentasTable extends Migration {
                 $tabla->string('telefono',20);
                 $tabla->dateTime('fechaNacimiento');
                 $tabla->string('ocupacion',100);
+                $tabla->timestamps();
             });
 	}
 

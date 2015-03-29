@@ -22,7 +22,7 @@ Route::get('/api/recentPosts', 'PostController@recentPosts');
 
 Route::get('/api/post/{id}/{slug}', 'PostController@show');
 
-Route::post('/api/createPost', 'PostController@store');
+Route::post('/api/storePost', 'PostController@store');
 
 Route::post('/api/uploadImage', 'FilesController@uploadImage');
 
@@ -33,11 +33,11 @@ Route::get('/api/allSections', function(){
 
 Route::get('/api/comments/{postId}', 'CommentController@indexComment');
 
-Route::post('/api/saveComment/{postId}', 'CommentController@storeComment');
+Route::post('/api/storeComment/{postId}', 'CommentController@storeComment');
 
 Route::get('/api/replies/{commentId}', 'CommentController@indexReply');
 
-Route::post('/api/saveReply/{commentId}', 'CommentController@storeReply');
+Route::post('/api/storeReply/{commentId}', 'CommentController@storeReply');
 
 Route::get('/api/tags', function(){
 	$tags = Tags::select('tag')->get();

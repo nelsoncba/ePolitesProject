@@ -58,7 +58,7 @@ class Posts extends Eloquent{
                                ->leftJoin('Usuarios', 'Usuarios.id', '=', 'Posts.usuario_id')
                                ->leftJoin('Posts_Tags', 'Posts_Tags.post_id', '=', 'Posts.id')
                                ->leftJoin('Tags','Posts_Tags.tag_id', '=', 'Tags.id')
-                               ->select('Posts.id as id','Posts.titulo as titulo', 'Posts.slug as slug', 'Posts.imagen as imagen', 'Posts.created_at as created_at', DB::raw('GROUP_CONCAT(Tags.tag) as tag'), 'Posts.cuerpo as cuerpo', 'Secciones.seccion as seccion', 'Usuarios.usuario as usuario')
+                               ->select('Posts.id as id','Posts.titulo as titulo', 'Posts.slug as slug', 'Posts.imagen as imagen', 'Posts.created_at as created_at', DB::raw('GROUP_CONCAT(Tags.tag) as tag'), 'Posts.cuerpo as cuerpo', 'Posts.urlFuente as urlFuente', 'Secciones.seccion as seccion', 'Usuarios.usuario as usuario')
                                ->where('Posts.id','=',$id)
                                ->groupBy('Posts.id')
                                ->get();
@@ -73,6 +73,7 @@ class Posts extends Eloquent{
                             'imagen' => $p->imagen,
                             'created_at' => $p->created_at,
                             'tag'=> explode(',', $p->tag),
+                            'urlFuente' => $p->urlFuente,
                             'seccion' => $p->seccion,
                             'usuario' => $p->usuario
                             );

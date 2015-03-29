@@ -1,4 +1,11 @@
 <article class="well">
+          <section ng-if="!post" >
+            <div align="center" style="height: 500px; width: 100%;">
+            <img src="images/loader1.gif" width="100" style="display:table-cell; vertical-align:middle; float:none;"><br>
+            <span>&nbsp;Cargando&nbsp;&nbsp;</span>
+            </div>
+          </section>
+          <section ng-if="post">
           <h5>{{ post.seccion }}</h5>
           <h2>{{ post.titulo }}</h2>
           <h6>Por <a href="#">{{post.usuario}}</a>&nbsp;-&nbsp;<span ng-bind="convertToDate(post.created_at)|date:'medium'"></span></h6>
@@ -9,7 +16,11 @@
             <a href="#" ng-repeat="tag in post.tag">
             	<span class="label label-default">{{tag}}</span></span>
             </a>
-          </h5>
+          </h5><br>
+          <h5><i class="glyphicon glyphicon-info-sign"></i>&nbsp;Fuente:&nbsp;</h5>
+          <span ng-if="!post.urlFuente">El artículo es de mi autoría y/o información recopilada.</span>
+          <span ng-if="post.urlFuente" class=""><a href="{{post.urlFuente}}">{{post.urlFuente | strLimit: 100}}</a></span>
+          </section>
           <hr>
           <section>
               <h4><i class="glyphicon glyphicon-comment"></i>&nbsp;{{comments.length}}&nbsp;Comentarios:</h4>
@@ -37,7 +48,7 @@
                     <div class="media-body">
                       <div class="media-heading"><span class="label-comment">{{comment.usuario}}</span>&nbsp;&nbsp;<span class="time-ago" timeago from-time="{{comment.created_at}}"></span><a ng-click="getReply(comment)" class="custom-link pull-right">Responder&nbsp;&nbsp;</a></div>
                       <p style="font-size:14px;" dd-text-collapse dd-text-collapse-max-length="300" dd-text-collapse-text="{{comment.comentario}}"></p>
-                      <div class="media-heading"><a class="custom-link" ng-show="comment.respuestasTotal > 0" ng-click="getReply(comment)">{{comment.respuestasTotal}}&nbsp;respuestas</a></div>
+                      <div class="media-heading"><a class="custom-link" ng-show="comment.respuestasTotal > 0" ng-click="getReply(comment)">{{comment.respuestasTotal}}&nbsp;respuestas</a>&nbsp;<img src="images/loader2.gif" width="70" ng-show="comment.imgReply"></div>
                       <div>
                          <article class="comment" ng-repeat="reply in comment.replies">
                             <div class="media">

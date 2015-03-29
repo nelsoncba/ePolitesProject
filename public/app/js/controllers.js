@@ -1,10 +1,11 @@
-angular.module('politesControllers',[])
-		  .controller('allPostsController', function($scope, Posts) {
+angular.module('politesControllers',['ui.router'])
+		  .controller('allPostsCtrl', function($scope, $anchorScroll, Posts) {
+		  		$anchorScroll();
 				var data = Posts.getAllPosts().success(function(data){
 					$scope.posts = data;
 				});
 		  })
-		  .controller('postController',function($scope, $state, $anchorScroll, Posts, $http){
+		  .controller('postCtrl',function($scope, $state, $anchorScroll, Posts){
 		  	    $scope.convertToDate = function(stringDate){
 		  	    	var dateOut = new Date(stringDate);
 		  	    	dateOut.setDate(dateOut.getDate()+1);
@@ -18,7 +19,18 @@ angular.module('politesControllers',[])
 		  			$scope.comments = data;
 		  		});
 
-		  		$scope.saveComment = function(post, input){
+		  		$scope.getReply = function(comment){
+		  			if(comment.respuestasTotal > 0){
+		  					comment.imgReply = true;
+			  		   Posts.getReplies(comment.id).success(function(data){
+			  		    	 comment.replies =  data;
+			  		    	 comment.imgReply = false;
+			  			});
+		  			}
+		  			this.show = true;
+		  		};
+
+		  		$scope.storeComment = function(post, input){
                     Posts.saveComment(post.id, input).success(function(data){
                     	message = data;
                     	Posts.getComments(post.id).success(function(data){
@@ -28,16 +40,8 @@ angular.module('politesControllers',[])
                     });
 		  		};
 
-		  		$scope.getReply = function(comment){
-		  			if(comment.respuestasTotal > 0){
-			  		    Posts.getReplies(comment.id).success(function(data){
-			  		    	 comment.replies =  data;
-			  			});
-		  			}
-		  			this.show = true;
-		  		};
 
-		  		$scope.saveReply = function(comment, input){
+		  		$scope.storeReply = function(comment, input){
 		  			Posts.saveReply(comment.id, input).success(function(data){
 		  				message = data;
 		  				Posts.getReplies(comment.id).success(function(data){
@@ -45,35 +49,32 @@ angular.module('politesControllers',[])
 		  				});
 		  				input.reply = '';
 		  			});
+		  		};		
+		  })
+		  .controller('storePostCtrl', function($scope, $anchorScroll, $timeout, $state, Posts) {
+		  		$anchorScroll();
+		  		$scope.storePost = function(input){
+		  			angular.element('#storePost').modal('show');
+		  			Posts.storePost(input).success(function(data){
+		  				$scope.input = '';
+		  				$scope.input = {tags: ''};
+		  				$scope.errors= '';
+		  				$scope.message = data;
+		  			}).error(function(data){
+		  				if(data.error){
+		  					$scope.message = data;
+		  				}
+		  				 angular.element('#storePost').modal('hide');
+						 $scope.errors = data;
+					});
 		  		};
-
-				//funcion para cargar imagen al servidor y luego renderizarla en el cuadro del editor
+		  		//funcion para cargar imagen al servidor y luego renderizarla en el cuadro del editor
+				//function to upload the image to the server and then render it this in the editor display box 
 				$scope.imgs = [];
 				    $('.note-image-url').on('value_changed',function(){
 						$scope.imgs.push($(this).val());
 						console.log('url: ', $(this).val());
 					});
-				
-				/*$('#summernote').summernote({
-					height: 500,
-					focus: true,
-					onImageUpload: function(files, editor, welEditable){
-						sendFiles(files[0], editor, welEditable);
-					},
-					toolbar: [
-					  	['edit',['undo','redo']],
-					  	['headline', ['style']],
-						['style', ['bold', 'italic', 'underline']],
-						['fontface', ['fontname']],
-						['textsize', ['fontsize']],
-							            //['fontclr', ['color']],
-						['alignment', ['ul', 'ol', 'paragraph', 'lineheight']],
-							            //['height', ['height']],
-						['table', ['table']],
-						['insert', ['link','picture','video']],
-						['view', ['codeview']],
-					]
-				});  */
 				
 				$scope.options = {
 					height: 500,
@@ -115,7 +116,6 @@ angular.module('politesControllers',[])
 					});
 				};
 
-			
 				/*****tags***********/
 				$scope.tagsOptions = {
 						maxTags: 4,
@@ -124,15 +124,6 @@ angular.module('politesControllers',[])
 					    }
 				};
 				/***end-tags********/
-
-				$scope.createPost = function(input){
-		  			
-		  			Posts.createPost(input).success(function(data){
-		  				$scope.message =  data;
-		  			}).error(function(data){
-						$scope.errors = data;
-					});
-		  		};
 
 				Posts.getSections().success(function(data){
 					$scope.secciones = data;
@@ -155,10 +146,16 @@ angular.module('politesControllers',[])
 					$scope.input = {image: file};
 					$scope.imagemini = file;
 				};
-				
-		  		
+
+				$scope.toAllPosts = function(){
+					angular.element('#storePost').modal('hide');
+					$timeout(function(){
+						$state.go("root");
+					}, 1500);
+				};
 		  })
-		  .controller('sidebarController',function($scope, Posts) {
+		  .controller('sidebarCtrl',function($scope, $anchorScroll, Posts) {
+		  		$anchorScroll();
 		  		Posts.getSections().success(function(data){
 		  			$scope.secciones =  data;
 		  		});

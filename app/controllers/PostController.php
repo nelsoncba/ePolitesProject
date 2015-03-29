@@ -45,8 +45,9 @@ class PostController extends \BaseController {
 			$post->seccion_id = Input::get('section.id');
 			$post->titulo = Input::get('title');
 			$post->slug = Str::slug(Input::get('title'), '-');
-							/*this condition will validate if the string $cuerpo going to saved with tags required <p> to display correctly in the view*/
+			/*this condition will validate if the string $cuerpo going to saved with tags required <p> to display correctly in the view*/
 			$post->cuerpo = preg_match('%(<p[^>]*>.*?</p>)%i', $cuerpo) ? $cuerpo : '<p>'.$cuerpo.'</p>';
+			$post->urlFuente = Input::get('urlFuente');
 
 			$oldTags = Tags::selectValues();
 			$postTags = Input::get('tags');
@@ -74,13 +75,13 @@ class PostController extends \BaseController {
 			//This is the condition to send success message or error message after save the new post and syncronize the matching $tagsPost 
 			// in the intermediate table Tags_Posts
 			if($post->save()){
-				$message = 'El artículo se a creado correctamente';
+				$message = array('success'=>'El artículo se a creado exitosamente.');
 				$post->tags()->sync($tagsPost);
+				return Response::json($message,200);
 			}else{
-				$message = 'Ha ocurrido un error';
+				$message = array('error'=>'Ha ocurrido un error al intentar crear el artículo.');
+				return Response::json($message,403);
 			}
-
-			return Response::json($message,200);
 		}
 	}
 

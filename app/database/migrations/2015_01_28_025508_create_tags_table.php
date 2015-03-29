@@ -16,6 +16,7 @@ class CreateTagsTable extends Migration {
                 $tabla->increments('id');
                 $tabla->string('tag', 40);
                 $tabla->string('slug', 40);
+                $tabla->timestamps();
             });
 	}
 

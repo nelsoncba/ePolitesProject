@@ -20,8 +20,8 @@ angular.module('Polites')
 			    		return data;
 			    	});
 			    },
-			    createPost: function(input){
-			    	return WebService.post('createPost', input).success(function(data){
+			    storePost: function(input){
+			    	return WebService.post('storePost', input).success(function(data){
 			    		return data;
 			    	}).error(function(data){
 						return data;
@@ -32,8 +32,8 @@ angular.module('Polites')
 			    		return data;
 			    	});
 			    },
-			    saveComment: function(postId, input){
-			    	return WebService.post('saveComment/' + postId, input).success(function(data){
+			    storeComment: function(postId, input){
+			    	return WebService.post('storeComment/' + postId, input).success(function(data){
 			    		return data;
 			    	});
 			    },
@@ -42,7 +42,7 @@ angular.module('Polites')
 			    		return data;
 			    	});
 			    },
-			    saveReply: function(commentId, input){
+			    storeReply: function(commentId, input){
 			    	return WebService.post('saveReply/' + commentId, input).success(function(data){
 			    		return data;
 			    	});

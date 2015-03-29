@@ -4,41 +4,41 @@ angular.module('Polites', ['ui.router', 'politesControllers', 'angular-timeago',
 			$urlRouterProvider.otherwise('/');
 			$stateProvider
 			.state('root', {
-					url: '',
+					url: '/',
                     views: {
 						'header': {
 							templateUrl: 'app/views/header.html'
 						},
 						'main': {
 							templateUrl: 'app/views/allPosts.html',
-							controller: 'allPostsController'
+							controller: 'allPostsCtrl'
 
 						},
 						'sidebar': {
 							templateUrl: 'app/views/sidebar.html',
-							controller: 'sidebarController'
+							controller: 'sidebarCtrl'
 						}
 					}
 			})
             .state('root.post',{
-					url: '/post/:id/:slug',
+					url: 'post/:id/:slug',
 					views:{
 						'main@':{
 							templateUrl: 'app/views/post.html',
-							controller: 'postController'
+							controller: 'postCtrl'
 						},
 						'similarPosts@':{
 							templateUrl: 'app/views/sidebar.html',
-							controller: 'sidebarController'
+							controller: 'sidebarCtrl'
 						}
 					}
 			})
 			.state('root.crear-post',{
-					url: '/crear-post',
+					url: 'crear-post',
 					views:{
 						'main@':{
 							templateUrl: 'app/views/crear-post.html',
-							controller: 'postController'
+							controller: 'storePostCtrl'
 						}
 					}
 			});
