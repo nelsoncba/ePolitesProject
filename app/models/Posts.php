@@ -13,7 +13,7 @@ class Posts extends Eloquent{
                                'urlFuente',
                                'imagen'
                                 );
-    //protected $with = array('secciones','usuarios');
+    protected $with = array('secciones');
 
     public static $rules = array(
                                 'title' => 'required|max:100',
@@ -33,7 +33,7 @@ class Posts extends Eloquent{
     }
     
     public function secciones(){
-        return $this->belongsTo('Secciones', 'seccion_id');
+        return $this->belongsTo('Secciones', 'seccion_id', 'slug');
     }
 
     public function usuarios(){
@@ -47,6 +47,23 @@ class Posts extends Eloquent{
                                ->leftJoin('Comentarios','Comentarios.post_id','=','Posts.id')
                                ->select(DB::raw('COUNT(Comentarios.id) as count'),'Posts.id as id','Posts.titulo as titulo', 'Posts.slug as slug','Posts.imagen as imagen', 'Posts.cuerpo as cuerpo', 'Posts.created_at as created_at', 'Secciones.seccion as seccion', 'Usuarios.usuario as usuario')
                                ->groupBy('Posts.id')
+                               ->orderBy('count','DESC')
+                               ->orderBy('created_at','DESC')
+                               ->get();
+  
+        return $posts; 
+    }
+
+    public static function bySection($slug){
+        $posts = DB::table('Posts')
+                               ->leftJoin('Secciones','Secciones.id', '=' ,'Posts.seccion_id')
+                               ->leftJoin('Usuarios', 'Usuarios.id', '=', 'Posts.usuario_id')
+                               ->leftJoin('Comentarios','Comentarios.post_id','=','Posts.id')
+                               ->select(DB::raw('COUNT(Comentarios.id) as count'),'Posts.id as id','Posts.titulo as titulo', 'Posts.slug as slug','Posts.imagen as imagen', 'Posts.cuerpo as cuerpo', 'Posts.created_at as created_at', 'Secciones.seccion as seccion', 'Usuarios.usuario as usuario')
+                               ->where('Secciones.slug','=', $slug)
+                               ->groupBy('Posts.id')
+                               ->orderBy('count','DESC')
+                               ->orderBy('created_at','DESC')
                                ->get();
   
         return $posts; 

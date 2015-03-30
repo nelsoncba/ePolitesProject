@@ -16,7 +16,9 @@ Route::get('/', function()
 	return View::make('index');
 });
 
-Route::get('/api/allPosts', 'PostController@index');
+Route::get('/api/allPosts/', 'PostController@index');
+
+Route::get('/api/bySection/{slug}', 'PostController@bySection');
 
 Route::get('/api/recentPosts', 'PostController@recentPosts');
 

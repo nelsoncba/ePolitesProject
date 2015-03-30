@@ -3,7 +3,11 @@
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
-a:link{
+
+body{
+  max-height:  400px;
+}
+body a:link{
     text-decoration: none;
 }
 .border{
@@ -67,6 +71,7 @@ hr.soften {
 .marketing {
   color:#5A5A5A;
   padding-top: 70px;
+  min-height: 630px;
 }
 
 .marketing h1 {
@@ -177,8 +182,8 @@ hr.soften {
 
 .recent-post{
   border: 1px solid #dddddd;
-  box-shadow: 1px 1px 5px 1px #dddddd,
-              0px 1px 5px 0px #dddddd;
+  box-shadow: 1px 1px 2px 1px #dddddd,
+              0px 0px 2px 0px #dddddd;
   padding-top: 5px;
   padding-bottom: 5px;
   padding-left: 5px;
@@ -194,7 +199,12 @@ hr.soften {
   width: 50px;
   height: 40px;
 }
-
+.recent-post:hover, .post:hover, .section:hover{
+    background: #EEECEC;
+}
+.section a:link{
+  text-decoration: none
+}
 .recent-post span.glyphicon{
   font-size: 0.8em;
 }
@@ -208,6 +218,14 @@ hr.soften {
 }
 .top-buffer{
     padding-top:20px;
+}
+.loader{
+    height: 500px; 
+    width: 100%;
+    padding-top: 200px;
+}
+.loader-img{
+  position: relative;
 }
 /***********************/
 .tags-wrapper {
@@ -277,6 +295,8 @@ hr.soften {
 .suggestions-list:focus{
     outline:none;
 }
+
+
 /************
  Footer
  ***********/

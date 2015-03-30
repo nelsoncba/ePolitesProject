@@ -15,6 +15,11 @@ angular.module('Polites')
 			       		return data;
 			       });
 			    },
+			    getBySection: function(params){
+			    	return WebService.get('bySection/' + params).success(function(data){
+			    		return data;
+			    	});
+			    },
 			    getPost: function(params){
 			    	return WebService.get('post/' + params).success(function(data){
 			    		return data;
@@ -43,7 +48,7 @@ angular.module('Polites')
 			    	});
 			    },
 			    storeReply: function(commentId, input){
-			    	return WebService.post('saveReply/' + commentId, input).success(function(data){
+			    	return WebService.post('storeReply/' + commentId, input).success(function(data){
 			    		return data;
 			    	});
 			    },

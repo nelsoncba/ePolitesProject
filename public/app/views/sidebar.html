@@ -1,8 +1,17 @@
+
 <div class="well sidebar-nav">
             <ul class="nav nav-list list-group">
-              <li class="nav-header"><h3>Categorías</h3></li>
+              &nbsp;<li class="nav-header"><h3>Secciones</h3></li>
+              <section ng-if="!secciones" >
+                    <div class="loader" align="center">
+                        <div class="loader-img">
+                            <img src="images/loader4.gif"  width="30" style="display:table-cell; vertical-align:middle; float:none;"><br>
+                            <span>&nbsp;Cargando&nbsp;&nbsp;</span>
+                        </div>
+                    </div>
+              </section>
               <div ng-repeat="seccion in secciones">
-              <li class="list-group-item"><a href="#">{{seccion.seccion}}&nbsp;<span class="badge pull-right">{{seccion.count}}</span></a></li>
+              <li class="list-group-item section"><a ui-sref="root.postsBySection({slug: seccion.slug})">{{seccion.seccion}}&nbsp;<span class="badge pull-right">{{seccion.count}}</span></a></li>
               </div>
             </ul>
         </div>
@@ -39,7 +48,7 @@
                         <img class="media-object" src="{{post.imagen}}"/>
                     </div>
                 <div class="media-body">
-                    <div class="media-heading"><a href="#"><span class="label-title">{{post.titulo}}</span></a>&nbsp;&nbsp;
+                    <div class="media-heading"><a ui-sref="root.post({id: post.id, slug: post.slug})"><span class="label-title">{{post.titulo}}</span></a>&nbsp;&nbsp;
                     </div>
                     <span class="glyphicon glyphicon-time"></span>&nbsp;<span class="time-ago" time-ago from-time="{{post.created_at}}"></span>&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-comment"></span>&nbsp;<span class="comment-total">{{post.count}}</span>
                 </div>

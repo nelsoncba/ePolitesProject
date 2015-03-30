@@ -15,6 +15,18 @@ class PostController extends \BaseController {
 	}
 
 	/**
+	 * Display a listing of the resource.
+	 * GET /post
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function bySection($slug){
+		$posts = Posts::bySection($slug);
+		return Response::json($posts, 200);
+	}
+
+	/**
 	 * Show the form for creating a new resource.
 	 * GET /post/create
 	 *

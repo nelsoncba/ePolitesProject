@@ -1,8 +1,10 @@
 <article class="well">
           <section ng-if="!post" >
-            <div align="center" style="height: 500px; width: 100%;">
-            <img src="images/loader1.gif" width="100" style="display:table-cell; vertical-align:middle; float:none;"><br>
+            <div class="loader" align="center">
+            <div class="loader-img">
+            <img src="images/loader4.gif"  width="30" style="display:table-cell; vertical-align:middle; float:none;"><br>
             <span>&nbsp;Cargando&nbsp;&nbsp;</span>
+            </div>
             </div>
           </section>
           <section ng-if="post">
@@ -23,18 +25,20 @@
           </section>
           <hr>
           <section>
+              <div name="comments">
               <h4><i class="glyphicon glyphicon-comment"></i>&nbsp;{{comments.length}}&nbsp;Comentarios:</h4>
+              </div>
               <article class="comment">
                 <div class="media">
                   <div class="pull-left">
                      <img class="media-object img-comment" src="images/{{usuario.photo}}"/>
                     </div>
                   <div class="media-body">
-                    <form name="formComment" role="form" ng-submit="saveComment(post, input)">
+                    <form name="formComment" role="form" ng-submit="storeComment(post, input)">
                       <div class="form form-group">
-                      <textarea class="form-control input-md"  placeholder="Comentar..." ng-model="input.comment" name="comment" style="resize: none; overflow: hidden;" elastic></textarea>
+                      <textarea class="form-control input-md"  placeholder="Comentar..." ng-model="input.comment" name="comment" style="resize: none; overflow: hidden;" elastic required></textarea>
                       </div>
-                      <button id="btn-reply" type="submit" ng-disabled="!formComment" class="btn btn-default btn-sm pull-right">Publicar</button>
+                      <button id="btn-reply" type="submit" ng-disabled="formComment.$invalid" class="btn btn-default btn-sm pull-right">Publicar</button>
                     </form>
                   </div>
                 </div>
@@ -46,17 +50,18 @@
                      <!-- <img class="media-object" data-src="holder.js/64x64" data-holder-rendered="true">-->
                     </div>
                     <div class="media-body">
-                      <div class="media-heading"><span class="label-comment">{{comment.usuario}}</span>&nbsp;&nbsp;<span class="time-ago" timeago from-time="{{comment.created_at}}"></span><a ng-click="getReply(comment)" class="custom-link pull-right">Responder&nbsp;&nbsp;</a></div>
+                      <div class="media-heading"><span class="label-comment">{{comment.usuario}}</span>&nbsp;&nbsp;<small class="time-ago" time-ago from-time="{{comment.created_at}}"></small><a ng-click="getReply($index, comment)"  class="custom-link pull-right">Responder&nbsp;&nbsp;</a></div>
                       <p style="font-size:14px;" dd-text-collapse dd-text-collapse-max-length="300" dd-text-collapse-text="{{comment.comentario}}"></p>
-                      <div class="media-heading"><a class="custom-link" ng-show="comment.respuestasTotal > 0" ng-click="getReply(comment)">{{comment.respuestasTotal}}&nbsp;respuestas</a>&nbsp;<img src="images/loader2.gif" width="70" ng-show="comment.imgReply"></div>
+                      <div class="media-heading" ng-show="!comment.replyData"><a class="custom-link" ng-show="comment.respuestasTotal > 0" ng-click="getReply($index, comment)">{{comment.respuestasTotal}}&nbsp;respuestas</a>&nbsp;<img src="images/loader4.gif" width="20" ng-show="comment.imgReply"></div>
                       <div>
+                         &nbsp;<img src="images/loader4.gif" width="20" ng-show="reply.loadReply">
                          <article class="comment" ng-repeat="reply in comment.replies">
                             <div class="media">
                                <div class="pull-left">
                                   <img class="media-object img-comment" src="images/{{reply.usuarios.photo}}"/>
                                </div>
                                <div class="media-body">
-                                 <span class="label-comment">{{reply.usuarios.usuario}}</span>&nbsp;&nbsp;<span class="time-ago" timeago from-time="{{reply.created_at}}"></span>
+                                 <span class="label-comment">{{reply.usuarios.usuario}}</span>&nbsp;&nbsp;&nbsp;<small class="time-ago" time-ago from-time="{{reply.created_at}}"></small></span>
                                  <p style="font-size:14px;" dd-text-collapse dd-text-collapse-max-length="200" dd-text-collapse-text="{{reply.respuesta}}"></p>
                                  {{message}}
                                </div>
@@ -67,11 +72,11 @@
                         <article class="comment">
                           <div class="media">
                             <div class="media-body">
-                              <form name="form" role="form" ng-submit="saveReply(comment, input)">
+                              <form name="form" role="form" ng-submit="storeReply(comment, input)">
                                 <div class="form form-group">
-                                <textarea class="form-control input-md"  placeholder="Responder..." ng-model="input.reply" name="reply" style="resize: none; overflow: hidden;" elastic></textarea>
+                                <textarea class="form-control input-md"  placeholder="Responder..." ng-model="input.reply" name="reply" style="resize: none; overflow: hidden;" elastic  required></textarea>
                                 </div>
-                                <button id="btn-reply" type="submit" ng-disabled="!form" class="btn btn-default btn-sm pull-right">Enviar</button>
+                                <button id="btn-reply" type="submit" ng-disabled="form.$invalid" class="btn btn-default btn-sm pull-right">Enviar</button>
                               </form>
                             </div>
                           </div>

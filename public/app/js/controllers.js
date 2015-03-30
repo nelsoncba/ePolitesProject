@@ -1,9 +1,27 @@
 angular.module('politesControllers',['ui.router'])
-		  .controller('allPostsCtrl', function($scope, $anchorScroll, Posts) {
+		  .controller('allPostsCtrl', function($scope,$state, $anchorScroll, Posts) {
 		  		$anchorScroll();
+		  		//date.setDate(date.getDate()-1);
+		  		if($state.params.slug == null){
 				var data = Posts.getAllPosts().success(function(data){
+					/*angular.forEach(posts, function(post, key){
+						var maxCommnts = 0;
+						var p = new Date(post.created_at);
+						p.setDate(p.getDate()+1);
+						if(date > p && post.count > maxComment){
+							maxComment = post.count
+							$scope.fecha = p;
+						}else{
+
+						}
+					});*/
 					$scope.posts = data;
 				});
+				}else{
+				Posts.getBySection($state.params.slug).success(function(data) {
+		  			$scope.posts = data;
+		  		});
+				}
 		  })
 		  .controller('postCtrl',function($scope, $state, $anchorScroll, Posts){
 		  	    $scope.convertToDate = function(stringDate){
@@ -19,19 +37,20 @@ angular.module('politesControllers',['ui.router'])
 		  			$scope.comments = data;
 		  		});
 
-		  		$scope.getReply = function(comment){
+		  		$scope.getReply = function(index, comment){
 		  			if(comment.respuestasTotal > 0){
 		  					comment.imgReply = true;
 			  		   Posts.getReplies(comment.id).success(function(data){
 			  		    	 comment.replies =  data;
 			  		    	 comment.imgReply = false;
-			  			});
+			  		    	 comment.replyData = true;
+				  			});
 		  			}
 		  			this.show = true;
 		  		};
 
 		  		$scope.storeComment = function(post, input){
-                    Posts.saveComment(post.id, input).success(function(data){
+                    Posts.storeComment(post.id, input).success(function(data){
                     	message = data;
                     	Posts.getComments(post.id).success(function(data){
 		  				      $scope.comments = data;
@@ -42,7 +61,7 @@ angular.module('politesControllers',['ui.router'])
 
 
 		  		$scope.storeReply = function(comment, input){
-		  			Posts.saveReply(comment.id, input).success(function(data){
+		  			Posts.storeReply(comment.id, input).success(function(data){
 		  				message = data;
 		  				Posts.getReplies(comment.id).success(function(data){
 		  					comment.replies = data;

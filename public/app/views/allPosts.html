@@ -1,4 +1,5 @@
-<div class="row">
+<!--<div class="row">
+  {{fecha|date:'yyyy-MM-dd HH:mm:ss'}}
                       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                           <article class="well" >
                               <h2>This is a Blog Post amet nulla ham qui sint.</h2>
@@ -23,14 +24,22 @@
                                    <a href="#" class="btn btn-primary btn-xs pull-right">leer mas...</a>
                               </article>
                       </div>
-</div>
-<div ng-repeat="post in posts" class="well">
-<article>
+</div>-->
+<section ng-if="!posts" >
+            <div class="loader" align="center">
+            <div class="loader-img">
+            <img src="images/loader4.gif"  width="30" style="display:table-cell; vertical-align:middle; float:none;"><br>
+            <span>&nbsp;Cargando&nbsp;&nbsp;</span>
+            </div>
+            </div>
+</section>
+<div ng-repeat="post in posts" class="well post">
+<article class="">
           <h3>{{ post.titulo }}</h3>
           <h5>{{ post.seccion }}</h5>
           <h6>Por <a href="#">{{post.usuario}}</a> {{post.created_at}}</h6>
           <h5>
-            <a href="#comments"><i class="glyphicon glyphicon-comment"></i>&nbsp;{{post.count}} comentarios&nbsp;</a>
+            <a ui-sref="root.post({id: post.id, slug: post.slug, '#': 'comments'})"><i class="glyphicon glyphicon-comment"></i>&nbsp;{{post.count}} comentarios&nbsp;</a>
           </h5>
           <div ng-if="post.imagen">
             <img class="img-posts media-object pull-left" src="{{post.imagen}}" alt="" holder-fix>

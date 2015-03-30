@@ -11,7 +11,7 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1; maximum-scale=1; minimum-scale=1; user-scalable=no;">
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
-        
+        <link rel="stylesheet" href="css/main.css">
           <!--jQuery-->
         <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
@@ -33,14 +33,7 @@
         <link rel="stylesheet" href="css/summernote-bs3.css">
         <script src="app/js/angular-summernote.js"></script>
         <script src="js/summernote.js"></script>
-
         
-        <!--ng-tags-input-->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ng-tags-input/2.2.0/ng-tags-input.bootstrap.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ng-tags-input/2.2.0/ng-tags-input.min.css">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/ng-tags-input/2.2.0/ng-tags-input.js"></script>
-
-        <link rel="stylesheet" href="css/main.css">
         <style>
            /* body {
                 padding-top: 50px;

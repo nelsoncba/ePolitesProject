@@ -20,6 +20,15 @@ angular.module('Polites', ['ui.router', 'politesControllers', 'angular-timeago',
 						}
 					}
 			})
+			.state('root.postsBySection',{
+					url: ':slug',
+					views:{
+						'main@':{
+							templateUrl: 'app/views/allPosts.html',
+							controller: 'allPostsCtrl'
+						}
+					}
+			})
             .state('root.post',{
 					url: 'post/:id/:slug',
 					views:{
