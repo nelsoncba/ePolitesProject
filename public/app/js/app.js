@@ -43,7 +43,7 @@ angular.module('Polites', ['ui.router', 'politesControllers', 'angular-timeago',
 					}
 			})
 			.state('root.crear-post',{
-					url: 'crear-post',
+					url: 'articulo/crear',
 					views:{
 						'main@':{
 							templateUrl: 'app/views/crear-post.html',
