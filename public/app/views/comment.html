@@ -1,0 +1,41 @@
+<article class="comment" ng-repeat="newComment in newComments | orderBy:predicate:reverse track by $index">
+<div class="media">
+                    <div class="pull-left">
+                      <img class="media-object img-comment" src="images/{{newComment.photoUser}}"/>
+                     <!-- <img class="media-object" data-src="holder.js/64x64" data-holder-rendered="true">-->
+                    </div>
+                    <div class="media-body">
+                      <div class="media-heading"><span class="label-comment">{{newComment.usuario}}</span>&nbsp;&nbsp;<small class="time-ago" time-ago from-time="{{newComment.created_at}}"></small><a ng-click="getReply($index, newComment)" style="text-decoration: none;" class="custom-link pull-right">Responder&nbsp;&nbsp;</a></div>
+                      <p style="font-size:14px;" dd-text-collapse dd-text-collapse-max-length="300" dd-text-collapse-text="{{newComment.comentario}}"></p>
+                      <div class="media-heading" ng-if="!newComment.replyData"><a class="custom-link" style="text-decoration: none;" ng-show="comment.respuestasTotal > 0" ng-click="getReply($index, newComment)">{{newComment.respuestasTotal}}&nbsp;respuestas</a>&nbsp;<img src="images/loader4.gif" width="20" ng-show="comment.imgReply"></div>
+                         &nbsp;<img src="images/loader4.gif" width="20" ng-show="reply.loadReply">
+                         <article class="comment" ng-repeat="reply in comment.replies" >
+                            <div class="media">
+                               <div class="pull-left">
+                                  <img class="media-object img-comment" src="images/{{reply.usuarios.photo}}"/>
+                               </div>
+                               <div class="media-body">
+                                 <span class="label-comment">{{reply.usuarios.usuario}}</span>&nbsp;&nbsp;&nbsp;<small class="time-ago" time-ago from-time="{{reply.created_at}}"></small></span>
+                                 <p style="font-size:14px;" dd-text-collapse dd-text-collapse-max-length="200" dd-text-collapse-text="{{reply.respuesta}}"></p>
+                                 {{message}}
+                               </div>
+                            </div>
+                          </article>
+                      <div ng-show="show">
+                        <article class="comment">
+                          <div class="media">
+                            <div class="media-body">
+                              <form name="form" role="form" ng-submit="storeReply(comment, input)">
+                                <div class="form form-group">
+                                <textarea class="form-control input-md"  placeholder="Responder..." ng-model="input.reply" name="reply" style="resize: none; overflow: hidden;" elastic  required></textarea>
+                                </div>
+                                <button id="btn-reply" type="submit" ng-disabled="form.$invalid" class="btn btn-default btn-sm pull-right">Enviar</button>
+                              </form>
+                            </div>
+                          </div>
+                        </article>
+                      </div>
+                    </div>
+                </div>
+              </div>
+</article>

@@ -63,7 +63,7 @@ angular.module('Polites', ['ui.router', 'politesControllers', 'angular-timeago',
 				return newText;
 			}
 		})
-		.filter('strLimit', ['$filter', function($filter) {
+		.filter('strLimit',  function($filter) {
 		   return function(input, limit) {
 		      if (input.length <= limit) {
 		          return input;
@@ -71,22 +71,21 @@ angular.module('Polites', ['ui.router', 'politesControllers', 'angular-timeago',
 		    
 		      return $filter('limitTo')(input, limit) + '...';
 		   };
-		}]);
-		
-		
-/*angular.module('Polites', ['ui.state','ui.router'])
-	    .config(function($stateProvider, $urlRouterProvider) {
-	    	$urlRouterProvider.otherwise( '/' );
-	    	$stateProvider
-	    		.state('index',{
-	    			url: '/',
-
-	    					//controller: 'PostsController',
-	    			templateUrl: 'app/views/allPosts.html'
-	    		});
-	    });
-		.state('main': {
-							templateUrl: 'app/views/allPosts.html',
-							controller: 'allPostsController'
-						})*/
-
+		})
+		.filter('dateTime', function($filter){
+			 return function(input){
+			  input = input.replace(/(.+) (.+)/, "$1T$2Z");
+			  input = new Date(input).getTime();
+			  return input;
+			 };
+		})
+		.filter('isUrl', function($filter){
+			return function(input){
+				var isUrl = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w!:.?+=&%@!\-\/]))?/;
+				if(isUrl.test(input)){
+					return true;
+				}else{
+					return false;
+				}
+			};
+		});

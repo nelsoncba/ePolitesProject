@@ -53,7 +53,7 @@ class PostController extends \BaseController {
 			$post = new Posts;
 			$cuerpo = Input::get('content');
 			$post->usuario_id = '1';
-			$post->imagen = Input::get('image');;
+			$post->imagen = Input::get('imgMini'); 
 			$post->seccion_id = Input::get('section.id');
 			$post->titulo = Input::get('title');
 			$post->slug = Str::slug(Input::get('title'), '-');
@@ -107,7 +107,11 @@ class PostController extends \BaseController {
 	public function show($id)
 	{
 		$post = Posts::getPost($id);
-		return Response::json($post, 200);
+		if($post){
+			return Response::json($post, 200);
+		}else{
+			return Response::json('El artículo no existe', 403);
+		}
 	}
 
 	/**

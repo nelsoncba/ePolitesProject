@@ -2,7 +2,7 @@
 
 class Posts extends Eloquent{
     
-    protected $table = 'Posts';
+    protected $table = 'posts';
     protected $fillabe = array(
                                'usuario_id',
                                'seccion_id',
@@ -41,12 +41,12 @@ class Posts extends Eloquent{
     }
 
     public static function selectAll(){
-        $posts = DB::table('Posts')
-                               ->leftJoin('Secciones','Secciones.id', '=' ,'Posts.seccion_id')
-                               ->leftJoin('Usuarios', 'Usuarios.id', '=', 'Posts.usuario_id')
-                               ->leftJoin('Comentarios','Comentarios.post_id','=','Posts.id')
-                               ->select(DB::raw('COUNT(Comentarios.id) as count'),'Posts.id as id','Posts.titulo as titulo', 'Posts.slug as slug','Posts.imagen as imagen', 'Posts.cuerpo as cuerpo', 'Posts.created_at as created_at', 'Secciones.seccion as seccion', 'Usuarios.usuario as usuario')
-                               ->groupBy('Posts.id')
+        $posts = DB::table('posts')
+                               ->leftJoin('secciones','secciones.id', '=' ,'posts.seccion_id')
+                               ->leftJoin('usuarios', 'usuarios.id', '=', 'posts.usuario_id')
+                               ->leftJoin('comentarios','comentarios.post_id','=','posts.id')
+                               ->select(DB::raw('COUNT(comentarios.id) as count'),'posts.id as id','posts.titulo as titulo', 'posts.slug as slug','posts.imagen as imagen', 'posts.cuerpo as cuerpo', 'posts.created_at as created_at', 'secciones.seccion as seccion', 'usuarios.usuario as usuario')
+                               ->groupBy('posts.id')
                                ->orderBy('count','DESC')
                                ->orderBy('created_at','DESC')
                                ->get();
@@ -55,13 +55,13 @@ class Posts extends Eloquent{
     }
 
     public static function bySection($slug){
-        $posts = DB::table('Posts')
-                               ->leftJoin('Secciones','Secciones.id', '=' ,'Posts.seccion_id')
-                               ->leftJoin('Usuarios', 'Usuarios.id', '=', 'Posts.usuario_id')
-                               ->leftJoin('Comentarios','Comentarios.post_id','=','Posts.id')
-                               ->select(DB::raw('COUNT(Comentarios.id) as count'),'Posts.id as id','Posts.titulo as titulo', 'Posts.slug as slug','Posts.imagen as imagen', 'Posts.cuerpo as cuerpo', 'Posts.created_at as created_at', 'Secciones.seccion as seccion', 'Usuarios.usuario as usuario')
-                               ->where('Secciones.slug','=', $slug)
-                               ->groupBy('Posts.id')
+        $posts = DB::table('posts')
+                               ->leftJoin('secciones','secciones.id', '=' ,'posts.seccion_id')
+                               ->leftJoin('usuarios', 'usuarios.id', '=', 'posts.usuario_id')
+                               ->leftJoin('comentarios','comentarios.post_id','=','posts.id')
+                               ->select(DB::raw('COUNT(comentarios.id) as count'),'posts.id as id','posts.titulo as titulo', 'posts.slug as slug','posts.imagen as imagen', 'posts.cuerpo as cuerpo', 'posts.created_at as created_at', 'secciones.seccion as seccion', 'usuarios.usuario as usuario')
+                               ->where('secciones.slug','=', $slug)
+                               ->groupBy('posts.id')
                                ->orderBy('count','DESC')
                                ->orderBy('created_at','DESC')
                                ->get();
@@ -70,14 +70,15 @@ class Posts extends Eloquent{
     }
 
     public static function getPost($id){
-        $post = DB::table('Posts')
-                               ->leftJoin('Secciones','Secciones.id', '=' ,'Posts.seccion_id')
-                               ->leftJoin('Usuarios', 'Usuarios.id', '=', 'Posts.usuario_id')
-                               ->leftJoin('Posts_Tags', 'Posts_Tags.post_id', '=', 'Posts.id')
-                               ->leftJoin('Tags','Posts_Tags.tag_id', '=', 'Tags.id')
-                               ->select('Posts.id as id','Posts.titulo as titulo', 'Posts.slug as slug', 'Posts.imagen as imagen', 'Posts.created_at as created_at', DB::raw('GROUP_CONCAT(Tags.tag) as tag'), 'Posts.cuerpo as cuerpo', 'Posts.urlFuente as urlFuente', 'Secciones.seccion as seccion', 'Usuarios.usuario as usuario')
-                               ->where('Posts.id','=',$id)
-                               ->groupBy('Posts.id')
+        $data = null;
+        $post = DB::table('posts')
+                               ->leftJoin('secciones','secciones.id', '=' ,'posts.seccion_id')
+                               ->leftJoin('usuarios', 'usuarios.id', '=', 'posts.usuario_id')
+                               ->leftJoin('posts_tags', 'posts_tags.post_id', '=', 'posts.id')
+                               ->leftJoin('tags','posts_tags.tag_id', '=', 'tags.id')
+                               ->select('posts.id as id','posts.titulo as titulo', 'posts.slug as slug', 'posts.imagen as imagen', 'posts.created_at as created_at', DB::raw('GROUP_CONCAT(tags.tag) as tag'), 'posts.cuerpo as cuerpo', 'posts.urlFuente as urlFuente', 'posts.created_at as created_at', 'secciones.seccion as seccion', 'usuarios.usuario as usuario')
+                               ->where('posts.id','=',$id)
+                               ->groupBy('posts.id')
                                ->get();
         
         foreach ($post as  $p) {
@@ -100,45 +101,16 @@ class Posts extends Eloquent{
     }
 
     public static function getRecent(){
-        $posts = DB::table('Posts')
-                            ->leftJoin('Secciones','Secciones.id','=','Posts.seccion_id')
-                            ->leftJoin('Comentarios','Comentarios.post_id','=','Posts.id')
-                            ->select(DB::raw('COUNT(Comentarios.id) as count'),'Posts.id as id','Posts.titulo as titulo', 'Posts.slug as slug','Posts.created_at as created_at','Posts.imagen as imagen', 'Secciones.seccion as seccion')
-                            ->groupBy('Posts.id')
+        $posts = DB::table('posts')
+                            ->leftJoin('secciones','secciones.id','=','posts.seccion_id')
+                            ->leftJoin('comentarios','comentarios.post_id','=','posts.id')
+                            ->select(DB::raw('COUNT(comentarios.id) as count'),'posts.id as id','posts.titulo as titulo', 'posts.slug as slug','posts.created_at as created_at','posts.imagen as imagen', 'secciones.seccion as seccion')
+                            ->groupBy('posts.id')
                             ->orderBy('created_at','DESC')
                             ->limit(10)
                             ->get();
         return $posts;
     }
-
-    public static function crearPost($input){
-        $respuesta = array();
-        
-        $reglas = array(
-            'seccion_id' => 'required',
-            'titulo' => array('required', 'max:100'),
-            'cuerpo' => array('required'),
-            'fuente' => array('required', 'max:100'),
-            'urlFuente' => array('required', 'max:255'),
-        );
-        
-        $validator = Validator::make($input, $reglas);
-        
-        if($validator->fails()){
-            $respuesta['message'] = $validator;
-            $respuesta['error'] = true;
-        }else{
-            $post = static::create($input);
-            $respuesta['mensaje'] = 'Publicación creada correctamente';
-            $respuesta['error'] = false;
-            $respuesta['data'] = $post;
-        }
-        
-        return $respuesta;
-        
-    }
-
-
 }
 
 

@@ -29,7 +29,7 @@
             <div class="loader" align="center">
             <div class="loader-img">
             <img src="images/loader4.gif"  width="30" style="display:table-cell; vertical-align:middle; float:none;"><br>
-            <span>&nbsp;Cargando&nbsp;&nbsp;</span>
+            <span>&nbsp;Cargando...</span>
             </div>
             </div>
 </section>
@@ -37,10 +37,10 @@
 <article class="">
           <h3>{{ post.titulo }}</h3>
           <h5>{{ post.seccion }}</h5>
-          <h6>Por <a href="#">{{post.usuario}}</a> {{post.created_at}}</h6>
-          <h5>
-            <a ui-sref="root.post({id: post.id, slug: post.slug, '#': 'comments'})"><i class="glyphicon glyphicon-comment"></i>&nbsp;{{post.count}} comentarios&nbsp;</a>
-          </h5>
+          <h6>Por <a href="#">{{post.usuario}}</a>&nbsp;-&nbsp;<span ng-bind="post.created_at|dateTime|date:'medium'"></span></h6>
+          <h6>
+            <a ui-sref="root.post({id: post.id, slug: post.slug, '#': 'comments'})"><i class="glyphicon glyphicon-comment"></i>&nbsp;<strong>{{post.count}} comentarios</strong>&nbsp;</a>
+          </h6>
           <div ng-if="post.imagen">
             <img class="img-posts media-object pull-left" src="{{post.imagen}}" alt="" holder-fix>
           </div>

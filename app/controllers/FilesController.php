@@ -12,4 +12,15 @@ class FilesController extends \BaseController {
         $photo->move('images/post/user'.$userId, $photo->getClientOriginalName());
         return Response::json('user'.$userId.'/'.$photo->getClientOriginalName(),200);
 	}
+
+	public function destroyImage(){
+		 
+		$path = Input::get('imagemini');
+		if(File::exists($path)){
+			File::delete($path);
+		}else{
+			return Response::json($image,403);
+		} 
+		return Response::json('Mini-imagen eliminada de servidor',200);
+	}
 }

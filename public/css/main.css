@@ -6,6 +6,7 @@
 
 body{
   max-height:  400px;
+  background-color: #EBEAEE!important;
 }
 body a:link{
     text-decoration: none;
@@ -122,6 +123,7 @@ hr.soften {
 
 .custom-link, .collapse-text-toggle{
    cursor: pointer;
+   text-decoration: none;
 }
 
 /*.collapse-text-toggle:hover {
@@ -139,6 +141,14 @@ hr.soften {
 .label-comment, .label-title{
   font-weight: bold;
   font-size: 16px;
+}
+.label-head-comments{
+  font-weight: bold;
+  font-size: 14px;
+  padding-bottom: 20px;
+  padding-top: 20px;
+  padding-left: 10px;
+  padding-right: 20px;
 }
 
 .label-reply{
@@ -189,6 +199,7 @@ hr.soften {
   padding-left: 5px;
   padding-right: 5px;
   margin-top: 10px;
+  background-color: #fff;
 }
 
 .recent-post .post-title{
@@ -199,8 +210,12 @@ hr.soften {
   width: 50px;
   height: 40px;
 }
-.recent-post:hover, .post:hover, .section:hover{
+.recent-post:hover, .section:hover{
     background: #EEECEC;
+}
+.post, .well{
+    background-color: #fff!important;
+    border-color: #d7d7d7!important;
 }
 .section a:link{
   text-decoration: none
@@ -225,7 +240,73 @@ hr.soften {
     padding-top: 200px;
 }
 .loader-img{
-  position: relative;
+    position: relative;
+}
+.closeImg{
+    position: absolute;
+    font-size: 1.0em;
+    color: #8DF3F1;
+    top: 2px;
+    right: 2px;
+    z-index: 100;
+    font-weight: bold!important;
+}
+.closeImg:hover{
+    color: #57C1BF;
+}
+.img-mini-container {
+    position: relative;
+    width: 130px;
+    height: 128px;
+}
+.comment-link{
+   color: #888888;
+}
+.comment-link:hover{
+   color: #666666;
+}
+.scroll-top-wrapper {
+  position: fixed;
+  opacity: 0;
+  visibility: hidden;
+  overflow: hidden;
+  text-align: center;
+  z-index: 99999999;
+  background-color: #777777;
+  color: #eeeeee;
+  width: 50px;
+  height: 48px;
+  line-height: 48px;
+  right: 30px;
+  bottom: 30px;
+  padding-top: 2px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -ms-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+}
+.scroll-top-wrapper:hover {
+  background-color: #888888;
+}
+.scroll-top-wrapper.show {
+  visibility:visible;
+  cursor:pointer;
+  opacity: 0.9;
+}
+.scroll-top-wrapper i.fa {
+  line-height: inherit;
+}
+.error-msg{
+    height: 300px; 
+    width: 100%;
+    padding-top: 100px;
+    text-align: center;
+    display: table;
 }
 /***********************/
 .tags-wrapper {
@@ -304,6 +385,7 @@ hr.soften {
     color: #CCCCCC;
     background-color: #333333;
     width: 100%;
+    padding: 20px;
 }
 
 

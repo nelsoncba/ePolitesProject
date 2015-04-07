@@ -39,11 +39,11 @@ class CommentController extends \BaseController {
 		$comment->usuario_id = '2';
 		$comment->comentario = Input::get('comment');
 
+		
 		if($comment->save()){
-			$message = 'success';
+			$newComment = Comentarios::lastComment('2');
+			return Response::json($newComment,200);
 		}
-
-		return Response::json($message,200);
 	}
 
 	/**
@@ -102,8 +102,9 @@ class CommentController extends \BaseController {
 	 */
 	public function indexReply($commentId)
 	{
-		$respuestas = Respuestas::with('Usuarios')->where('Respuestas.comentario_id','=', $commentId)->get();
-		return Response::json($respuestas, 200);
+
+		$replies = Respuestas::with('usuarios')->orderBy('id','ASC')->where('respuestas.comentario_id','=', $commentId)->get();
+		return Response::json($replies, 200);
 	}
 
 	/**
@@ -120,11 +121,12 @@ class CommentController extends \BaseController {
 		$reply->comentario_id = $id;
 		$reply->usuario_id = '1';
 
+
 		if($reply->save()){
-			$message = 'success';
+			$reply = Respuestas::with('usuarios')->where('comentario_id','=', $id)->orderBy('id', 'ASC')->get();
 		}else{
-			$message = 'error';
+			$reply = 'error';
 		}
-		return Response::json($message,200);
+		return Response::json($reply,200);
 	}
 }

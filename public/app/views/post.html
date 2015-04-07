@@ -1,16 +1,21 @@
 <article class="well">
-          <section ng-if="!post" >
+          <section ng-if="!post">
             <div class="loader" align="center">
             <div class="loader-img">
             <img src="images/loader4.gif"  width="30" style="display:table-cell; vertical-align:middle; float:none;"><br>
-            <span>&nbsp;Cargando&nbsp;&nbsp;</span>
+            <span>&nbsp;&nbsp;Cargando...</span>
             </div>
             </div>
           </section>
-          <section ng-if="post">
+          <section ng-if="post.error" class="error-msg">
+              <p><span class="text-danger" align="center" style="font-size: 20px;"><i class="glyphicon glyphicon-exclamation-sign"></i>&nbsp;<strong>{{post.error}}</strong></span></p><br>
+              <p><button class="btn btn-default">Ir a artículos</button></p>
+          </section>
+          <section ng-if="post && !post.error">
           <h5>{{ post.seccion }}</h5>
           <h2>{{ post.titulo }}</h2>
-          <h6>Por <a href="#">{{post.usuario}}</a>&nbsp;-&nbsp;<span ng-bind="convertToDate(post.created_at)|date:'medium'"></span></h6>
+          <h6>Por <a href="#">{{post.usuario}}</a>&nbsp;-&nbsp;<span ng-bind="post.created_at|dateTime|date:'medium'"></span></h6>
+          <br>
           <p data-dd-collapse-text="50"><p ng-bind-html="post.cuerpo|unsafe"></p></p>
           <h5>
             <i class="glyphicon glyphicon-tags"></i>
@@ -24,25 +29,10 @@
           <span ng-if="post.urlFuente" class=""><a href="{{post.urlFuente}}">{{post.urlFuente | strLimit: 100}}</a></span>
           </section>
           <hr>
-          <section>
-              <div name="comments">
-              <h4><i class="glyphicon glyphicon-comment"></i>&nbsp;{{comments.length}}&nbsp;Comentarios:</h4>
+          <section ng-if="post && !post.error">
+              <div class="comments label-head-comments">
+              <i class="glyphicon glyphicon-comment"></i>&nbsp;{{comments.length}}&nbsp;Comentarios: <span class="comment-link pull-right custom-link" scroll-mode  scrollto="comment-box"><strong>&nbsp;<i class="glyphicon glyphicon-pencil"></i>&nbsp;Comentar</strong></span>
               </div>
-              <article class="comment">
-                <div class="media">
-                  <div class="pull-left">
-                     <img class="media-object img-comment" src="images/{{usuario.photo}}"/>
-                    </div>
-                  <div class="media-body">
-                    <form name="formComment" role="form" ng-submit="storeComment(post, input)">
-                      <div class="form form-group">
-                      <textarea class="form-control input-md"  placeholder="Comentar..." ng-model="input.comment" name="comment" style="resize: none; overflow: hidden;" elastic required></textarea>
-                      </div>
-                      <button id="btn-reply" type="submit" ng-disabled="formComment.$invalid" class="btn btn-default btn-sm pull-right">Publicar</button>
-                    </form>
-                  </div>
-                </div>
-              </article>
               <article class="comment" ng-repeat="comment in comments | orderBy: '-respuestasTotal'">
                 <div class="media">
                     <div class="pull-left">
@@ -50,12 +40,12 @@
                      <!-- <img class="media-object" data-src="holder.js/64x64" data-holder-rendered="true">-->
                     </div>
                     <div class="media-body">
-                      <div class="media-heading"><span class="label-comment">{{comment.usuario}}</span>&nbsp;&nbsp;<small class="time-ago" time-ago from-time="{{comment.created_at}}"></small><a ng-click="getReply($index, comment)"  class="custom-link pull-right">Responder&nbsp;&nbsp;</a></div>
+                      <div class="media-heading"><span class="label-comment">{{comment.usuario}}</span>&nbsp;&nbsp;<small class="time-ago" time-ago from-time="{{comment.created_at}}"></small>&nbsp;&nbsp;<a ng-click="replyComment(this.comment)" ng-hide="show" style="text-decoration: none;" class="custom-link pull-right">Responder&nbsp;&nbsp;</a></div>
                       <p style="font-size:14px;" dd-text-collapse dd-text-collapse-max-length="300" dd-text-collapse-text="{{comment.comentario}}"></p>
-                      <div class="media-heading" ng-show="!comment.replyData"><a class="custom-link" ng-show="comment.respuestasTotal > 0" ng-click="getReply($index, comment)">{{comment.respuestasTotal}}&nbsp;respuestas</a>&nbsp;<img src="images/loader4.gif" width="20" ng-show="comment.imgReply"></div>
+                      <div class="media-heading" ng-show="!comment.replyData"><a class="custom-link" style="text-decoration: none;" ng-show="comment.respuestasTotal > 0" ng-click="getReply(comment, false)" ng-model="page">{{comment.respuestasTotal}}&nbsp;respuestas</a>&nbsp;<img src="images/loader4.gif" width="20" ng-show="comment.imgReply"></div>
                       <div>
-                         &nbsp;<img src="images/loader4.gif" width="20" ng-show="reply.loadReply">
-                         <article class="comment" ng-repeat="reply in comment.replies">
+                         <a ng-show="hasMore()" ng-click="getReply(comment)" class="custom-link" style="text-decoration: none;">Ver respuestas anteriores... </a>&nbsp;<img src="images/loader4.gif" width="20" ng-show="reply.loadReply">
+                         <article class="comment" ng-repeat="reply in comment.replies"  >
                             <div class="media">
                                <div class="pull-left">
                                   <img class="media-object img-comment" src="images/{{reply.usuarios.photo}}"/>
@@ -72,9 +62,9 @@
                         <article class="comment">
                           <div class="media">
                             <div class="media-body">
-                              <form name="form" role="form" ng-submit="storeReply(comment, input)">
+                              <form  name="form" role="form" ng-submit="storeReply(comment, input)">
                                 <div class="form form-group">
-                                <textarea class="form-control input-md"  placeholder="Responder..." ng-model="input.reply" name="reply" style="resize: none; overflow: hidden;" elastic  required></textarea>
+                                <textarea class="form-control input-md" placeholder="Responder..." ng-model="input.reply" name="reply" style="resize: none; overflow: hidden;" elastic  required></textarea>
                                 </div>
                                 <button id="btn-reply" type="submit" ng-disabled="form.$invalid" class="btn btn-default btn-sm pull-right">Enviar</button>
                               </form>
@@ -82,6 +72,21 @@
                           </div>
                         </article>
                       </div>
+                    </div>
+                </div>
+              </article>
+              <article class="comment" anchor="comment-box">
+                <div class="media">
+                  <div class="pull-left">
+                     <img class="media-object img-comment" src="images/{{usuario.photo}}"/>
+                    </div>
+                    <div class="media-body">
+                      <form name="formComment" role="form" ng-submit="storeComment(post, input)">
+                        <div class="form form-group">
+                        <textarea id="input-comment" class="form-control input-md"  placeholder="Comentar..." ng-model="input.comment" name="comment" style="resize: none; overflow: hidden;" elastic required></textarea>
+                        </div>
+                        <button id="btn-reply" type="submit" ng-disabled="formComment.$invalid" class="btn btn-default btn-sm pull-right">Publicar</button>
+                      </form>
                     </div>
                 </div>
               </article>

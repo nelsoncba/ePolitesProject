@@ -28,6 +28,8 @@ Route::post('/api/storePost', 'PostController@store');
 
 Route::post('/api/uploadImage', 'FilesController@uploadImage');
 
+Route::post('/api/deleteImage', 'FilesController@destroyImage');
+
 Route::get('/api/allSections', function(){
 	$data = Secciones::getSections();
 	return Response::json($data,200);

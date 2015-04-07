@@ -12,15 +12,15 @@ class Comentarios extends Eloquent{
     
     public function posts()
     {
-        return $this->belongsToMany('Posts');
+        return $this->belongsToMany('posts');
     }
 
     public function usuarios(){
-        return $this->belongsTo('Usuarios');
+        return $this->belongsTo('usuarios');
     }
 
     public function respuestas(){
-        return $this->hasMany('Respuestas', 'comentario_id');
+        return $this->hasMany('respuestas', 'comentario_id');
     }
     
     public static function findComments($postId){

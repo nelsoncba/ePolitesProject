@@ -61,6 +61,11 @@ angular.module('Polites')
 			    	return WebService.sendFile('uploadImage', image).success(function(data){
 			    		return data;
 			    	});
+			    },
+			    deleteImage: function(image){
+			    	return WebService.post('deleteImage', image).success(function(data){
+			    		return data;
+			    	});
 			    }
 			};
 		});

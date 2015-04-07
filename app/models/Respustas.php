@@ -1,7 +1,7 @@
 <?php
 
 class Respuestas extends \Eloquent {
-	protected $table = 'Respuestas';
+	protected $table = 'respuestas';
 	protected $fillable = [];
 
 	public function comentarios(){

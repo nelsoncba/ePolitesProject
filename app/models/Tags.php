@@ -2,7 +2,7 @@
 
 class Tags extends Eloquent{
     
-    protected $table = 'Tags';
+    protected $table = 'tags';
     protected $fillable = array('post_id', 'tag');
     
     

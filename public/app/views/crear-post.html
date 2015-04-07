@@ -4,41 +4,41 @@
    		<h3>&nbsp;Crear Post&nbsp;</h3>
    </div>
    <div class="y">
-   		<form name="formPost" role="form"  ng-submit="storePost(input)">
+   		<form name="formPost" role="form"  ng-submit="storePost(input)" enctype="multipart/form-data">
    			<div class="panel panel-body">
    				 <div class="row">
    				 <div class="col-lg-6">
 	   				 <h4>Elegir Mini-imágen</h4>
-	   				 <div ng-if="!imagemini">
-	   				    <a  role="button"  data-target="#image-mini-modal" data-toggle="modal" class="custom-link"><img src="images/mini-img.png"></a>	
+	   				 <div ng-if="!imageMini">
+	   				    &nbsp;&nbsp;&nbsp;<a  role="button"  data-target="#image-mini-modal" data-toggle="modal" class="custom-link"><img src="images/mini-img.png" ></a>	
 	   				 </div style="border: 1px solid ccc;">
-	   				 <div ng-if="imagemini">
-	   				 	<div>
-	   				    <a  role="button"  data-target="#image-mini-modal" data-toggle="modal" class="custom-link" ><img src="{{imagemini}}"  width="128" height="128" ></a>
+	   				 &nbsp;<span class="text-danger">{{errors.imagemini}}</span>
+	   				 <div ng-if="imageMini; input.imgMini = imageMini">
+	   				 	<div class="img-mini-container">
+	   				 	    <a class="custom-link"><span id="closeImgMini" ng-click="input.imgMini = null; deleteImgMini(imageMini)" class="closeImg" type="button"><i class="glyphicon glyphicon-remove-circle"></i></i></span></a>
+	   				        <img src="{{imageMini}}" class="img-mini"  width="130" height="128">
 	   				    </div>
 					 </div>
-					 <input id="image-mini" type="hidden" ng-model="input.image">
+					 <input id="image-mini" type="hidden" ng-model="input.imgMini">
    				 </div>
    				 <div class="col-lg-6">
    				  	 <h4>Seleccionar sección</h4>
-	   				 <select class="form-control" ng-model="input.section" ng-options="seccion as seccion.seccion for seccion in secciones track by seccion.id">
+	   				 <select class="form-control" name="section" ng-model="input.section" ng-options="seccion as seccion.seccion for seccion in secciones track by seccion.id">
 	   				 </select>
 	   				 &nbsp;<span class="text-danger">{{errors.section.toString()}}</span>
    				 </div>
    				 </div>
 			   	 <h4>Título:</h4>
-			   	 <input type="text" id="title-post" ng-model="input.title" class="form-control input-lg">
+			   	 <input type="text" id="title-post" name="title" ng-model="input.title" class="form-control input-lg">
 			   	 &nbsp;<span class="text-danger">{{errors.title.toString()}}</span>
 			   	 <h4>Contenido:</h4>
-			     <summernote config="options" ng-model="input.content" class="col-lg-12"></summernote>
+			     <summernote config="options" name="content" ng-model="input.content" class="col-lg-12"></summernote>
 			     &nbsp;<span class="text-danger">{{errors.content.toString()}}</span>	
-			     <h4 ng-if="imgs.length > 0">Elige imágen principal</h4>
-			   	 <div  ng-repeat="image in imgs track by $index" class="mini-images"><img  class="image-mini" src="{{image}}">&nbsp;<input type="radio" name="image" ng-value="image" ng-model="input.imagemini"/></div>
-			   	 <h4>Tags</h4><h6>(agrega hasta 4 etiquetas referentes al artículo):</h6>
-				 <input type="text" ng-model="input.tags" bs-tags-input="tagsOptions">
+			   	 <h4>Tags</h4><h6>(agrega hasta 8 etiquetas referentes al artículo):</h6>
+				 <input type="text" name="tags" ng-model="input.tags" bs-tags-input="tagsOptions">
 				 &nbsp;<span class="text-danger">{{errors.tags.toString()}}</span>	
 			   	 <h4 width="50">Fuentes: </h4>
-			     <input type="text" placeholder="Url de fuete" id="urlFuente" ng-model="input.urlFuente" class="form-control input-md" >
+			     <input type="text" placeholder="Url de fuete" id="urlFuente" name="urlFuente" ng-model="input.urlFuente" class="form-control input-md" >
 		   	</div>
 		   	<div class="panel panel-footer">
 		   	 	<button class="btn btn-success pull-right" type="submit" ng-disabled="!formPost">Crear Post</button>
@@ -47,38 +47,39 @@
 
    </div>
 </article>
-<div class="modal fade" id="image-mini-modal" >
-	<div class="modal-dialog">
+<div class="modal" id="storePost">
+	<div class="modal-dialog" >
 		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<label for="" >Elegir mini-imágen</label>
-			</div>
-			<div class="class modal-body">
-				<input type="file" name="fileimagemini" ng-model="imagemini" onchange="angular.element(this).scope().uploadImagemini(this.files)" ng-keydown="this.uploadImagemini()" ng-keyup="this.uploadImagemini()">
-				<br><span>ó</span><br>
-				<input type="text" placeholder="URL de imagen" class="form-control input-md"  ng-model="imageminiurl">
-			</div>
-			<div class="modal-footer">
-				<button type="button" ng-click="uploadImageminiUrl(imageminiurl)" class="btn btn-primary pull-right" class="close" data-dismiss="modal">Enviar</button>
-			</div>
+			    <div class="modal-body " align="center">
+			    	<button tabindex="-1" data-dismiss="modal" ng-if="message" aria-hidden="true" class="close" type="button">×</button>
+			    	<br>
+			    	<div ng-if="!message">
+			    	<img src="images/loader4.gif" width="30"><br>
+			    	&nbsp;&nbsp;Guardando...
+			    	</div>
+			    	<h4><div ng-class="{'text-success': message.success, 'text-danger': message.error}"><i ng-class="{'glyphicon glyphicon-ok-sign': message.success, 'glyphicon glyphicon-remove-sign': message.error}"></i>&nbsp;{{message.success}}{{message.error}}</div>
+			    	</h4>
+			    	<button type="button" class="btn btn-default" ng-if="message" ng-click="toAllPosts()">Ir a posts</button>
+			   	</div>
 		</div>
 	</div>
 </div>
-<div class="modal" id="storePost">
-<div class="modal-dialog" >
-	<div class="modal-content">
-		    <div class="modal-body " align="center">
-		    	<button tabindex="-1" data-dismiss="modal" ng-if="message" aria-hidden="true" class="close" type="button">×</button>
-		    	<br>
-		    	<div ng-if="!message">
-		    	<img src="images/loader4.gif" width="30"><br>
-		    	Guardando&nbsp;&nbsp;
-		    	</div>
-		    	<h4><div ng-class="{'text-success': message.success, 'text-danger': message.error}"><i ng-class="{'glyphicon glyphicon-ok-sign': message.success, 'glyphicon glyphicon-remove-sign': message.error}"></i>&nbsp;{{message.success}}{{message.error}}</div>
-		    	</h4>
-		    	<button type="button" class="btn btn-default" ng-if="message" ng-click="toAllPosts()">Ir a posts</button>
-		   	</div>
-	</div>
-</div>
-</div>
+<div class="modal fade" id="image-mini-modal" >
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<label for="" >Elegir mini-imágen</label>
+					</div>
+					<div class="class modal-body">
+						<h5>Selecciona archivo local</h5>
+						<p><input type="file" id="imgMini" name="fileimagemini" ng-model="imgMini" onchange="angular.element(this).scope().uploadImagemini(this.files)" ng-keydown="this.uploadImagemini()" ng-keyup="this.uploadImagemini()"></p>
+						<span><p>&nbsp;ó</p></span>
+						<input type="text" id="imgMiniUrl" placeholder="URL de imagen" class="form-control input-md"  ng-model="imgMiniUrl">
+					</div>
+					<div class="modal-footer">
+						<button type="button" ng-click="uploadImageminiUrl(imgMiniUrl)" class="btn btn-primary pull-right" class="close" data-dismiss="modal">Enviar</button>
+					</div>
+				</div>
+			</div>
+		</div>

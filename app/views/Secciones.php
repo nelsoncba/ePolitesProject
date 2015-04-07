@@ -13,8 +13,8 @@ class Secciones extends Eloquent{
     
     public static function getSections(){
     	$sections = DB::table('secciones')
-    	                ->leftJoin('posts', 'secciones.id','=','posts.seccion_id')
-    		            ->select('secciones.id as id','secciones.slug as slug', 'secciones.seccion as seccion',DB::raw('COUNT(posts.id) as count'))
+    	                ->leftJoin('Posts', 'secciones.id','=','Posts.seccion_id')
+    		            ->select('secciones.id as id','secciones.slug as slug', 'secciones.seccion as seccion',DB::raw('COUNT(Posts.id) as count'))
     		            ->groupBy('secciones.id')
     		            ->get();
     	return $sections;

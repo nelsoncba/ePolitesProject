@@ -23,35 +23,42 @@ angular.module('politesControllers',['ui.router'])
 		  		});
 				}
 		  })
-		  .controller('postCtrl',function($scope, $state, $anchorScroll, Posts){
-		  	    $scope.convertToDate = function(stringDate){
-		  	    	var dateOut = new Date(stringDate);
-		  	    	dateOut.setDate(dateOut.getDate()+1);
-		  	    	return dateOut;
-		  	    }
+		  .controller('postCtrl',function($scope, $state, $timeout, $anchorScroll, Posts){
+		  	    $scope.convertToDate = function(input){
+		  	    	input = input.replace(/(.+) (.+)/, "$1T$2Z");
+					input = new Date(input).getTime();
+					return input;
+		  	    };
 		  		Posts.getPost($state.params.id + '/' + $state.params.slug).success(function(data) {
 		  			$scope.post = data;
+		  		}).error(function(data){
+		  			$scope.post = {error: data};
 		  		});
 		  			$anchorScroll();
 		  		Posts.getComments($state.params.id).success(function(data){
 		  			$scope.comments = data;
 		  		});
 
-		  		$scope.getReply = function(index, comment){
-		  			if(comment.respuestasTotal > 0){
-		  					comment.imgReply = true;
-			  		   Posts.getReplies(comment.id).success(function(data){
-			  		    	 comment.replies =  data;
-			  		    	 comment.imgReply = false;
-			  		    	 comment.replyData = true;
-				  			});
-		  			}
+		  		$scope.getReply = function(comment){
+			  		comment.imgReply = true;
+				  	Posts.getReplies(comment.id).success(function(data){
+				  	    comment.replies = data;
+				  	    comment.replyData = true;
+				  	    comment.imgReply = false;
+					});
 		  			this.show = true;
 		  		};
 
+				$scope.replyComment = function(comment){
+					if(comment.respuestasTotal > 0){
+						this.getReply(comment);
+					}else{
+						this.show = true
+					}
+				}
+
 		  		$scope.storeComment = function(post, input){
                     Posts.storeComment(post.id, input).success(function(data){
-                    	message = data;
                     	Posts.getComments(post.id).success(function(data){
 		  				      $scope.comments = data;
 		  				});
@@ -62,15 +69,18 @@ angular.module('politesControllers',['ui.router'])
 
 		  		$scope.storeReply = function(comment, input){
 		  			Posts.storeReply(comment.id, input).success(function(data){
-		  				message = data;
+		  				comment.replies = data;
+		  				/*message = data;
 		  				Posts.getReplies(comment.id).success(function(data){
 		  					comment.replies = data;
-		  				});
+		  					comment.replyData = true;
+		  				});*/
 		  				input.reply = '';
 		  			});
-		  		};		
+		  		};
+
 		  })
-		  .controller('storePostCtrl', function($scope, $anchorScroll, $timeout, $state, Posts) {
+		  .controller('storePostCtrl', function($scope, $anchorScroll, $timeout, $state, $filter, Posts) {
 		  		$anchorScroll();
 		  		$scope.storePost = function(input){
 		  			angular.element('#storePost').modal('show');
@@ -87,14 +97,7 @@ angular.module('politesControllers',['ui.router'])
 						 $scope.errors = data;
 					});
 		  		};
-		  		//funcion para cargar imagen al servidor y luego renderizarla en el cuadro del editor
-				//function to upload the image to the server and then render it this in the editor display box 
-				$scope.imgs = [];
-				    $('.note-image-url').on('value_changed',function(){
-						$scope.imgs.push($(this).val());
-						console.log('url: ', $(this).val());
-					});
-				
+		  		
 				$scope.options = {
 					height: 500,
 					focus: true,
@@ -115,15 +118,6 @@ angular.module('politesControllers',['ui.router'])
 						['view', ['codeview']],
 					]
 				}; 
-				/*$scope.imageUpload = function(files, editor){
-					data = new FormData();
-		            data.append("file", files[0]);
-					Posts.uploadImage(data).success(function(url){
-						editor.insertImage($scope.editable, 'images/temp/' + url);
-						path = 'images/temp/'+url;
-						$scope.imgs.push(path);
-					});
-				};*/
 
 				function sendFiles(files, editor, welEditable){
 		            data = new FormData();
@@ -137,7 +131,7 @@ angular.module('politesControllers',['ui.router'])
 
 				/*****tags***********/
 				$scope.tagsOptions = {
-						maxTags: 4,
+						maxTags: 8,
 						typeahead: {
 					          prefetch: './api/tags'
 					    }
@@ -148,22 +142,25 @@ angular.module('politesControllers',['ui.router'])
 					$scope.secciones = data;
 				});		
 
+				//funcion para cargar imagen al servidor y luego renderizarla en el cuadro del editor
+				//function to upload the image to the server and then render it this in the editor display box 
 				$scope.uploadImagemini = function(files){
 					data = new FormData();
 					data.append('file', files[0]);
 					Posts.uploadImage(data).success(function(url){
 						path = 'images/post/'+url;
-						$scope.imagemini = path;
-						$scope.input = {image:path};
+						$scope.imageMini = path;
 					});
-					console.log('url: ', files);
 					$('#image-mini-modal').modal('hide');
 				};
 
 				$scope.uploadImageminiUrl = function(file){
-				//	$('#image-mini').val(file);
-					$scope.input = {image: file};
-					$scope.imagemini = file;
+					if($filter('isUrl')(file)){
+						$scope.imageMini = file;
+						$scope.errors = {imagemini: ''};
+					}else{
+						$scope.errors = {imagemini: 'URL de imagen inválida'};
+					}
 				};
 
 				$scope.toAllPosts = function(){
@@ -171,6 +168,18 @@ angular.module('politesControllers',['ui.router'])
 					$timeout(function(){
 						$state.go("root");
 					}, 1500);
+				};
+
+				$scope.deleteImgMini = function(imageMini){
+					if(!$filter('isUrl')(imageMini)){
+						Posts.deleteImage({imagemini: imageMini}).success(function(data){
+							console.log('success ', data);
+						})
+						.error(function(data){
+							console.log('error ', data);
+						});
+					}
+					$scope.imageMini = null;
 				};
 		  })
 		  .controller('sidebarCtrl',function($scope, $anchorScroll, Posts) {

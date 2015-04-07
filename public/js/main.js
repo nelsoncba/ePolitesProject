@@ -8,3 +8,14 @@ $(document).ready(function(){
               focus: true,   
         });
     });
+//valida si supera 100px para mostrar icono de scroll top.
+$(function(){
+	$(document).on( 'scroll', function(){
+ 
+		if ($(window).scrollTop() > 100) {
+			$('.scroll-top-wrapper').addClass('show');
+		} else {
+			$('.scroll-top-wrapper').removeClass('show');
+		}
+	});
+});

@@ -2579,7 +2579,7 @@
      */
     var createImage = function (sUrl, filename) {
       return $.Deferred(function (deferred) {
-        var $img = $('<img>');
+        var $img = $('<img class="img-responsive">');
 
         $img.one('load', function () {
           $img.off('error abort');

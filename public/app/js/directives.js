@@ -98,4 +98,18 @@ angular.module('Polites')
                 });
             }
         };
-    });
+    })
+    .directive('scrollMode', [function () {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                    element.on('click', function(){
+                    var scrollAnchor = attrs.scrollto;
+                    scrollPoint = $('[anchor="'+scrollAnchor+'"]').offset().top - 50;
+                    angular.element('body, html').animate({
+                        scrollTop: scrollPoint
+                    }, 500);
+                })
+            }
+        };
+    }]);
