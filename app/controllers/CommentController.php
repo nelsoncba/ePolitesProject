@@ -42,7 +42,7 @@ class CommentController extends \BaseController {
 		
 		if($comment->save()){
 			$newComment = Comentarios::lastComment('2');
-			return Response::json($newComment,200);
+			return Response::json($newComment[0],200);
 		}
 	}
 

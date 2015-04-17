@@ -5,7 +5,7 @@ use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableTrait;
 use Illuminate\Auth\Reminders\RemindableInterface;
 
-class Usuarios extends Eloquent implements UserInterface, RemindableInterface {
+class Usuarios extends Eloquent implements UserInterface{
 
 	use UserTrait, RemindableTrait;
 
@@ -17,15 +17,15 @@ class Usuarios extends Eloquent implements UserInterface, RemindableInterface {
 	protected $table = 'usuarios';
     
     protected $fillabe = array(
-                               'usuario',
-                               'email'
+                               'email',
+                               'password'
                                 );
 	/**
 	 * The attributes excluded from the model's JSON form.
 	 *
 	 * @var array
 	 */
-	protected $hidden = array('password', 'remember_token');
+	protected $hidden = array('password');
 
 	public function posts(){
         return $this->hasMany('Posts', 'usuario_id');
@@ -38,4 +38,5 @@ class Usuarios extends Eloquent implements UserInterface, RemindableInterface {
     public function respuestas(){
     	return $this->hasMany('Respuestas', 'usuario_id');
     }
+
 }

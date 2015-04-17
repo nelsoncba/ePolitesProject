@@ -1,5 +1,5 @@
-angular.module('politesControllers',['ui.router'])
-		  .controller('allPostsCtrl', function($scope,$state, $anchorScroll, Posts) {
+angular.module('Controllers',[])
+		  .controller('AllpostsCtrl', function($scope, $state, $anchorScroll, Posts) {
 		  		$anchorScroll();
 		  		//date.setDate(date.getDate()-1);
 		  		if($state.params.slug == null){
@@ -23,7 +23,7 @@ angular.module('politesControllers',['ui.router'])
 		  		});
 				}
 		  })
-		  .controller('postCtrl',function($scope, $state, $timeout, $anchorScroll, Posts){
+		  .controller('PostCtrl',function($scope, $state, $timeout, $anchorScroll, Posts){
 		  	    $scope.convertToDate = function(input){
 		  	    	input = input.replace(/(.+) (.+)/, "$1T$2Z");
 					input = new Date(input).getTime();
@@ -59,9 +59,10 @@ angular.module('politesControllers',['ui.router'])
 
 		  		$scope.storeComment = function(post, input){
                     Posts.storeComment(post.id, input).success(function(data){
-                    	Posts.getComments(post.id).success(function(data){
+                    	/*Posts.getComments(post.id).success(function(data){
 		  				      $scope.comments = data;
-		  				});
+		  				});*/
+                    	$scope.comments.push(data);
 		  				input.comment = '';
                     });
 		  		};
@@ -80,7 +81,7 @@ angular.module('politesControllers',['ui.router'])
 		  		};
 
 		  })
-		  .controller('storePostCtrl', function($scope, $anchorScroll, $timeout, $state, $filter, Posts) {
+		  .controller('StorepostCtrl', function($scope, $anchorScroll, $timeout, $state, $filter, Posts) {
 		  		$anchorScroll();
 		  		$scope.storePost = function(input){
 		  			angular.element('#storePost').modal('show');
@@ -182,7 +183,20 @@ angular.module('politesControllers',['ui.router'])
 					$scope.imageMini = null;
 				};
 		  })
-		  .controller('sidebarCtrl',function($scope, $anchorScroll, Posts) {
+		  .controller('LoginCtrl', function ($rootScope, $scope, $sanitize, $state, Authenticate) {
+		  		$scope.authentication = function(login){
+		  			Authenticate.login({
+		  				'email': $sanitize(login.email),
+		  				'password': $sanitize(login.password)
+		  			}).success(function(data){
+		  				angular.element('#login').modal('hide');
+		  				$state.go($rootScope.pathSelected, {},{reload: true});
+		  			}).error(function(data){
+		  				$scope.flash = data;
+		  			});
+		  		}
+		  })
+		  .controller('SidebarCtrl',function($scope, $anchorScroll, Posts) {
 		  		$anchorScroll();
 		  		Posts.getSections().success(function(data){
 		  			$scope.secciones =  data;
@@ -190,5 +204,17 @@ angular.module('politesControllers',['ui.router'])
 		  		Posts.getRecentPosts().success(function(data){
 		  			$scope.sidebarPosts = data;
 		  		});
+		  })
+		  .controller('HeaderCtrl', function ($rootScope, $scope, $state, Authenticate, $cookieStore) {
+		  		$scope.login = function(){
+		  			angular.element('#login').modal('show');
+		  		};
+		  		$scope.logout = function(){
+		  			Authenticate.logout();
+		  			$state.go('root', {},{reload: true});
+		  		};
+		  		
+		  })
+		  .controller('AppCtrl', function ($scope, $rootScope) {
 		  });
 		  

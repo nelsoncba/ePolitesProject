@@ -12,14 +12,16 @@ class CreateUsuariosTable extends Migration {
 	 */
 	public function up()
 	{
-            Schema::create('Usuarios', function(Blueprint $tabla){
-                $tabla->increments('id');
-                $tabla->string('usuario', 50);
-                $tabla->string('email',100);
-                $tabla->string('password', 50);
-                $tabla->boolean('enabled');
-                $tabla->integer('role');
-                $tabla->timestamps();
+            Schema::create('Usuarios', function(Blueprint $table){
+                $table->increments('id');
+                $table->string('user', 50);
+                $table->string('email',100);
+                $table->string('password', 50);
+                $table->boolean('enabled');
+                $table->integer('role');
+                $table->string('photo', 100);
+                $table->string('remember_token', 100);
+                $table->timestamps();
             });
 	}
 

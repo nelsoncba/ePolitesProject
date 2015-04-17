@@ -70,6 +70,12 @@ Route::filter('guest', function()
 	if (Auth::check()) return Redirect::to('/');
 });
 
+Route::filter('serviceAuth', function(){
+	if(!Auth::check()){
+		return Response::json(['flash'=>'Debes iniciar sesión.'],401);
+	}
+});
+
 /*
 |--------------------------------------------------------------------------
 | CSRF Protection Filter

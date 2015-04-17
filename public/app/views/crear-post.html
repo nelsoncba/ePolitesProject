@@ -65,21 +65,21 @@
 	</div>
 </div>
 <div class="modal fade" id="image-mini-modal" >
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<label for="" >Elegir mini-imágen</label>
-					</div>
-					<div class="class modal-body">
-						<h5>Selecciona archivo local</h5>
-						<p><input type="file" id="imgMini" name="fileimagemini" ng-model="imgMini" onchange="angular.element(this).scope().uploadImagemini(this.files)" ng-keydown="this.uploadImagemini()" ng-keyup="this.uploadImagemini()"></p>
-						<span><p>&nbsp;ó</p></span>
-						<input type="text" id="imgMiniUrl" placeholder="URL de imagen" class="form-control input-md"  ng-model="imgMiniUrl">
-					</div>
-					<div class="modal-footer">
-						<button type="button" ng-click="uploadImageminiUrl(imgMiniUrl)" class="btn btn-primary pull-right" class="close" data-dismiss="modal">Enviar</button>
-					</div>
-				</div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<label for="" >Elegir mini-imágen</label>
+			</div>
+			<div class="class modal-body">
+				<h5>Selecciona archivo local</h5>
+				<p><input type="file" id="imgMini" name="fileimagemini" ng-model="imgMini" onchange="angula(this).scope().uploadImagemini(this.files)" ng-keydown="this.uploadImagemini()" ng-keyup="this.uploadImagemini()"></p>
+				<span><p>&nbsp;ó</p></span>
+				<input type="text" id="imgMiniUrl" placeholder="URL de imagen" class="form-control input-md"  ng-model="imgMiniUrl">
+			</div>
+			<div class="modal-footer">
+				<button type="button" ng-click="uploadImageminiUrl(imgMiniUrl)" class="btn btn-primary pull-right" class="close" data-dismiss="modal">Enviar</button>
 			</div>
 		</div>
+	</div>
+</div>

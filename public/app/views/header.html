@@ -37,10 +37,17 @@
                 <li><a href="#">One more separated link</a></li>
               </ul>
             </li>-->
+            
             <li><a ui-sref="root.crear-post"><span class="glyphicon glyphicon-pencil"></span> Postear</a></li>
             <li><a href="#"><span class="glyphicon glyphicon-share"></span> Registrarse</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon-user"></span> Ingresar</a></li>     
+            <li ng-if="!currentUser"><a ng-click="login()" role="button" data-toggle="modal"><span class="glyphicon glyphicon-user"></span> Ingresar</a></li>
+            <li class="dropdown" ng-if="currentUser">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{currentUser.usuario}}<span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a ng-click="logout()" role="button" data-toggle="modal">Cerrar</a></li>
+              </ul>
+            </li>
           </ul>
       </div>
     </div>
-<script src="js/header.js"></script>
+    

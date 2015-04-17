@@ -24,8 +24,6 @@ Route::get('/api/recentPosts', 'PostController@recentPosts');
 
 Route::get('/api/post/{id}/{slug}', 'PostController@show');
 
-Route::post('/api/storePost', 'PostController@store');
-
 Route::post('/api/uploadImage', 'FilesController@uploadImage');
 
 Route::post('/api/deleteImage', 'FilesController@destroyImage');
@@ -37,11 +35,9 @@ Route::get('/api/allSections', function(){
 
 Route::get('/api/comments/{postId}', 'CommentController@indexComment');
 
-Route::post('/api/storeComment/{postId}', 'CommentController@storeComment');
+
 
 Route::get('/api/replies/{commentId}', 'CommentController@indexReply');
-
-Route::post('/api/storeReply/{commentId}', 'CommentController@storeReply');
 
 Route::get('/api/tags', function(){
 	$tags = Tags::select('tag')->get();
@@ -50,4 +46,14 @@ Route::get('/api/tags', function(){
 		$tagList[] = $value->tag;
 	}
 	return Response::json($tagList,200);
+});
+
+Route::post('/api/authenticate', 'AuthenticationController@store');
+
+Route::get('/api/logout', 'AuthenticationController@index');
+
+Route::group(array('before' => 'serviceAuth'), function(){
+	Route::post('/api/storePost', 'PostController@store');
+	Route::post('/api/storeReply/{commentId}', 'CommentController@storeReply');
+	Route::post('/api/storeComment/{postId}', 'CommentController@storeComment');
 });

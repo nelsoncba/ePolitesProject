@@ -2,6 +2,10 @@
 
 class PostController extends \BaseController {
 
+	public function __construct(){
+		//$this->beforeFilter('serviceAuth', ['except' => ['index', 'show', 'bySection', 'recentPosts']]);
+	}
+
 	/**
 	 * Display a listing of the resource.
 	 * GET /post
@@ -44,7 +48,7 @@ class PostController extends \BaseController {
 	 * @return Response
 	 */
 	public function store()
-	{
+	{	
 		$validator = Validator::make(Input::all(), Posts::$rules);
 		if($validator->fails()){
 			return Response::json($validator->messages(),403);

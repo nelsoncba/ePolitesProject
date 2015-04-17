@@ -77,10 +77,9 @@
                       <div class="modal-body " ng-controller="LoginCtrl">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         <br>
-                        <div class="formLogin">
                         <h4>Ingresar al sitio</h4>
                         <div class="alert" ng-show="flash" ng-bind="flash"></div>
-                        <form name="form" ng-submit="authentication(login)" >
+                        <form name="form" ng-submit="authentication(login)">
                             <div class="form form-group">
                             <input id="login_email" ng-model="login.email" placeholder="Email" type="text" name="email"  class="form-control"  required/>
                             </div>
@@ -94,7 +93,6 @@
                             <button class="btn btn-primary" type="submit" ng-disabled="!form">Ingresar</button>&nbsp;&nbsp;ó&nbsp;&nbsp;<a ui-sref="root">Registrarse</a> 
                             <br><br><a ui-sref="root" role="button" data-toggle="modal" >¿Olvidó su contraseña?</a>
                         </form>
-                        </div>
                       </div>
                 </div>
               </div>

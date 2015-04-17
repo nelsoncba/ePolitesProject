@@ -1,91 +1,92 @@
-angular.module('Polites', ['ui.router', 'politesControllers', 'angular-timeago','summernote', 'bsTagsInput'])
+angular.module('Polites', ['ui.router', 'ngSanitize', 'ngCookies', 'Controllers', 'Service', 'Filters', 'angular-timeago','summernote', 'bsTagsInput'])
+		.run(function($rootScope, $state, Authenticate, sessionService){
+			'use strict';
+			$rootScope.currentUser = sessionService.get('user');
+			$rootScope.$on("$stateChangeStart",
+	        function(event, toState, toParams, fromState, fromParams) {
+	            if (toState.authenticate && !Authenticate.isLoggedIn()) {
+	            	$rootScope.pathSelected = toState.name;
+	                angular.element('#login').modal('show');
+	                event.preventDefault();
+	            }
+	        });
+		})
 		.config(function($stateProvider, $urlRouterProvider) {
-			
-			$urlRouterProvider.otherwise('/');
 			$stateProvider
 			.state('root', {
 					url: '/',
+					controller: 'AppCtrl',
                     views: {
 						'header': {
-							templateUrl: 'app/views/header.html'
+							templateUrl: 'app/views/header.html',
+							controller:  'HeaderCtrl'
 						},
 						'main': {
 							templateUrl: 'app/views/allPosts.html',
-							controller: 'allPostsCtrl'
+							controller: 'AllpostsCtrl'
 
 						},
 						'sidebar': {
 							templateUrl: 'app/views/sidebar.html',
-							controller: 'sidebarCtrl'
+							controller: 'SidebarCtrl'
 						}
-					}
+					},
+					authenticate: false
 			})
 			.state('root.postsBySection',{
 					url: ':slug',
 					views:{
 						'main@':{
 							templateUrl: 'app/views/allPosts.html',
-							controller: 'allPostsCtrl'
+							controller: 'AllpostsCtrl'
 						}
-					}
+					},
+					authenticate: false
 			})
             .state('root.post',{
 					url: 'post/:id/:slug',
 					views:{
 						'main@':{
 							templateUrl: 'app/views/post.html',
-							controller: 'postCtrl'
+							controller: 'PostCtrl'
 						},
 						'similarPosts@':{
 							templateUrl: 'app/views/sidebar.html',
-							controller: 'sidebarCtrl'
+							controller: 'SidebarCtrl'
 						}
-					}
+					},
+					authenticate: false
 			})
 			.state('root.crear-post',{
 					url: 'articulo/crear',
 					views:{
 						'main@':{
 							templateUrl: 'app/views/crear-post.html',
-							controller: 'storePostCtrl'
+							controller: 'StorepostCtrl'
 						}
-					}
+					},
+					authenticate: true
 			});
-		})
-		.filter('unsafe',function($sce){
-			return function(text){
-				return $sce.trustAsHtml(text);
-			}
-		})
-		.filter('htmlToText',function(){
-			return function(text){
-				var newText = angular.element(text).text();
-				return newText;
-			}
-		})
-		.filter('strLimit',  function($filter) {
-		   return function(input, limit) {
-		      if (input.length <= limit) {
-		          return input;
-		      }
-		    
-		      return $filter('limitTo')(input, limit) + '...';
-		   };
-		})
-		.filter('dateTime', function($filter){
-			 return function(input){
-			  input = input.replace(/(.+) (.+)/, "$1T$2Z");
-			  input = new Date(input).getTime();
-			  return input;
-			 };
-		})
-		.filter('isUrl', function($filter){
-			return function(input){
-				var isUrl = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w!:.?+=&%@!\-\/]))?/;
-				if(isUrl.test(input)){
-					return true;
-				}else{
-					return false;
-				}
-			};
+			$urlRouterProvider.otherwise('/');
 		});
+		/*.config(function($httpProvider) {
+			var interceptor = function($injector,$q,$rootScope){
+	        var success = function(response){
+	            return response
+	        }
+	        var error = function(response){
+	            if (response.status == 401){
+	                delete sessionStorage.authenticated
+	                var state = $injector.get('$state');
+	                angular.element('#login').modal('show');
+	                $rootScope.flash(response.data);
+	            }
+	            return $q.reject(response);
+	        }
+	            return function(promise){
+	                return promise.then(success, error);
+	            }
+	        }
+	        $httpProvider.interceptors.push(interceptor);
+		});*/
+		
