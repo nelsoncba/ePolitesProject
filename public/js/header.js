@@ -13,6 +13,3 @@ $('#nav').mouseleave(function(){
 	if($(window).scrollTop() !== 0)
        $('#nav.navbar-fixed-top').addClass('transparent');  
 });
-
-
-

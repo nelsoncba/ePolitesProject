@@ -25,7 +25,7 @@
                               </article>
                       </div>
 </div>-->
-<section ng-if="!posts" >
+<section ng-show="!has_posts" >
             <div class="loader" align="center">
             <div class="loader-img">
             <img src="images/loader4.gif"  width="30" style="display:table-cell; vertical-align:middle; float:none;"><br>
@@ -39,7 +39,7 @@
           <h5>{{ post.seccion }}</h5>
           <h6>Por <a href="#">{{post.usuario}}</a>&nbsp;-&nbsp;<span ng-bind="post.created_at|dateTime|date:'medium'"></span></h6>
           <h6>
-            <a ui-sref="root.post({id: post.id, slug: post.slug, '#': 'comments'})"><i class="glyphicon glyphicon-comment"></i>&nbsp;<strong>{{post.count}} comentarios</strong>&nbsp;</a>
+            <a ui-sref="root.post({id: post.id, slug: post.slug, '#': 'comments'})"><i class="fa fa-comments"></i>&nbsp;<strong>{{post.count}} comentarios</strong>&nbsp;</a>
           </h6>
           <div ng-if="post.imagen">
             <img class="img-posts media-object pull-left" src="{{post.imagen}}" alt="" holder-fix>
@@ -48,4 +48,7 @@
           <a ui-sref="root.post({id: post.id, slug: post.slug})" class="btn btn-primary btn-xs pull-right">leer mas</a>&nbsp;&nbsp;
 </article>
 <!--<hr class="soften">-->
+</div>
+<div class="well" align="center" ng-show="has_more()">
+    <a class="clear-link" ng-click="show_more()"><i class="icon-plus icon-white"></i> Mostrar mas</a>&nbsp;&nbsp;<img src="images/loader4.gif" ng-if="more_posts"  width="30" style="display:inline; float:none;">
 </div>

@@ -40,7 +40,7 @@ class Posts extends Eloquent{
         return $this->belongsTo('Usuarios', 'usuario_id');
     }
 
-    public static function selectAll(){
+    public static function selectAll($perPage){
         $posts = DB::table('posts')
                                ->leftJoin('secciones','secciones.id', '=' ,'posts.seccion_id')
                                ->leftJoin('usuarios', 'usuarios.id', '=', 'posts.usuario_id')
@@ -49,12 +49,12 @@ class Posts extends Eloquent{
                                ->groupBy('posts.id')
                                ->orderBy('count','DESC')
                                ->orderBy('created_at','DESC')
-                               ->get();
+                               ->paginate($perPage);
   
         return $posts; 
     }
 
-    public static function bySection($slug){
+    public static function bySection($slug, $perPage){
         $posts = DB::table('posts')
                                ->leftJoin('secciones','secciones.id', '=' ,'posts.seccion_id')
                                ->leftJoin('usuarios', 'usuarios.id', '=', 'posts.usuario_id')
@@ -64,7 +64,7 @@ class Posts extends Eloquent{
                                ->groupBy('posts.id')
                                ->orderBy('count','DESC')
                                ->orderBy('created_at','DESC')
-                               ->get();
+                               ->paginate($perPage);
   
         return $posts; 
     }

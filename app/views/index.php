@@ -10,7 +10,8 @@
         <title></title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1; maximum-scale=1; minimum-scale=1; user-scalable=0;">
-        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <link rel="icon" type="image/x-icon" href="laravel-icon-black.png">
+        <!--<link rel="apple-touch-icon" href="apple-touch-icon.png">-->
         <link rel="stylesheet" href="css/main.css">
         <!--jQuery-->
         <!--<script src="js/vendor/jquery-1.11.1.min.js"></script>-->
@@ -28,7 +29,7 @@
         <!--<script src="js/vendor/bootstrap.js"></script>-->
 
          <!--Angular-->
-        <script src="app/lib/angular/angular.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
         <script src="app/lib/angular/angular-ui-router.min.js"></script>
         <script src="app/lib/angular/angular-cookies.min.js"></script>
         <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.12/angular.min.js"></script>-->
@@ -42,6 +43,14 @@
         <style>
             .border{
                 border: 1px #265a88 solid;
+            }
+            .div_NOSCRIPT
+            {   
+                text-align: center;
+                border: solid 2px red;
+                background-color: #ccc;
+                padding: 5px;
+                margin: 5px;
             }
 
         </style>
@@ -61,16 +70,28 @@
         <![endif]-->
         <nav id="nav" class="navbar navbar-inverse navbar-fixed-top" ui-view="header"></nav>
         <div class="container marketing" anchor="top">
+          <noscript>
+            <div class="div_NOSCRIPT">
+                <p>
+                    Para que este web site funcione correctamente, 
+                    es necesario habilitar javascript en tu navegador.
+                </p>
+                <p>
+                    <a href="http://www.enable-javascript.com/es/" target="_blank">
+                    En este enlace encontrarás instrucciones de 
+                    cómo habilitar javascript en tu navegador</a>
+                </p>
+            </div>
+           </noscript>
             <!-- Example row of columns -->
             <div class="row">
-              <div class="col-sm-8 col-md-8 col-lg-8">  
+              <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">  
                     <div ui-view="main" autoscroll="false"></div>       
               </div>
-              <div class="col-sm-4 col-md-4 col-lg-4 right">
+              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 right">
                   <div ui-view="sidebar" autoscroll="false"></div>
               </div>
             </div>
-            <hr>
             <div class="modal" id="login">
               <div class="modal-dialog" >
                 <div class="modal-content">
@@ -79,7 +100,7 @@
                         <br>
                         <div class="formLogin">
                         <h4>Ingresar al sitio</h4>
-                        <div class="alert" ng-show="flash" ng-bind="flash"></div>
+                        <p><span class="text-danger" ng-show="flash" ng-bind="flash"></span></p>
                         <form name="form" ng-submit="authentication(login)" >
                             <div class="form form-group">
                             <input id="login_email" ng-model="login.email" placeholder="Email" type="text" name="email"  class="form-control"  required/>
@@ -91,7 +112,7 @@
                             <input type="checkbox" id="no_cerrar" name="_remember_me" class="label-login select" />                            
                             <label for="no_cerrar" class="label-login">No cerrar sesión</label><br>
                             </div>
-                            <button class="btn btn-primary" type="submit" ng-disabled="!form">Ingresar</button>&nbsp;&nbsp;ó&nbsp;&nbsp;<a ui-sref="root">Registrarse</a> 
+                            <button class="btn btn-primary" type="submit" ng-disabled="">Ingresar</button>&nbsp;&nbsp;ó&nbsp;&nbsp;<a ui-sref="root">Registrarse</a> 
                             <br><br><a ui-sref="root" role="button" data-toggle="modal" >¿Olvidó su contraseña?</a>
                         </form>
                         </div>
@@ -166,13 +187,13 @@
             ga('create','UA-XXXXX-X','auto');ga('send','pageview');
         </script>
         <script src="js/main.js"></script>
-        <script src="js/underscore.js"></script>
         <script src="app/js/app.js"></script>
         <script src="app/js/controllers.js"></script>
         <script src="app/js/service.js"></script>
         <script src="app/js/directives.js"></script>
         <script src="app/js/filters.js"></script>
         <script src="app/lib/angular/angular-sanitize.min.js"></script>
+        <script src="js/underscore.js"></script>
         <script src="js/jquery.timeago.js"></script>
         <script src="app/lib/angular/angular-timeago.js"></script>
         <script src="app/lib/angular/i18n/angular-locale_es-ar.js"> </script>

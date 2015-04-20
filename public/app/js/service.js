@@ -8,8 +8,8 @@ angular.module('Service',[])
 			       		return data;
 					});
 				},
-			    getAllPosts: function(){
-			       return  webservice.request('GET','allPosts').success(function(data){
+			    getAllPosts: function(params){
+			       return  webservice.request('GET','allPosts/' + params).success(function(data){
 			       		return data;
 			       }).error(function(data){
 			       		return data;

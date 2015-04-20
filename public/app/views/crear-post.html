@@ -4,9 +4,9 @@
    		<h3>&nbsp;Crear Post&nbsp;</h3>
    </div>
    <div class="y">
-   		<form name="formPost" role="form"  ng-submit="storePost(input)" enctype="multipart/form-data">
+   		<form class="formPost" name="formPost" role="form"  ng-submit="storePost(input)" enctype="multipart/form-data">
    			<div class="panel panel-body">
-   				 <div class="row">
+   				<div class="row">
    				 <div class="col-lg-6">
 	   				 <h4>Elegir Mini-imágen</h4>
 	   				 <div ng-if="!imageMini">
@@ -15,7 +15,7 @@
 	   				 &nbsp;<span class="text-danger">{{errors.imagemini}}</span>
 	   				 <div ng-if="imageMini; input.imgMini = imageMini">
 	   				 	<div class="img-mini-container">
-	   				 	    <a class="custom-link"><span id="closeImgMini" ng-click="input.imgMini = null; deleteImgMini(imageMini)" class="closeImg" type="button"><i class="glyphicon glyphicon-remove-circle"></i></i></span></a>
+	   				 	    <a class="custom-link"><span id="closeImgMini" ng-click="input.imgMini = null; deleteImgMini(imageMini)" class="closeImg" type="button"><i class="fa fa-times-circle"></i></i></span></a>
 	   				        <img src="{{imageMini}}" class="img-mini"  width="130" height="128">
 	   				    </div>
 					 </div>
@@ -27,7 +27,7 @@
 	   				 </select>
 	   				 &nbsp;<span class="text-danger">{{errors.section.toString()}}</span>
    				 </div>
-   				 </div>
+   				</div>
 			   	 <h4>Título:</h4>
 			   	 <input type="text" id="title-post" name="title" ng-model="input.title" class="form-control input-lg">
 			   	 &nbsp;<span class="text-danger">{{errors.title.toString()}}</span>
@@ -57,7 +57,7 @@
 			    	<img src="images/loader4.gif" width="30"><br>
 			    	&nbsp;&nbsp;Guardando...
 			    	</div>
-			    	<h4><div ng-class="{'text-success': message.success, 'text-danger': message.error}"><i ng-class="{'glyphicon glyphicon-ok-sign': message.success, 'glyphicon glyphicon-remove-sign': message.error}"></i>&nbsp;{{message.success}}{{message.error}}</div>
+			    	<h4><div ng-class="{'text-success': message.success, 'text-danger': message.error}"><i ng-class="{'fa fa-check-circle': message.success, 'fa fa-times-circle': message.error}"></i>&nbsp;{{message.success}}{{message.error}}</div>
 			    	</h4>
 			    	<button type="button" class="btn btn-default" ng-if="message" ng-click="toAllPosts()">Ir a posts</button>
 			   	</div>
@@ -69,12 +69,14 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<label for="" >Elegir mini-imágen</label>
+				<label for="" >Cargar mini-imágen</label>
 			</div>
 			<div class="class modal-body">
+				<div class="hidden-xs">
 				<h5>Selecciona archivo local</h5>
-				<p><input type="file" id="imgMini" name="fileimagemini" ng-model="imgMini" onchange="angula(this).scope().uploadImagemini(this.files)" ng-keydown="this.uploadImagemini()" ng-keyup="this.uploadImagemini()"></p>
+				<p><input type="file" id="imgMini" name="fileimagemini" ng-model="imgMini" onchange="angular.element(this).scope().uploadImagemini(this.files)" ng-keydown="this.uploadImagemini()" ng-change="this.uploadImagemini()" ng-keyup="this.uploadImagemini()"></p>
 				<span><p>&nbsp;ó</p></span>
+				</div>
 				<input type="text" id="imgMiniUrl" placeholder="URL de imagen" class="form-control input-md"  ng-model="imgMiniUrl">
 			</div>
 			<div class="modal-footer">

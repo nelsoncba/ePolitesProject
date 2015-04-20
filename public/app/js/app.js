@@ -1,11 +1,17 @@
 angular.module('Polites', ['ui.router', 'ngSanitize', 'ngCookies', 'Controllers', 'Service', 'Filters', 'angular-timeago','summernote', 'bsTagsInput'])
 		.run(function($rootScope, $state, Authenticate, sessionService){
 			'use strict';
+
+			//init. var. 
+			$rootScope.pathSelected = 'root';
+			//add current user to global var. 
 			$rootScope.currentUser = sessionService.get('user');
+
 			$rootScope.$on("$stateChangeStart",
 	        function(event, toState, toParams, fromState, fromParams) {
+	        	//add route selected to redirect after the process in the controllers
+	        	$rootScope.pathSelected = toState.name;
 	            if (toState.authenticate && !Authenticate.isLoggedIn()) {
-	            	$rootScope.pathSelected = toState.name;
 	                angular.element('#login').modal('show');
 	                event.preventDefault();
 	            }
@@ -68,8 +74,8 @@ angular.module('Polites', ['ui.router', 'ngSanitize', 'ngCookies', 'Controllers'
 					authenticate: true
 			});
 			$urlRouterProvider.otherwise('/');
-		});
-		/*.config(function($httpProvider) {
+		})
+		.config(function($httpProvider) {
 			var interceptor = function($injector,$q,$rootScope){
 	        var success = function(response){
 	            return response
@@ -88,5 +94,5 @@ angular.module('Polites', ['ui.router', 'ngSanitize', 'ngCookies', 'Controllers'
 	            }
 	        }
 	        $httpProvider.interceptors.push(interceptor);
-		});*/
+		});
 		

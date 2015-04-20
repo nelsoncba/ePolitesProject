@@ -36,10 +36,10 @@ class AuthenticationController extends \BaseController {
 							'email' => Input::get('email'),
 							'password' => Input::get('password')
 							);
-		if(Auth::attempt($credentials,true)){
+		if(Auth::attempt($credentials)){
 			return Response::json(['user'=> Auth::user()->toArray()], 202);
 		}else{
-			return Response::json(['flash' => $credentials],403);
+			return Response::json(['flash' => 'Usuario / clave incorrectos'],403);
 		}
 	}
 

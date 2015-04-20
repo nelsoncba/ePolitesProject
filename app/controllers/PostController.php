@@ -12,9 +12,11 @@ class PostController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function index()
-	{
-		$posts = Posts::selectAll();
+	public function index($page, $perPage)
+	{	
+		Paginator::setCurrentPage($page);
+		$posts = Posts::selectAll($perPage);
+		
         return Response::json($posts, 200);
 	}
 
@@ -25,8 +27,9 @@ class PostController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function bySection($slug){
-		$posts = Posts::bySection($slug);
+	public function bySection($slug, $page, $perPage){
+		Paginator::setCurrentPage($page);
+		$posts = Posts::bySection($slug, $perPage);
 		return Response::json($posts, 200);
 	}
 
@@ -61,6 +64,7 @@ class PostController extends \BaseController {
 			$post->seccion_id = Input::get('section.id');
 			$post->titulo = Input::get('title');
 			$post->slug = Str::slug(Input::get('title'), '-');
+			$post->estado = true;
 			/*this condition will validate if the string $cuerpo going to saved with tags required <p> to display correctly in the view*/
 			$post->cuerpo = preg_match('%(<p[^>]*>.*?</p>)%i', $cuerpo) ? $cuerpo : '<p>'.$cuerpo.'</p>';
 			$post->urlFuente = Input::get('urlFuente');

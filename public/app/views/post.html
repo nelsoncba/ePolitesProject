@@ -8,7 +8,7 @@
             </div>
           </section>
           <section ng-if="post.error" class="error-msg">
-              <p><span class="text-danger" align="center" style="font-size: 20px;"><i class="glyphicon glyphicon-exclamation-sign"></i>&nbsp;<strong>{{post.error}}</strong></span></p><br>
+              <p><span class="text-danger" align="center" style="font-size: 20px;"><i class="fa fa-exlamation-circle"></i>&nbsp;<strong>{{post.error}}</strong></span></p><br>
               <p><button class="btn btn-default">Ir a artículos</button></p>
           </section>
           <section ng-if="post && !post.error">
@@ -18,20 +18,20 @@
           <br>
           <p data-dd-collapse-text="50"><p ng-bind-html="post.cuerpo|unsafe"></p></p>
           <h5>
-            <i class="glyphicon glyphicon-tags"></i>
+            <i class="fa fa-tags"></i>
             &nbsp;Tags:&nbsp;
             <a href="#" ng-repeat="tag in post.tag">
-            	<span class="label label-default">{{tag}}</span></span>
+            	<span class="label label-default">{{tag}}</span>
             </a>
           </h5><br>
-          <h5><i class="glyphicon glyphicon-info-sign"></i>&nbsp;Fuente:&nbsp;</h5>
+          <h5><i class="fa fa-info-circle"></i>&nbsp;Fuente:&nbsp;</h5>
           <span ng-if="!post.urlFuente">El artículo es de mi autoría y/o información recopilada.</span>
           <span ng-if="post.urlFuente" class=""><a href="{{post.urlFuente}}">{{post.urlFuente | strLimit: 100}}</a></span>
           </section>
           <hr>
           <section ng-if="post && !post.error">
               <div class="comments label-head-comments">
-              <i class="glyphicon glyphicon-comment"></i>&nbsp;{{comments.length}}&nbsp;Comentarios: <span ng-if="currentUser" class="comment-link pull-right custom-link" scroll-mode  scrollto="comment-box"><strong>&nbsp;<i class="glyphicon glyphicon-pencil"></i>&nbsp;Comentar</strong></span>
+              <i class="fa fa-comments"></i>&nbsp;{{comments.length}}&nbsp;Comentarios: <span ng-if="currentUser" class="comment-link pull-right custom-link" scroll-mode  scrollto="comment-box"><strong>&nbsp;<i class="fa fa-pencil"></i>&nbsp;Comentar</strong></span>
               </div>
               <article class="comment" ng-repeat="comment in comments | orderBy: '-respuestasTotal'">
                 <div class="media">
@@ -40,7 +40,7 @@
                      <!-- <img class="media-object" data-src="holder.js/64x64" data-holder-rendered="true">-->
                     </div>
                     <div class="media-body">
-                      <div class="media-heading"><span class="label-comment">{{comment.usuario}}</span>&nbsp;&nbsp;<small class="time-ago" time-ago from-time="{{comment.created_at}}"></small>&nbsp;&nbsp;<a ng-click="replyComment(this.comment)" ng-hide="show || !currentUser" style="text-decoration: none;" class="custom-link pull-right">Responder&nbsp;&nbsp;</a></div>
+                      <div class="media-heading"><span class="label-comment">{{comment.usuario}}</span>&nbsp;&nbsp;<small class="time-ago" time-ago from-time="{{comment.created_at}}"></small>&nbsp;&nbsp;<a ng-click="replyComment(this.comment)" ng-hide="show || !currentUser" style="text-decoration: none;" class="custom-link pull-right"><span class="hidden-xs">Responder</span><span class="hidden-md hidden-sm hidden-lg"><i class="fa fa-reply"></i></span>&nbsp;&nbsp;</a></div>
                       <p style="font-size:14px;" dd-text-collapse dd-text-collapse-max-length="300" dd-text-collapse-text="{{comment.comentario}}"></p>
                       <span ng-show="!comment.replyData"><a class="custom-link" style="text-decoration: none;" ng-show="comment.respuestasTotal > 0" ng-click="getReply(comment, false)" ng-model="page">{{comment.respuestasTotal}}&nbsp;respuestas</a>&nbsp;<img src="images/loader4.gif" width="20" ng-show="comment.imgReply"></span>
                       <article class="comment" ng-repeat="reply in comment.replies"  >
@@ -58,6 +58,9 @@
                       <div ng-show="show" ng-if="currentUser">
                         <article class="comment">
                           <div class="media">
+                           <div class="pull-left">
+                            <img class="media-object img-comment" src="images/{{currentUser.photo}}"/>
+                            </div>
                             <div class="media-body">
                               <form  name="form" role="form" ng-submit="storeReply(comment, input)">
                                 <div class="form form-group">
@@ -75,7 +78,7 @@
               <article class="comment" anchor="comment-box" ng-if="currentUser.usuario">
                 <div class="media">
                   <div class="pull-left">
-                     <img class="media-object img-comment" src="images/{{usuario.photo}}"/>
+                     <img class="media-object img-comment" src="images/{{currentUser.photo}}"/>
                     </div>
                     <div class="media-body">
                       <form name="formComment" role="form" ng-submit="storeComment(post, input)">

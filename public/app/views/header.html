@@ -17,7 +17,7 @@
                    <input type="text" class="form-control" placeholder="Search">
                   <span class="input-group-addon">
                         <button type="submit">
-                            <span class="glyphicon glyphicon-search"></span>
+                            <span class="fa fa-search"></span>
                         </button>  
                   </span>
                 </div>
@@ -38,9 +38,9 @@
               </ul>
             </li>-->
             
-            <li><a ui-sref="root.crear-post"><span class="glyphicon glyphicon-pencil"></span> Postear</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon-share"></span> Registrarse</a></li>
-            <li ng-if="!currentUser"><a ng-click="login()" role="button" data-toggle="modal"><span class="glyphicon glyphicon-user"></span> Ingresar</a></li>
+            <li><a ui-sref="root.crear-post"><span class="fa fa-pencil"></span> Postear</a></li>
+            <li><a href="#"><span class="fa fa-share-square-o"></span> Registrarse</a></li>
+            <li ng-if="!currentUser"><a ng-click="login()" role="button" data-toggle="modal"><span class="fa fa-user"></span> Ingresar</a></li>
             <li class="dropdown" ng-if="currentUser">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{currentUser.usuario}}<span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
@@ -50,4 +50,5 @@
           </ul>
       </div>
     </div>
+<script src="js/header.js"></script>
     

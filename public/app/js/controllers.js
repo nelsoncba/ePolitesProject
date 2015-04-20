@@ -1,27 +1,59 @@
 angular.module('Controllers',[])
 		  .controller('AllpostsCtrl', function($scope, $state, $anchorScroll, Posts) {
-		  		$anchorScroll();
-		  		//date.setDate(date.getDate()-1);
-		  		if($state.params.slug == null){
-				var data = Posts.getAllPosts().success(function(data){
-					/*angular.forEach(posts, function(post, key){
-						var maxCommnts = 0;
-						var p = new Date(post.created_at);
-						p.setDate(p.getDate()+1);
-						if(date > p && post.count > maxComment){
-							maxComment = post.count
-							$scope.fecha = p;
-						}else{
+		  		//initialize variables 
+		  		//to paginate in server
+		  		$scope.page = 1;
+		  		$scope.perPage = 3;
+		  		//loaders & link show more
+				$scope.more = $scope.more_posts = false;
+				$scope.has_posts = null;
+				$scope.posts = [];
+				
 
-						}
-					});*/
-					$scope.posts = data;
-				});
+				$anchorScroll();
+
+				//check if there is a section 
+			  	if($state.params.slug == null){
+					Posts.getAllPosts($scope.page + '/' + $scope.perPage).success(function(data){
+						//concatenates paged articles
+					    $scope.posts = $scope.posts.concat(data.data);
+					    $scope.has_posts = true;
+					    //check for more paged posts
+						$scope.more = $scope.page < (data.total / $scope.perPage);
+						console.log('total', data.data.length);
+				    });
 				}else{
-				Posts.getBySection($state.params.slug).success(function(data) {
-		  			$scope.posts = data;
-		  		});
+					Posts.getBySection($state.params.slug + '/' + $scope.page + '/' + $scope.perPage).success(function(data) {
+				  		$scope.posts = $scope.posts.concat(data.data);
+				  		$scope.has_posts = true;
+						$scope.more = $scope.page < (data.total / $scope.perPage);
+				  	});
 				}
+
+				$scope.has_more = function(){
+					return $scope.more;
+				};
+
+				//link to show more posts
+				$scope.show_more = function(){
+					$scope.more_posts = true;
+					$scope.page = $scope.page + 1;
+					if($state.params.slug == null){
+						Posts.getAllPosts($scope.page + '/' + $scope.perPage).success(function(data){
+						    $scope.posts = $scope.posts.concat(data.data);
+						    $scope.more_posts = false
+							$scope.more = $scope.page < (data.total / $scope.perPage);
+							console.log('total', data.data.length);
+					    });
+					}else{
+						Posts.getBySection($state.params.slug + '/' + $scope.page + '/' + $scope.perPage).success(function(data) {
+					  		$scope.posts = $scope.posts.concat(data.data);
+					  		$scope.more_posts = false;
+							$scope.more = $scope.page < (data.total / $scope.perPage);
+					  	});
+					}
+				};
+
 		  })
 		  .controller('PostCtrl',function($scope, $state, $timeout, $anchorScroll, Posts){
 		  	    $scope.convertToDate = function(input){
@@ -167,7 +199,7 @@ angular.module('Controllers',[])
 				$scope.toAllPosts = function(){
 					angular.element('#storePost').modal('hide');
 					$timeout(function(){
-						$state.go("root");
+						$state.go('root', {},{reload: true})
 					}, 1500);
 				};
 
@@ -184,6 +216,7 @@ angular.module('Controllers',[])
 				};
 		  })
 		  .controller('LoginCtrl', function ($rootScope, $scope, $sanitize, $state, Authenticate) {
+
 		  		$scope.authentication = function(login){
 		  			Authenticate.login({
 		  				'email': $sanitize(login.email),
@@ -192,7 +225,8 @@ angular.module('Controllers',[])
 		  				angular.element('#login').modal('hide');
 		  				$state.go($rootScope.pathSelected, {},{reload: true});
 		  			}).error(function(data){
-		  				$scope.flash = data;
+		  				login.password = '';
+		  				$scope.flash = data.flash;
 		  			});
 		  		}
 		  })
