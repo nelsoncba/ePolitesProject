@@ -29,7 +29,7 @@ return array(
 			"string"  => "El campo :attribute debe estar entre :min - :max caracteres.",
 			"array"   => "El campo :attribute debe tener entre :min y :max elementos.",
 	),
-	"confirmed"      => "El campo de confirmación de :attribute no coincide.",
+	"confirmed"      => "El campo de confirmación no coincide.", //"El campo de confirmación de :attribute no coincide."
 	"date"           => "El campo :attribute no es una fecha válida.",
 	"date_format" 	 => "El campo :attribute no corresponde con el formato :format.",
 	"different"      => "Los campos :attribute y :other deben ser diferentes.",
@@ -70,7 +70,7 @@ return array(
 				"string"  => "El campo :attribute debe tener :size caracteres.",
 				"array"   => "El campo :attribute debe contener :size elementos.",
 	),
-	"unique" => "El campo :attribute ya ha sido tomado.",
+	"unique" => "El campo :attribute ya ha sido registrado.",
 	"url"    => "El formato de :attribute es inválido.",
 	/*
 	|--------------------------------------------------------------------------
@@ -106,12 +106,14 @@ return array(
 	|
 	*/
 	'attributes' => array(
+		'name' => 'nombre',
 		'username' => 'usuario',
 		'password' => 'contraseña',
 		'title' => 'título',
 		'comment' => 'comentario',
 		'content' => 'contenido',
 		'section' => 'sección',
-		'tags' => 'etiquetas'
+		'tags' => 'etiquetas',
+		'password_confirmation' => 'confirmar contraseña'
 	),
 );

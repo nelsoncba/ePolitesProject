@@ -36,7 +36,7 @@
               <article class="comment" ng-repeat="comment in comments | orderBy: '-respuestasTotal'">
                 <div class="media">
                     <div class="pull-left">
-                      <img class="media-object img-comment" src="images/{{comment.photoUser}}"/>
+                      <img class="media-object img-comment" src="images/{{comment.photoUser ? comment.photoUser : 'default-user-image.png'}}"/>
                      <!-- <img class="media-object" data-src="holder.js/64x64" data-holder-rendered="true">-->
                     </div>
                     <div class="media-body">
@@ -51,7 +51,6 @@
                             <div class="media-body">
                               <span class="label-comment">{{reply.usuarios.usuario}}</span>&nbsp;&nbsp;&nbsp;<small class="time-ago" time-ago from-time="{{reply.created_at}}"></small></span>
                               <p style="font-size:14px;" dd-text-collapse dd-text-collapse-max-length="200" dd-text-collapse-text="{{reply.respuesta}}"></p>
-                              {{message}}
                             </div>
                          </div>
                        </article>
@@ -78,7 +77,7 @@
               <article class="comment" anchor="comment-box" ng-if="currentUser.usuario">
                 <div class="media">
                   <div class="pull-left">
-                     <img class="media-object img-comment" src="images/{{currentUser.photo}}"/>
+                     <img class="media-object img-comment" src="images/{{comment.photoUser ? comment.photoUser : 'default-user-image.png'}}"/>
                     </div>
                     <div class="media-body">
                       <form name="formComment" role="form" ng-submit="storeComment(post, input)">

@@ -93,6 +93,27 @@ angular.module('Service',[])
 			    }
 			};
 		})
+		.factory('Registration', function(webservice,sessionService) {
+			
+			return {
+				storeUser: function(data){
+					return webservice.request('POST', 'register', data).success(function(data){
+						return data;
+					}).error(function(data){
+						return data;
+					});
+
+				},
+				verify: function(token){
+					return webservice.request('GET', 'register/verify/' + token).success(function(data){
+						sessionService.set('user', data.user);
+						return data;
+					}).error(function(data){
+						return data;
+					});
+				}
+			};
+		})
 		.factory('Authenticate', function(webservice, sessionService, $rootScope) {
 
 			return {
@@ -133,7 +154,7 @@ angular.module('Service',[])
 			this.request = function(method, path, data){
 				return $http({
 						method: method,
-						url: './api/' +  path,
+						url: './api/v1/' +  path,
 						data: data
 						}).success(function(data){
 							return data;

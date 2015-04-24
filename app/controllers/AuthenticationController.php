@@ -34,10 +34,13 @@ class AuthenticationController extends \BaseController {
 	{
 		$credentials = array(
 							'email' => Input::get('email'),
-							'password' => Input::get('password')
+							'password' => Input::get('password'),
 							);
 		if(Auth::attempt($credentials)){
-			return Response::json(['user'=> Auth::user()->toArray()], 202);
+			if(Auth::user()->enabled == false)
+				return Response::json(['flash'=>'Debe ingresar a su correo y habilitar su cuenta.'],403);
+			else
+				return Response::json(['user'=> Auth::user()->toArray()], 202);
 		}else{
 			return Response::json(['flash' => 'Usuario / clave incorrectos'],403);
 		}

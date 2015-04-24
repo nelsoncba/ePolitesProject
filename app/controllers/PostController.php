@@ -59,7 +59,7 @@ class PostController extends \BaseController {
 		else{
 			$post = new Posts;
 			$cuerpo = Input::get('content');
-			$post->usuario_id = '1';
+			$post->usuario_id = Auth::id();
 			$post->imagen = Input::get('imgMini'); 
 			$post->seccion_id = Input::get('section.id');
 			$post->titulo = Input::get('title');

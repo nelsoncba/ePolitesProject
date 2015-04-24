@@ -15,7 +15,16 @@ body a:link, li a{
 body.modal-open, .modal-open .navbar-fixed-top, .modal-open .navbar-fixed-bottom {
     margin-right: 0;
 }
-
+.center {
+    display: block;
+    margin-left: auto!important;
+    margin-right: auto!important;
+}
+.panel-main{
+  max-width: 450px;
+  margin-left:auto;
+  margin-right: auto;
+}
 .modal {
     overflow-y: auto;
 }

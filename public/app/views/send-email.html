@@ -1,0 +1,21 @@
+<div class="well well-lg">
+   <div class="row">
+       <div class="col-lg-12 center">
+       <div class="panel panel-primary panel-main">
+       <div class="panel-heading">
+       <h4>Enviar correo para resetear contraseña</h4>
+       </div>
+       <div class="panel-body">
+       <p><span class="text-danger" ng-show="message" ng-bind="message"></span></p>
+       <form name="form" role="form" ng-submit="sendMail(input)" >
+            <div class="form form-group">
+            <p style="font-size: 14px;"><i class="fa fa-info-circle"></i> Ingrese la dirección de su cuenta de usuario para recuperar su contraseña. Se le enviará un correo electrónico con información para recuperar su contraseña.</p>
+	            <input id="login_email" ng-model="input.email" placeholder="Email" type="text" name="email"  class="form-control"  required/>
+            </div>
+            <button class="btn btn-primary" type="submit" ng-disabled="form.$invalid">Enviar</button>
+        </form>
+        </div>
+    </div>
+       </div>
+   </div>
+</div>

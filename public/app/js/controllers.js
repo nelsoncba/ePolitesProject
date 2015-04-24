@@ -1,5 +1,5 @@
 angular.module('Controllers',[])
-		  .controller('AllpostsCtrl', function($scope, $state, $anchorScroll, Posts) {
+		  .controller('AllpostsCtrl', function($rootScope,$scope, $state, $anchorScroll, Posts) {
 		  		//initialize variables 
 		  		//to paginate in server
 		  		$scope.page = 1;
@@ -8,7 +8,6 @@ angular.module('Controllers',[])
 				$scope.more = $scope.more_posts = false;
 				$scope.has_posts = null;
 				$scope.posts = [];
-				
 
 				$anchorScroll();
 
@@ -20,9 +19,8 @@ angular.module('Controllers',[])
 					    $scope.has_posts = true;
 					    //check for more paged posts
 						$scope.more = $scope.page < (data.total / $scope.perPage);
-						console.log('total', data.data.length);
 				    });
-				}else{
+				}else if($state.params.slug){
 					Posts.getBySection($state.params.slug + '/' + $scope.page + '/' + $scope.perPage).success(function(data) {
 				  		$scope.posts = $scope.posts.concat(data.data);
 				  		$scope.has_posts = true;
@@ -43,7 +41,6 @@ angular.module('Controllers',[])
 						    $scope.posts = $scope.posts.concat(data.data);
 						    $scope.more_posts = false
 							$scope.more = $scope.page < (data.total / $scope.perPage);
-							console.log('total', data.data.length);
 					    });
 					}else{
 						Posts.getBySection($state.params.slug + '/' + $scope.page + '/' + $scope.perPage).success(function(data) {
@@ -166,7 +163,7 @@ angular.module('Controllers',[])
 				$scope.tagsOptions = {
 						maxTags: 8,
 						typeahead: {
-					          prefetch: './api/tags'
+					          prefetch: './api/v1/tags'
 					    }
 				};
 				/***end-tags********/
@@ -206,7 +203,6 @@ angular.module('Controllers',[])
 				$scope.deleteImgMini = function(imageMini){
 					if(!$filter('isUrl')(imageMini)){
 						Posts.deleteImage({imagemini: imageMini}).success(function(data){
-							console.log('success ', data);
 						})
 						.error(function(data){
 							console.log('error ', data);
@@ -217,18 +213,26 @@ angular.module('Controllers',[])
 		  })
 		  .controller('LoginCtrl', function ($rootScope, $scope, $sanitize, $state, Authenticate) {
 
-		  		$scope.authentication = function(login){
-		  			Authenticate.login({
-		  				'email': $sanitize(login.email),
-		  				'password': $sanitize(login.password)
-		  			}).success(function(data){
-		  				angular.element('#login').modal('hide');
-		  				$state.go($rootScope.pathSelected, {},{reload: true});
-		  			}).error(function(data){
-		  				login.password = '';
-		  				$scope.flash = data.flash;
-		  			});
-		  		}
+			  	$scope.authentication = function(login){
+			  		Authenticate.login({
+			  			'email': $sanitize(login.email),
+			  			'password': $sanitize(login.password)
+			  		}).success(function(data){
+			  			angular.element('#login').modal('hide');
+			  			$state.go($rootScope.pathSelected, $rootScope.paramUrl, {reload: true});
+			  		}).error(function(data){
+			  			login.password = '';
+			  			$scope.flash = data.flash;
+			  		});
+			  	};
+			  	$scope.tplLogin = function(){
+		  			if(Authenticate.isLoggedIn()){
+		  				$state.go('root');
+		  				return false;
+		  			}else{
+		  				return  true;
+		  			}
+		  		};
 		  })
 		  .controller('SidebarCtrl',function($scope, $anchorScroll, Posts) {
 		  		$anchorScroll();
@@ -238,17 +242,48 @@ angular.module('Controllers',[])
 		  		Posts.getRecentPosts().success(function(data){
 		  			$scope.sidebarPosts = data;
 		  		});
+
 		  })
-		  .controller('HeaderCtrl', function ($rootScope, $scope, $state, Authenticate, $cookieStore) {
+		  .controller('HeaderCtrl', function ($rootScope, $scope, $state, Authenticate, Registration) {
+		  
 		  		$scope.login = function(){
-		  			angular.element('#login').modal('show');
+		  			if(!$rootScope.currentUser)
+		  				$state.go('root.login');
+		  			else
+		  				$state.go('root');
 		  		};
 		  		$scope.logout = function(){
 		  			Authenticate.logout();
 		  			$state.go('root', {},{reload: true});
 		  		};
-		  		
+
 		  })
-		  .controller('AppCtrl', function ($scope, $rootScope) {
+		  .controller('RegisterCtrl',  function($rootScope, $scope, $state, Registration) {
+		  		
+		  		$scope.registration = function(input){
+		  			$rootScope.errors = null;
+		  			$rootScope.message = null;
+		  			angular.element('#modalMsg').modal('show');
+		  			Registration.storeUser(input).success(function(data){
+		  				$rootScope.message = {success: data};
+		  				$rootScope.labelBtn = 'Ir a login';
+		  				$scope.input = '';
+		  				$rootScope.toTemplate = function(){
+		  					angular.element('#modalMsg').modal('hide');
+		  				}
+		  			}).error(function(data){
+		  				if(data.message){
+			  				$rootScope.message = {error: data};
+			  				$rootScope.labelBtn = 'Cerrar';
+			  				$rootScope.toTemplate = function(){
+			  					angular.element('#modalMsg').modal('hide');
+			  				}		  					
+		  				}else{
+		  					$rootScope.errors = data;
+		  					angular.element('#modalMsg').modal('hide');
+			  			}	
+		  			});
+		  		}
+
 		  });
 		  

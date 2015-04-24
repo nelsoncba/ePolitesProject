@@ -27,6 +27,13 @@ class Usuarios extends Eloquent implements UserInterface{
 	 */
 	protected $hidden = array('password');
 
+	public static $rules = array(
+                                'username' => 'required|unique:usuarios,usuario|min:5|max:12',
+                                'email' => 'required|email|unique:usuarios,email',
+                                'password' => 'required|min:8|max:30|alpha_dash',
+                                'password_confirmation' => 'required|same:password'
+                                );
+
 	public function posts(){
         return $this->hasMany('Posts', 'usuario_id');
     }

@@ -16,30 +16,30 @@ Route::get('/', function()
 	return View::make('index');
 });
 
-Route::get('/api/allPosts/{page}/{perPage}', 'PostController@index');
+Route::get('/api/v1/allPosts/{page}/{perPage}', 'PostController@index');
 
-Route::get('/api/bySection/{slug}/{page}/{perPage}', 'PostController@bySection');
+Route::get('/api/v1/bySection/{slug}/{page}/{perPage}', 'PostController@bySection');
 
-Route::get('/api/recentPosts', 'PostController@recentPosts');
+Route::get('/api/v1/recentPosts', 'PostController@recentPosts');
 
-Route::get('/api/post/{id}/{slug}', 'PostController@show');
+Route::get('/api/v1/post/{id}/{slug}', 'PostController@show');
 
-Route::post('/api/uploadImage', 'FilesController@uploadImage');
+Route::post('/api/v1/uploadImage', 'FilesController@uploadImage');
 
-Route::post('/api/deleteImage', 'FilesController@destroyImage');
+Route::post('/api/v1/deleteImage', 'FilesController@destroyImage');
 
-Route::get('/api/allSections', function(){
+Route::get('/api/v1/allSections', function(){
 	$data = Secciones::getSections();
 	return Response::json($data,200);
 });
 
-Route::get('/api/comments/{postId}', 'CommentController@indexComment');
+Route::get('/api/v1/comments/{postId}', 'CommentController@indexComment');
 
 
 
-Route::get('/api/replies/{commentId}', 'CommentController@indexReply');
+Route::get('/api/v1/replies/{commentId}', 'CommentController@indexReply');
 
-Route::get('/api/tags', function(){
+Route::get('/api/v1/tags', function(){
 	$tags = Tags::select('tag')->get();
 	$tagList = array();
 	foreach ($tags as $key => $value) {
@@ -48,12 +48,16 @@ Route::get('/api/tags', function(){
 	return Response::json($tagList,200);
 });
 
-Route::post('/api/authenticate', 'AuthenticationController@store');
+Route::post('/api/v1/register', 'RegisterController@store');
 
-Route::get('/api/logout', 'AuthenticationController@index');
+Route::post('/api/v1/authenticate', 'AuthenticationController@store');
+
+Route::get('/api/v1/logout', 'AuthenticationController@index');
+
+Route::get('/api/v1/register/verify/{confirmToken}', 'RegisterController@confirm');
 
 Route::group(array('before' => 'serviceAuth'), function(){
-	Route::post('/api/storePost', 'PostController@store');
-	Route::post('/api/storeReply/{commentId}', 'CommentController@storeReply');
-	Route::post('/api/storeComment/{postId}', 'CommentController@storeComment');
+	Route::post('/api/v1/storePost', 'PostController@store');
+	Route::post('/api/v1/storeReply/{commentId}', 'CommentController@storeReply');
+	Route::post('/api/v1/storeComment/{postId}', 'CommentController@storeComment');
 });

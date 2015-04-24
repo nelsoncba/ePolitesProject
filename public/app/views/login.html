@@ -1,31 +1,29 @@
-<div class="modal-fade" id="login">
-      <div class="modal-dialog" >
-        <div class="modal-content">
-              <div class="modal-body " >
-                <button tabindex="-1" data-dismiss="modal" ng-if="message" aria-hidden="true" class="close" type="button">×</button>
-                <br>
-                <div class="alert" ng-show="flash" ng-bind="flash"></div>
-                <form class="form-horizontal" ng-submit="login()">
-                    <div class="control-group">
-                        <label class="control-label" for="inputEmail">Email</label>
-                        <div class="controls">
-                            <input type="text" id="inputEmail" placeholder="Email" ng-model="email" required>
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label" for="inputPassword">Password</label>
-                        <div class="controls">
-                            <input type="password" id="inputPassword" placeholder="Password" ng-model="password" required>
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <div class="controls">
-                            <button type="submit" class="btn">Sign in</button>
-                        </div>
-                    </div>
-                    </div>
-                </form>
-              </div>
+<div class="well well-lg" ng-if="tplLogin()">
+   <div class="row">
+       <div class="col-lg-12 center">
+       <div class="panel panel-primary panel-main">
+       <div class="panel-heading">
+       <h4>Ingresar</h4>
+       </div>
+       <div class="panel-body">
+       <p><span class="text-danger" ng-show="flash" ng-bind="flash"></span></p>
+       <form name="form" role="form" ng-submit="authentication(login)" >
+            <div class="form form-group">
+	            <input id="login_email" ng-model="login.email" placeholder="Email" type="text" name="email"  class="form-control"  required/>
+            </div>
+            <div class="form form-group">
+	            <input id="login_pass" ng-model="login.password" placeholder="Contraseña" type="password" name="password" class="form-control"  required/>
+            </div>
+            <div class="form form-group">
+                <input type="checkbox" id="no_cerrar" name="_remember_me" class="label-login select" />
+                <label for="no_cerrar" class="label-login">No cerrar sesión</label><br>
+            </div>
+            <p style="line-height: 1.2em;"><span style="font-size: 10px;">Registrándose usted está aceptando nuestros <a href="">términos y condiciones</a> para el uso del servicio</span></p>
+            <button class="btn btn-primary" type="submit" ng-disabled="form.$invalid">Ingresar</button>&nbsp;&nbsp;ó&nbsp;&nbsp;<a ui-sref="root">Registrarse</a> 
+            <br><br><a ui-sref="root.sendMail">¿Olvidó su contraseña?</a>
+        </form>
         </div>
-      </div>
     </div>
+       </div>
+   </div>
+</div>

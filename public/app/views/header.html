@@ -7,7 +7,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-          <a class="navbar-brand" ng-href="#/">WebBlog</a>
+          <a class="navbar-brand" ui-sref="root">WebBlog</a>
       </div>
       <div class="collapse navbar-collapse" id="bs-navbar-collapse">
           <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3 navbar-right">
@@ -38,11 +38,11 @@
               </ul>
             </li>-->
             
-            <li><a ui-sref="root.crear-post"><span class="fa fa-pencil"></span> Postear</a></li>
-            <li><a href="#"><span class="fa fa-share-square-o"></span> Registrarse</a></li>
-            <li ng-if="!currentUser"><a ng-click="login()" role="button" data-toggle="modal"><span class="fa fa-user"></span> Ingresar</a></li>
+            <li><a ui-sref="root.create-post"><span class="fa fa-pencil"></span> Postear</a></li>
+            <li><a ng-show="!currentUser"  ui-sref="root.register"><span class="fa fa-share-square-o"></span> Registrarse</a></li>
+            <li ng-if="!currentUser"><a ui-sref="root.login" role="button"><span class="fa fa-user"></span> Ingresar</a></li>
             <li class="dropdown" ng-if="currentUser">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{currentUser.usuario}}<span class="caret"></span></a>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span ng-bind="currentUser.usuario"></span><span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
                 <li><a ng-click="logout()" role="button" data-toggle="modal">Cerrar</a></li>
               </ul>

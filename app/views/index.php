@@ -5,6 +5,7 @@
 <!--[if gt IE 8]><!--> 
 <html class="no-js" lang="es"  ng-app="Polites"> <!--<![endif]-->
     <head>
+        <base href="http://localhost/polites/public/" >
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <title></title>
@@ -15,7 +16,7 @@
         <link rel="stylesheet" href="css/main.css">
         <!--jQuery-->
         <!--<script src="js/vendor/jquery-1.11.1.min.js"></script>-->
-        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script src="//code.jquery.com/jquery-1.11.1.js"></script>
 
         <!--Bootstrap-->
         <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/css/bootstrap-theme.min.css"> -->
@@ -32,6 +33,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
         <script src="app/lib/angular/angular-ui-router.min.js"></script>
         <script src="app/lib/angular/angular-cookies.min.js"></script>
+        <script src="app/lib/angular/angular-route.min.js"></script>
         <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.12/angular.min.js"></script>-->
 
         <!--Summernote-->
@@ -64,64 +66,31 @@
         
     </head>
 
-    <body ng-controller="AppCtrl">
+    <body>
         <!--[if lt IE 8]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
         <nav id="nav" class="navbar navbar-inverse navbar-fixed-top" ui-view="header"></nav>
-        <div class="container marketing" anchor="top">
-          <noscript>
-            <div class="div_NOSCRIPT">
-                <p>
-                    Para que este web site funcione correctamente, 
-                    es necesario habilitar javascript en tu navegador.
-                </p>
-                <p>
-                    <a href="http://www.enable-javascript.com/es/" target="_blank">
-                    En este enlace encontrarás instrucciones de 
-                    cómo habilitar javascript en tu navegador</a>
-                </p>
-            </div>
-           </noscript>
-            <!-- Example row of columns -->
-            <div class="row">
-              <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">  
-                    <div ui-view="main" autoscroll="false"></div>       
-              </div>
-              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 right">
-                  <div ui-view="sidebar" autoscroll="false"></div>
-              </div>
-            </div>
-            <div class="modal" id="login">
-              <div class="modal-dialog" >
-                <div class="modal-content">
-                      <div class="modal-body " ng-controller="LoginCtrl">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <br>
-                        <div class="formLogin">
-                        <h4>Ingresar al sitio</h4>
-                        <p><span class="text-danger" ng-show="flash" ng-bind="flash"></span></p>
-                        <form name="form" ng-submit="authentication(login)" >
-                            <div class="form form-group">
-                            <input id="login_email" ng-model="login.email" placeholder="Email" type="text" name="email"  class="form-control"  required/>
+        <div class="container marketing" anchor="top" ui-view="container">
+        </div>
+            <div class="modal" id="modalMsg">
+                <div class="modal-dialog" >
+                    <div class="modal-content">
+                            <div class="modal-body " align="center">
+                                <button tabindex="-1" data-dismiss="modal" ng-if="message" aria-hidden="true" class="close" type="button">×</button>
+                                <br>
+                                <div ng-if="!message">
+                                <img src="images/loader4.gif" width="30"><br>
+                                &nbsp;&nbsp;Espere...
+                                </div>
+                                <h4><div ng-class="{'text-success': message.success.message, 'text-danger': message.error.message}"><i ng-class="{'fa fa-check-circle': message.success.message, 'fa fa-times-circle': message.error.message}"></i>&nbsp;{{message.success.message}}{{message.error.message}}</div>
+                                </h4>
+                                <button type="button" class="btn btn-default" ng-if="message" ng-click="toTemplate()">{{labelBtn}}</button>
                             </div>
-                            <div class="form form-group">
-                            <input id="login_pass" ng-model="login.password" placeholder="Contraseña" type="password" name="password" class="form-control"  required/>
-                            </div>
-                            <div class="form form-group">
-                            <input type="checkbox" id="no_cerrar" name="_remember_me" class="label-login select" />                            
-                            <label for="no_cerrar" class="label-login">No cerrar sesión</label><br>
-                            </div>
-                            <button class="btn btn-primary" type="submit" ng-disabled="">Ingresar</button>&nbsp;&nbsp;ó&nbsp;&nbsp;<a ui-sref="root">Registrarse</a> 
-                            <br><br><a ui-sref="root" role="button" data-toggle="modal" >¿Olvidó su contraseña?</a>
-                        </form>
-                        </div>
-                      </div>
+                    </div>
                 </div>
-              </div>
             </div>
-
-        </div> <!-- /container --> 
+        </div>
         <footer id="footer" class="vspace20">
           <div class="container">
             <div class="row">
