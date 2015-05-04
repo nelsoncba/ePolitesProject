@@ -8,7 +8,6 @@ angular.module('Controllers',[])
 				$scope.more = $scope.more_posts = false;
 				$scope.has_posts = null;
 				$scope.posts = [];
-
 				$anchorScroll();
 
 				//check if there is a section 
@@ -52,7 +51,7 @@ angular.module('Controllers',[])
 				};
 
 		  })
-		  .controller('PostCtrl',function($scope, $state, $timeout, $anchorScroll, Posts){
+		  .controller('PostCtrl',function($scope, $state, $timeout, $anchorScroll, Posts, Likes){
 		  	    $scope.convertToDate = function(input){
 		  	    	input = input.replace(/(.+) (.+)/, "$1T$2Z");
 					input = new Date(input).getTime();
@@ -69,6 +68,7 @@ angular.module('Controllers',[])
 		  		});
 
 		  		$scope.getReply = function(comment){
+		  			console.log(comment.id);
 			  		comment.imgReply = true;
 				  	Posts.getReplies(comment.id).success(function(data){
 				  	    comment.replies = data;
@@ -109,18 +109,32 @@ angular.module('Controllers',[])
 		  			});
 		  		};
 
+		  		$scope.setLike = function(comment){
+		  			var scope = this.comment;
+		  			Likes.setlikes(comment.id).success(function(data){
+		  				scope.likes = data.likes;
+		  			});	
+		  		};
+		  		$scope.setUnlike = function(comment){
+		  			var scope = this.comment;
+		  			Likes.setUnlikes(comment.id).success(function(data){
+		  				scope.unlikes = data.unlikes;
+		  			});
+		  		}	
+
 		  })
-		  .controller('StorepostCtrl', function($scope, $anchorScroll, $timeout, $state, $filter, Posts) {
+		  .controller('StorepostCtrl', function($rootScope, $scope, $anchorScroll, $timeout, $state, $filter, Posts, sessionService) {
 		  		$anchorScroll();
 		  		$scope.storePost = function(input){
+		  			$rootScope.message = null;
 		  			angular.element('#storePost').modal('show');
 		  			Posts.storePost(input).success(function(data){
 		  				$scope.input = '';
 		  				$scope.input = {tags: ''};
 		  				$scope.errors= '';
-		  				$scope.message = data;
+		  				$scope.message =  data;
 		  			}).error(function(data){
-		  				if(data.error){
+		  				if(data.message){
 		  					$scope.message = data;
 		  				}
 		  				 angular.element('#storePost').modal('hide');
@@ -158,14 +172,15 @@ angular.module('Controllers',[])
 						$scope.imgs.push(path);
 					});
 				};
-
 				/*****tags***********/
-				$scope.tagsOptions = {
-						maxTags: 8,
-						typeahead: {
-					          prefetch: './api/v1/tags'
-					    }
-				};
+				$scope.loadTags = function($query) {
+					return Posts.selectTags().then(function(response) {
+					  var allTags = response.data;
+					  return allTags.filter(function(tags) {
+					    return tags.tag.toLowerCase().indexOf($query.toLowerCase()) != -1;
+					  });
+					});
+				}				
 				/***end-tags********/
 
 				Posts.getSections().success(function(data){
@@ -177,7 +192,7 @@ angular.module('Controllers',[])
 				$scope.uploadImagemini = function(files){
 					data = new FormData();
 					data.append('file', files[0]);
-					Posts.uploadImage(data).success(function(url){
+					Posts.uploadImage(data, sessionService.get('user').id).success(function(url){
 						path = 'images/post/'+url;
 						$scope.imageMini = path;
 					});
@@ -210,16 +225,50 @@ angular.module('Controllers',[])
 					}
 					$scope.imageMini = null;
 				};
-		  })
-		  .controller('LoginCtrl', function ($rootScope, $scope, $sanitize, $state, Authenticate) {
 
-			  	$scope.authentication = function(login){
+				
+				if($rootScope.stateSelected == 'root.editPost'){
+					Posts.getPost($state.params.id + '/' + $state.params.slug).then(function(response){
+						$scope.sectionSelected = response.data.seccion;
+		  				$scope.input = {postId: response.data.id,
+		  								section: response.data.seccion,
+		  								title: response.data.titulo,
+		  								content: response.data.cuerpo,
+		  								urlFuente: response.data.urlFuente,
+		  								tags: response.data.tag};	
+		  				
+		  				$scope.imageMini = response.data.imagen;	
+		  			}, function(response){
+
+		  			});
+
+
+				$scope.editPost = function(input){
+					$rootScope = null;
+			  		angular.element('#storePost').modal('show');
+			  		Posts.updatePost($state.params.id, input).success(function(data){
+		  				$scope.input = '';
+		  				$scope.input = {tags: ''};
+		  				$scope.errors= '';
+		  				$scope.message = data;
+		  			}).error(function(data){
+		  				if(data.error){
+		  					$scope.message = data;
+		  				}
+		  				angular.element('#storePost').modal('hide');
+						$scope.errors = data;
+					});
+			  	}
+		  		}
+		  })
+		  .controller('UserCtrl', function ($rootScope, $scope, $sanitize, $state, Authenticate, sessionService) {
+		  		$scope.authentication = function(login){
 			  		Authenticate.login({
 			  			'email': $sanitize(login.email),
 			  			'password': $sanitize(login.password)
 			  		}).success(function(data){
 			  			angular.element('#login').modal('hide');
-			  			$state.go($rootScope.pathSelected, $rootScope.paramUrl, {reload: true});
+			  			$state.go($rootScope.stateSelected, $rootScope.paramUrl, {reload: true});
 			  		}).error(function(data){
 			  			login.password = '';
 			  			$scope.flash = data.flash;
@@ -233,6 +282,60 @@ angular.module('Controllers',[])
 		  				return  true;
 		  			}
 		  		};
+
+		  		$scope.sendMail = function(input){
+		  			angular.element('#modalMsg').modal('show');
+		  			Authenticate.sendMail(input).success(function(data){
+		  				$rootScope.message = {success: data};
+		  				$rootScope.labelBtn = 'Cerrar';
+		  				$scope.input = '';
+		  				$rootScope.toTemplate = function(){
+		  					angular.element('#modalMsg').modal('hide');
+		  				}
+		  			}).error(function(data){
+		  				$rootScope.message = {error: data};
+			  			$rootScope.labelBtn = 'Cerrar';
+			  			$rootScope.toTemplate = function(){
+			  					angular.element('#modalMsg').modal('hide');
+			  			}	
+		  			});
+		  		}
+
+		  		if($rootScope.stateSelected == 'root.checkTokenResetPassword'){
+		  			angular.element('#modalMsg').modal('show');
+		  			Authenticate.verifyResetPass($state.params.token).success(function(data){
+		  				$state.transitionTo('root.resetPassword');
+		  				angular.element('#modalMsg').modal('hide');
+		  				console.log(data);
+		  			}).error(function(data){
+		  				$state.go('root',{},{reload: true});
+		  				$rootScope.message = {error: data};
+		  				$rootScope.labelBtn = 'Cerrar'
+		  				$rootScope.toTemplate = function(){
+			  					angular.element('#modalMsg').modal('hide');
+			  			}	
+		  			});
+		  		}
+
+		  		$scope.resetPassword = function(input){
+		  		  if($rootScope.stateSelected == 'root.resetPassword' && sessionService.get('resetPassInfo').confirmation_token){
+		  			var usuario_id = sessionService.get('resetPassInfo').usuario_id;
+		  			console.log('id ',sessionService.get('resetPassInfo').usuario_id);
+		  			angular.element('#modalMsg').modal('show');
+		  			Authenticate.resetPassword({'password': $sanitize(input.password), 'password_confirmation':$sanitize(input.password_confirmation) ,'id': usuario_id}).success(function(data){
+		  				$rootScope.message = {success: data};
+		  				$scope.errors = '';
+			  			$rootScope.labelBtn = 'Ingresar'
+			  			$rootScope.toTemplate = function(){
+				  			angular.element('#modalMsg').modal('hide');
+				  			$state.go('root.login');
+				  		}	
+		  			}).error(function(data){
+		  				$scope.errors = data;
+		  				angular.element('#modalMsg').modal('hide');	
+		  			});
+		  		  }
+		  		}
 		  })
 		  .controller('SidebarCtrl',function($scope, $anchorScroll, Posts) {
 		  		$anchorScroll();
@@ -245,7 +348,6 @@ angular.module('Controllers',[])
 
 		  })
 		  .controller('HeaderCtrl', function ($rootScope, $scope, $state, Authenticate, Registration) {
-		  
 		  		$scope.login = function(){
 		  			if(!$rootScope.currentUser)
 		  				$state.go('root.login');
@@ -285,5 +387,45 @@ angular.module('Controllers',[])
 		  			});
 		  		}
 
+		  })
+		  .controller('AccountCtrl', function ($rootScope, $scope, $state, Account, sessionService, Posts) {
+		  		Account.myPosts(sessionService.get('user').id).success(function(data){
+		  			$scope.myposts = data;
+		  		}).error(function(data){
+
+		  		});
+		  		//modal bootstrap to confirm delete post
+		  		$scope.deletePost = function(id, index){
+		  			angular.element('#simpleMsg').modal('show');
+		  			$rootScope.iconSimpleMsg = 'fa fa-exclamation-circle';
+		  			$rootScope.simpleMessage = '¿Está seguro que desea eliminar este artículo?';
+		  			$rootScope.dataToDelete = {'id':id, 'index': index};
+		  			$rootScope.labelBtn = 'Confirmar';
+		  			console.log($rootScope.dataToDelete.index);
+		  		},
+		  		//function to delete emails from the database and delete emails from view with "splice"
+		  		$rootScope.simpleMsgBtn = function(){
+		  			angular.element('#simpleMsg').modal('hide');
+		  			angular.element('#modalMsg').modal('show');
+		  			Posts.deletePost($rootScope.dataToDelete.id).success(function(data){
+		  				$rootScope.message = {success: data};
+		  				$scope.myposts.splice($rootScope.dataToDelete.index, 1);
+		  				$rootScope.labelBtn = 'Cerrar';
+		  				$scope.input = '';
+		  				$rootScope.toTemplate = function(){
+		  					angular.element('#modalMsg').modal('hide');
+		  				}
+		  			}).error(function(data){
+		  				$rootScope.message = {error: data};
+			  			$rootScope.labelBtn = 'Cerrar';
+			  			$rootScope.toTemplate = function(){
+			  				angular.element('#modalMsg').modal('hide');
+			  			}
+		  			});
+		  		}
+
+		  })
+		  .controller('AccountsideCtrl', function ($scope) {
+		  	
 		  });
 		  

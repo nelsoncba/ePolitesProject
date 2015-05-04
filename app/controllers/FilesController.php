@@ -5,8 +5,7 @@ class FilesController extends \BaseController {
 	/**
      * function to create a images directory and upload images by users  
      */
-	public function uploadImage(){
-		$userId = 1;
+	public function uploadImage($userId){
 		File::makeDirectory('images/post/user'.$userId, 0777, true, true);
         $photo = Input::file('file');
         $photo->move('images/post/user'.$userId, $photo->getClientOriginalName());

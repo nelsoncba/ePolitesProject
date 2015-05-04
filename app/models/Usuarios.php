@@ -34,6 +34,11 @@ class Usuarios extends Eloquent implements UserInterface{
                                 'password_confirmation' => 'required|same:password'
                                 );
 
+    public static $rulesResetPassword = array(
+                                              'password' => 'required|min:8|max:30',
+                                              'password_confirmation' => 'required|same:password'
+                                            );
+
 	public function posts(){
         return $this->hasMany('Posts', 'usuario_id');
     }

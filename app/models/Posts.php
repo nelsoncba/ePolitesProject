@@ -29,7 +29,7 @@ class Posts extends Eloquent{
     
     public function tags()
     {
-        return $this->belongsToMany('Tags','Posts_Tags','post_id','tag_id');
+        return $this->belongsToMany('Tags','posts_tags','post_id','tag_id');
     }
     
     public function secciones(){
@@ -54,12 +54,26 @@ class Posts extends Eloquent{
         return $posts; 
     }
 
+    public static function myPosts($id){
+        $posts = DB::table('posts')
+                               ->leftJoin('secciones','secciones.id', '=' ,'posts.seccion_id')
+                               ->leftJoin('comentarios','comentarios.post_id','=','posts.id')
+                               ->select(DB::raw('COUNT(comentarios.id) as count'),'posts.id as id','posts.titulo as titulo', 'posts.slug as slug','posts.imagen as imagen', 'posts.cuerpo as cuerpo', 'posts.created_at as created_at', 'secciones.seccion as seccion')
+                               ->where('posts.usuario_id','=', $id)
+                               ->groupBy('posts.id')
+                               ->orderBy('count','DESC')
+                               ->orderBy('created_at','DESC')
+                               ->get();
+  
+        return $posts; 
+    }
+
     public static function bySection($slug, $perPage){
         $posts = DB::table('posts')
                                ->leftJoin('secciones','secciones.id', '=' ,'posts.seccion_id')
                                ->leftJoin('usuarios', 'usuarios.id', '=', 'posts.usuario_id')
                                ->leftJoin('comentarios','comentarios.post_id','=','posts.id')
-                               ->select(DB::raw('COUNT(comentarios.id) as count'),'posts.id as id','posts.titulo as titulo', 'posts.slug as slug','posts.imagen as imagen', 'posts.cuerpo as cuerpo', 'posts.created_at as created_at', 'secciones.seccion as seccion', 'usuarios.usuario as usuario')
+                               ->select(DB::raw('COUNT(comentarios.id) as count'),'posts.id as id','posts.titulo as titulo', 'posts.slug as slug','posts.imagen as imagen', 'posts.cuerpo as cuerpo', 'posts.created_at as created_at', DB::raw('secciones.*'),'secciones.seccion as seccion', 'usuarios.usuario as usuario')
                                ->where('secciones.slug','=', $slug)
                                ->groupBy('posts.id')
                                ->orderBy('count','DESC')

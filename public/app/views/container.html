@@ -1,5 +1,4 @@
-          
-          <noscript>
+           <noscript>
             <div class="div_NOSCRIPT">
                 <p>
                     Para que este web site funcione correctamente, 
@@ -14,17 +13,17 @@
            </noscript>
             <!-- Example row of columns -->
             <div class="row">
-              <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">  
+              <div id="main" class="col-xs-12 col-sm-8 col-md-8 col-lg-8">  
                     <div ui-view="main" autoscroll="false"></div>       
               </div>
-              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 right">
+              <div id="sidebar" class="hidden-xs col-sm-4 col-md-4 col-lg-4 right">
                   <div ui-view="sidebar" autoscroll="false"></div>
               </div>
             </div>
             <div class="modal" id="login">
               <div class="modal-dialog" >
                 <div class="modal-content">
-                      <div class="modal-body " ng-controller="LoginCtrl">
+                      <div class="modal-body">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         <br>
                         <div class="formLogin">

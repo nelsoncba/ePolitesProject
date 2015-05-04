@@ -1,20 +1,26 @@
-angular.module('Polites', ['ui.router','ngRoute', 'ngSanitize', 'ngCookies', 'Controllers', 'Service', 'Filters', 'angular-timeago','summernote', 'bsTagsInput'])
+angular.module('Polites', ['ui.router', 'ngRoute', 'ngSanitize', 'ngCookies', 'Controllers', 'Service', 'Filters', 'angular-timeago','summernote', 'ngTagsInput'])
 		.run(function($rootScope, $state, Authenticate, sessionService, Registration){
 			'use strict';
 
 			//init. var. 
-			$rootScope.pathSelected = 'root';
-			$rootScope.message = null;
-			$rootScope.labelBtn = null;
-			$rootScope.toTemplate = null;
+			$rootScope.stateSelected = 'root';
+			$rootScope.message = $rootScope.simpleMessage = null;
+			$rootScope.labelBtn = $rootScope.iconSimpleMsg = null;
+			$rootScope.toTemplate = $rootScope.simpleMsgBtn = null;
 			$rootScope.errors = null;
+			$rootScope.allTags = null;
+			$rootScope.dataToDelete = null;
 
-
+			console.log($rootScope.allTags)
 			//add current user to global var. 
 			$rootScope.currentUser = sessionService.get('user');
 
 			//auth. routes
 			$rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
+				//active buttons from secound bar
+				$rootScope.isActive = function(nameState){
+					return toState.name === nameState;
+				}
 
 				//user registration confirmation or registration error
 				if(toState.name == 'root.confirmRegister'){
@@ -38,7 +44,7 @@ angular.module('Polites', ['ui.router','ngRoute', 'ngSanitize', 'ngCookies', 'Co
 				}
 				//add route selected to redirect after login 
 	        	if(toState.name != 'root.login'){
-	        		$rootScope.pathSelected = toState.name;
+	        		$rootScope.stateSelected = toState.name;
 	        		$rootScope.paramUrl = toParams;
 	        		
 	        	}
@@ -48,7 +54,15 @@ angular.module('Polites', ['ui.router','ngRoute', 'ngSanitize', 'ngCookies', 'Co
                         event.preventDefault();
 	            }
 
+	            if(toState.name == 'root.resetPassword' && !sessionService.get('resetPassInfo')){
+	            	$state.go('root');
+	            	event.preventDefault();
+	            }
+
+
 	        });
+
+			angular.element('.itemMininav').change('.item-nav-mini');
 		})
 		.config(function($stateProvider, $urlRouterProvider,$locationProvider){
 			$stateProvider
@@ -71,6 +85,26 @@ angular.module('Polites', ['ui.router','ngRoute', 'ngSanitize', 'ngCookies', 'Co
 						}
 					},
 					authenticate: false
+			})
+			.state('root.secciones',{
+					url: 'secciones',
+					views: {
+						'container@':{
+							templateUrl: 'app/views/secciones.html',
+							controller: 'SidebarCtrl'
+						}
+					},
+					authenticate: false
+			})
+			.state('root.recientes',{
+				 	url:'recientes',
+				 	views: {
+						'container@':{
+							templateUrl: 'app/views/recientes.html',
+							controller: 'SidebarCtrl'
+						}
+					},
+				 	authenticate: false
 			})
 			.state('root.postsBySection',{
 					url: 'seccion::slug',
@@ -121,29 +155,77 @@ angular.module('Polites', ['ui.router','ngRoute', 'ngSanitize', 'ngCookies', 'Co
 					views:{
 						'container@':{
 							templateUrl: 'app/views/login.html',
-							controller: 'LoginCtrl'
+							controller: 'UserCtrl'
 						}
 					},
 					authenticate: false
 			})
 			.state('root.confirmRegister',{
-				url: 'register-verify/:confirmToken',
-				authenticate: false		
+					url: 'register-verify/:confirmToken',
+					authenticate: false		
 			})
 			.state('root.sendMail',{
 					url:'send-email',
 					views:{
 						'container@':{
-							templateUrl: 'app/views/send-email.html'
+							templateUrl: 'app/views/send-email.html',
+							controller: 'UserCtrl'
 						}
 					},
 					authenticate: false
+			})
+			.state('root.checkTokenResetPassword',{
+					url:'verify-reset-password/:token',
+					views:{
+						'container@':{
+							controller: 'UserCtrl'
+						}
+					},
+					authenticate: false
+			})
+			.state('root.resetPassword',{
+					url: 'reset-password',
+					views:{
+						'container@':{
+							templateUrl: 'app/views/reset-password.html',
+							controller: 'UserCtrl'
+						}
+					},
+					authenticate: false,
+			})
+			.state('root.account',{
+					url: 'account',
+					views:{
+						'main@root':{
+							templateUrl: 'app/views/account-main.html',
+							controller: 'AccountCtrl'
+						},
+						'sidebar@root':{
+							templateUrl: 'app/views/account-side.html',
+							controller: 'AccountsideCtrl'
+						}
+					},
+					authenticate: true
+			})
+			.state('root.editPost',{
+					url: 'editar-post/:id/:slug',
+					views:{
+						'main@root':{
+							templateUrl: 'app/views/crear-post.html',
+							controller: 'StorepostCtrl'
+						},
+						'sidebar@root':{
+							templateUrl: 'app/views/account-side.html',
+							controller: 'AccountsideCtrl'
+						}
+					},
+					authenticate: true
 			});
 			$urlRouterProvider.otherwise('/');
 			//$locationProvider.html5Mode(true);
 		})
 		.config(function($httpProvider) {
-			var interceptor = function($injector,$q,$rootScope){
+			/*var interceptor = function($injector,$q,$rootScope){
 	        var success = function(response){
 	            return response
 	        }
@@ -160,6 +242,6 @@ angular.module('Polites', ['ui.router','ngRoute', 'ngSanitize', 'ngCookies', 'Co
 	                return promise.then(success, error);
 	            }
 	        }
-	        $httpProvider.interceptors.push(interceptor);
+	        $httpProvider.interceptors.push(interceptor);*/
 		});
 		

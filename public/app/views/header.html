@@ -37,13 +37,13 @@
                 <li><a href="#">One more separated link</a></li>
               </ul>
             </li>-->
-            
             <li><a ui-sref="root.create-post"><span class="fa fa-pencil"></span> Postear</a></li>
             <li><a ng-show="!currentUser"  ui-sref="root.register"><span class="fa fa-share-square-o"></span> Registrarse</a></li>
             <li ng-if="!currentUser"><a ui-sref="root.login" role="button"><span class="fa fa-user"></span> Ingresar</a></li>
             <li class="dropdown" ng-if="currentUser">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span ng-bind="currentUser.usuario"></span><span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
+                <li><a ui-sref="root.account" role="button" data-toggle="modal">Cuenta</a></li>
                 <li><a ng-click="logout()" role="button" data-toggle="modal">Cerrar</a></li>
               </ul>
             </li>

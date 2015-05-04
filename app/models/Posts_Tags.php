@@ -1,6 +1,6 @@
 <?php
 
-class Post_Tags extends Eloquent{
+class Posts_Tags extends Eloquent{
     
     protected $table = 'posts_tags';
 

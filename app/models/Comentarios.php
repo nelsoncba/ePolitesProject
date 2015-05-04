@@ -22,13 +22,18 @@ class Comentarios extends Eloquent{
     public function respuestas(){
         return $this->hasMany('Respuestas', 'comentario_id');
     }
+
+    public function likes(){
+        return $this->hasOne('Likes', 'comentario_id');
+    }
     
     public static function findComments($postId){
         $comments = DB::table('comentarios')
                             ->leftJoin('respuestas','respuestas.comentario_id','=','comentarios.id')
                             ->leftJoin('usuarios','usuarios.id','=','comentarios.usuario_id')
+                            ->leftJoin('likes','likes.comentario_id','=','comentarios.id')
                             ->where('comentarios.post_id','=',$postId)
-                            ->select('comentarios.*','usuarios.usuario as usuario','usuarios.photo as photoUser',DB::raw('count(respuestas.id) as respuestasTotal'))
+                            ->select('comentarios.*', 'likes.likes as likes','likes.unlikes as unlikes','usuarios.usuario as usuario','usuarios.photo as photoUser',DB::raw('count(respuestas.id) as respuestasTotal'))
                             ->groupBy('comentarios.id')
                             ->get();
         return $comments;
@@ -38,8 +43,9 @@ class Comentarios extends Eloquent{
         $comment = DB::table('comentarios')
                             ->leftJoin('respuestas','respuestas.comentario_id','=','comentarios.id')
                             ->leftJoin('usuarios','usuarios.id','=','comentarios.usuario_id')
+                            ->leftJoin('likes','likes.comentario_id','=','comentarios.id')
                             ->where('comentarios.usuario_id','=',$id)
-                            ->select('comentarios.*','usuarios.usuario as usuario','usuarios.photo as photoUser',DB::raw('count(respuestas.id) as respuestasTotal'))
+                            ->select('comentarios.*','likes.likes as likes','likes.unlikes as unlikes','usuarios.usuario as usuario','usuarios.photo as photoUser',DB::raw('count(respuestas.id) as respuestasTotal'))
                             ->groupBy('comentarios.id')
                             ->orderBy('comentarios.created_at','DESC')
                             ->limit('1')

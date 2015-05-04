@@ -70,23 +70,29 @@ class PostController extends \BaseController {
 			$post->urlFuente = Input::get('urlFuente');
 
 			$oldTags = Tags::selectValues();
-			$postTags = Input::get('tags');
-
-			//iterate tag values to determinate if exists in D.B.
-			foreach ($postTags as $postTag) {
-				if(!in_array($postTag, $oldTags, true)){
+			$getTags = Input::get('tags');
+			$postTags = [];
+			foreach ($getTags as  $val) {
+				foreach ($val as $key => $value) {
+					$postTags[] = $value;
+				}
+			 } 
+			 
+			//iterate tag values to determinate if exists in D.B. and save the news tags
+			foreach ($postTags as $postTag => $value) {
+				if(!in_array($value, $oldTags, true)){
 					$tag = new Tags;
-					$tag->tag = $postTag;
-					$tag->slug = Str::slug($postTag);
-					$tag->save();
+					$tag->tag = $value;
+					$tag->slug = Str::slug($value);
+					//$tag->save();
 				}
 			}
 	        //iterate to compare new tags with old tags and add to $tagsPost matching id´s 
 			$tags = Tags::all();
 			$tagsPost = array();
-			foreach ($postTags as $pTag) {
+			foreach ($postTags as $key => $value) {
 				foreach ($tags as $tag) {
-					if($pTag == $tag->tag){
+					if($value == $tag->tag){
 						$tagsPost[] = $tag->id;
 					}
 				}
@@ -118,7 +124,7 @@ class PostController extends \BaseController {
 		if($post){
 			return Response::json($post, 200);
 		}else{
-			return Response::json('El artículo no existe', 403);
+			return Response::json(array('message'=>'El artículo no existe'), 403);
 		}
 	}
 
@@ -143,7 +149,61 @@ class PostController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		//
+		$validator = Validator::make(Input::all(), Posts::$rules);
+		if($validator->fails()){
+			return Response::json($validator->messages(),403);
+		}
+		else{
+			$post = Posts::find($id);
+			$cuerpo = Input::get('content');
+			$post->imagen = Input::get('imgMini');
+			Input::get('section') ? $post->seccion_id = Input::get('section.id') : '';
+			$post->titulo = Input::get('title');
+			$post->slug = Str::slug(Input::get('title'), '-');
+			/*this condition will validate if the string $cuerpo going to saved with tags required <p> to display correctly in the view*/
+			$post->cuerpo = preg_match('%(<p[^>]*>.*?</p>)%i', $cuerpo) ? $cuerpo : '<p>'.$cuerpo.'</p>';
+			$post->urlFuente = Input::get('urlFuente');
+
+			$oldTags = Tags::selectValues();
+			$getTags = Input::get('tags');
+			$postTags = [];
+			foreach ($getTags as  $val) {
+				foreach ($val as $key => $value) {
+					$postTags[] = $value;
+				}
+			 } 
+			 
+			//iterate tag values to determinate if exists in D.B. and save the news tags
+			foreach ($postTags as $postTag => $value) {
+				if(!in_array($value, $oldTags, true)){
+					$tag = new Tags;
+					$tag->tag = $value;
+					$tag->slug = Str::slug($value);
+					//$tag->save();
+				}
+			}
+	        //iterate to compare new tags with old tags and add to $tagsPost matching id´s 
+			$tags = Tags::all();
+			$tagsPost = array();
+			foreach ($postTags as $key => $value) {
+				foreach ($tags as $tag) {
+					if($value == $tag->tag){
+						$tagsPost[] = $tag->id;
+					}
+				}
+			}
+
+			//This is the condition to send success message or error message after save the new post and syncronize the matching $tagsPost 
+			// in the intermediate table Tags_Posts
+			if($post->save()){
+				$message = array('success'=>'El artículo se a guardado exitosamente.');
+				$post->tags()->sync($tagsPost);
+				return Response::json($message,200);
+			}else{
+				$message = array('error'=>'Ha ocurrido un error al intentar guardar el artículo.');
+				return Response::json($message,403);
+			}
+		}
 	}
 
 	/**
@@ -154,8 +214,29 @@ class PostController extends \BaseController {
 	 * @return Response
 	 */
 	public function destroy($id)
-	{
-		//
+	{		
+		$post = Posts::where('id','=', $id)->first();
+		$comentarios = Comentarios::where('post_id','=', $id)->select('id')->get();
+		$img_path = $post->imagen;
+
+		
+		try {
+			
+			foreach ($comentarios as $comentario) {
+				Respuestas::where('comentario_id','=',$comentario->id)->delete();
+				Likes::where('comentario_id','=', $comentario->id);
+			}
+			Comentarios::where('post_id','=', $id)->delete();
+			Posts_Tags::where('post_id','=', $id)->delete();
+			if(File::exists($img_path)){
+				File::delete($img_path);
+			}
+			$post->delete();
+			return Response::json(array('message' => 'El artículo se ha eliminado correctamente'),200);
+		 	
+		 } catch (Exception $e) {
+		 	return Response::json(array('message' => 'Error al eliminar artículo: '),403);
+		 } 
 	}
 
 	public function recentPosts(){

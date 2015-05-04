@@ -1,0 +1,16 @@
+<div class="well sidebar-nav">
+         <ul class="nav nav-list list-group">
+           &nbsp;&nbsp;<li class="nav-header"><h4><strong>Secciones</strong></h4></li>
+           <section ng-if="!secciones" >
+                 <div class="loader" align="center">
+                     <div class="loader-img">
+                         <img src="images/loader4.gif"  width="30" style="display:table-cell; vertical-align:middle; float:none;"><br>
+                         <span>&nbsp;&nbsp;&nbsp;Cargando...</span>
+                     </div>
+                 </div>
+           </section>
+           <div ng-repeat="seccion in secciones">
+           <li class="list-group-item section"><a ui-sref="root.postsBySection({slug: seccion.slug})">{{seccion.seccion}}&nbsp;<span class="badge pull-right">{{seccion.count}}</span></a></li>
+           </div>
+         </ul>
+</div>

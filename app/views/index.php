@@ -5,7 +5,6 @@
 <!--[if gt IE 8]><!--> 
 <html class="no-js" lang="es"  ng-app="Polites"> <!--<![endif]-->
     <head>
-        <base href="http://localhost/polites/public/" >
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <title></title>
@@ -64,6 +63,11 @@
         <script src="app/lib/bootstrap-tagsinput/src/bsTagsInput.js"></script>        
         <script src="app/lib/bootstrap-tagsinput/dist/typeahead.min.js"></script>
         
+        <!--ngTagsInput-->
+        <link rel="stylesheet" href="app/lib/ngTagsInput/ng-tags-input-bootstrap.min.css">
+        <link rel="stylesheet" href="app/lib/ngTagsInput/ng-tags-input.min.css">
+        <script src="app/lib/ngTagsInput/ng-tags-input.min.js"></script>
+        
     </head>
 
     <body>
@@ -71,6 +75,13 @@
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
         <nav id="nav" class="navbar navbar-inverse navbar-fixed-top" ui-view="header"></nav>
+        <div class="col-xs-12 hidden-sm hidden-md hidden-lg col-nav-secound" anchor="top">
+                  <ul class="nav" id="nav-secound">
+                    <li class="nav-item col-xs-4"><a ui-sref="root" ng-class="{'item-nav-mini': isActive('root')}">Artículos</a></li>
+                    <li class="nav-item col-xs-4 "><a ui-sref="root.secciones" ng-class="{'item-nav-mini': isActive('root.secciones')}">Secciones</a></li>
+                    <li class="nav-item col-xs-4 "><a ui-sref="root.recientes" ng-class="{'item-nav-mini': isActive('root.recientes')}">Recientes</a></li>
+                  </ul>
+        </div>
         <div class="container marketing" anchor="top" ui-view="container">
         </div>
             <div class="modal" id="modalMsg">
@@ -86,6 +97,19 @@
                                 <h4><div ng-class="{'text-success': message.success.message, 'text-danger': message.error.message}"><i ng-class="{'fa fa-check-circle': message.success.message, 'fa fa-times-circle': message.error.message}"></i>&nbsp;{{message.success.message}}{{message.error.message}}</div>
                                 </h4>
                                 <button type="button" class="btn btn-default" ng-if="message" ng-click="toTemplate()">{{labelBtn}}</button>
+                            </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal" id="simpleMsg">
+                <div class="modal-dialog" >
+                    <div class="modal-content">
+                            <div class="modal-body " align="center">
+                                <button tabindex="-1" data-dismiss="modal" aria-hidden="true" class="close" type="button">×</button>
+                                <br>
+                                <h4><div class=""><i class="{{iconSimpleMsg}}"></i>&nbsp;{{simpleMessage}}</div>
+                                </h4>
+                                <button type="button" class="btn btn-default" ng-show="simpleMessage" ng-click="simpleMsgBtn()">{{labelBtn}}</button>
                             </div>
                     </div>
                 </div>

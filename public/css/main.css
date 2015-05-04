@@ -15,6 +15,39 @@ body a:link, li a{
 body.modal-open, .modal-open .navbar-fixed-top, .modal-open .navbar-fixed-bottom {
     margin-right: 0;
 }
+#nav-secound{
+  margin-left: -16px;
+  margin-right: -16px;
+  min-height: 47px;
+  margin-bottom: 15px;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+.col-nav-secound{
+  margin-top: 50px;
+}
+#nav-secound .nav-item{
+  display: inline;
+}
+#nav-secound li{
+  padding-left: 0;
+  padding-right: 0;
+  position: relative;
+  background-color: #ffffff;
+  text-align: center;
+}
+#nav-secound li a:active, 
+#nav-secound li a:focus{
+  border-bottom: 5px solid black;
+}
+.item-nav-mini{
+  border-bottom: 5px solid black;
+}
+ #nav-secound li a{
+   color:#000;
+}
 .center {
     display: block;
     margin-left: auto!important;
@@ -91,8 +124,9 @@ hr.soften {
      Marketing Area
 **********************/
 .marketing {
+  margin-top: 70px;
   color:#5A5A5A;
-  padding-top: 70px;
+  padding-top: 5px;
   min-height: 600px;
 }
 
@@ -268,7 +302,7 @@ hr.soften {
     font-size: 1.5em;
     color: #8DF3F1;
     top: 2px;
-    right: 2px;
+    right: 6px;
     z-index: 100;
     font-weight: bold!important;
 }
@@ -437,6 +471,9 @@ hr.soften {
 
 }
 @media screen and (max-width: 768px){
+  .marketing{
+    margin-top:0;
+  }
   .navbar-fixed-top{
     position: fixed;
       margin-left: 0px;
@@ -498,6 +535,11 @@ hr.soften {
   }
   .time-ago{
     font-size: 10px;
+  }
+  .loader{
+    height: 300px; 
+    width: 100%;
+    padding-top: 100px;
   }
 }
 @media screen and (max-width: 320px){

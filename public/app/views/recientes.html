@@ -1,0 +1,24 @@
+ 
+<section class="well" anchor="recientes">
+    <div class="media-heading">&nbsp;&nbsp;<h4><strong>Artículos recientes:</strong></h4></div>
+    <section ng-if="!sidebarPosts" >
+    <div class="loader" align="center">
+        <div class="loader-img">
+            <img src="images/loader4.gif"  width="30" style="display:table-cell; vertical-align:middle; float:none;"><br>
+            <span>&nbsp;&nbsp;&nbsp;Cargando...</span>
+        </div>
+    </div>
+</section>
+    <article class="recent-post" ng-repeat="post in sidebarPosts">
+        <div class="media">
+            <div class="pull-left" ng-if="post.imagen">
+                <img class="media-object" src="{{post.imagen}}"/>
+            </div>
+          <div class="media-body">
+             <div class="media-heading"><a ui-sref="root.post({id: post.id, slug: post.slug})"><span class="label-title">{{post.titulo}}</span></a>&nbsp;&nbsp;
+             </div>
+             <span class="fa fa-clock-o"></span>&nbsp;<span class="time-ago" time-ago from-time="{{post.created_at}}"></span>&nbsp;&nbsp;&nbsp;<span class="fa fa-comment"></span>&nbsp;<span class="comment-total">{{post.count}}</span>
+          </div>
+        </div>
+    </article>
+</section>

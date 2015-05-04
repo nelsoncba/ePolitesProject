@@ -12,7 +12,7 @@ class Tags extends Eloquent{
     
     //function return only values tag in array
     public static function selectValues(){
-    	$tags = DB::table('Tags')->select('tag')->get();
+    	$tags = DB::table('tags')->select('tag')->get();
 
     	$values = array();
     	foreach ($tags as $key => $tag) {

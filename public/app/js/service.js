@@ -1,5 +1,5 @@
 angular.module('Service',[])
-		.factory('Posts', function(webservice) {
+		.factory('Posts', function(webservice, $rootScope) {
 			return {
 				getRecentPosts: function(){
 					return webservice.request('GET','recentPosts').success(function(data){
@@ -36,6 +36,23 @@ angular.module('Service',[])
 						return data;
 					});
 			    },
+			    updatePost: function(id, input){
+			    	return webservice.request('PUT', 'updatePost/' + id, input).success(function(data){
+			    		return data;
+			    	}).error(function(data){
+			    		return data;
+			    	});
+			    },
+			    deletePost: function(id){
+			    	return webservice.request('DELETE','deletePost/' + id).success(function(data){
+			    		return data;
+			    	}).error(function(data){
+						return data;
+					});
+			    },
+			    editPost: function(id){
+
+			    },
 			    getComments: function(postId){
 			    	return webservice.request('GET', 'comments/' + postId).success(function(data){
 			    		return data;
@@ -71,10 +88,15 @@ angular.module('Service',[])
 			       		return data;
 			       });
 			    },
-			    uploadImage: function(data){
+			    selectTags: function(){
+			    	return webservice.request('GET', 'tags').success(function(data){
+			    		return data;
+			    	});
+			    },
+			    uploadImage: function(data, id){
 			    	return $.ajax({
 							method: 'POST',
-				    		url: './api/uploadImage',
+				    		url: './api/v1/uploadImage/' + id,
 				    		data: data,
 				    		cache: false,
 			                contentType: false,
@@ -91,6 +113,22 @@ angular.module('Service',[])
 			       		return data;
 					});
 			    }
+			};
+		})
+		.factory('Likes', function(webservice) {
+		
+			return {
+				setlikes: function(id, likes){
+					return webservice.request('GET', 'likes/' + id + '/' + 1 + '/' + 0).success(function(data){
+						return data;
+					});
+				},
+				setUnlikes: function(id, unlikes){
+					return webservice.request('GET', 'likes/' + id + '/' + 0 + '/' + 1).success(function(data){
+						return data;
+					});
+				}
+		
 			};
 		})
 		.factory('Registration', function(webservice,sessionService) {
@@ -135,6 +173,41 @@ angular.module('Service',[])
 				},
 				isLoggedIn: function(){
 					return sessionService.get('user');
+				},
+				sendMail: function(input){
+					return webservice.request('POST', 'sendMail/'+'resetPassword', input).success(function(data){
+						return data;
+					}).error(function(data){
+						return	data;
+					});
+				},
+				verifyResetPass: function(token){
+					return webservice.request('GET', 'verifyResetPass/'+ token).success(function(data){
+						sessionService.set('resetPassInfo', data);
+						return data;
+					}).error(function(data){
+						return	data;
+					});
+				},
+				resetPassword: function(data){
+					return webservice.request('POST', 'resetPassword', data).success(function(data){
+						sessionService.remove('resetPassInfo');
+						return data;
+					}).error(function(data){
+						return	data;
+					});
+				}
+			};
+		})
+		.factory('Account', function (webservice) {
+		
+			return {
+				myPosts: function(id){
+					return webservice.request('GET', 'account/myPosts/' + id).success(function(data){
+						return data;
+					}).error(function(data){
+						return	data;
+					});
 				}
 			};
 		})
