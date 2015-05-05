@@ -7,7 +7,8 @@ $(document).ready(function(){
 
               focus: true,   
         });
-    });
+
+});
 //valida si supera 100px para mostrar icono de scroll top.
 $(function(){
 	$(document).on( 'scroll', function(){
@@ -18,4 +19,11 @@ $(function(){
 			$('.scroll-top-wrapper').removeClass('show');
 		}
 	});
+});
+
+$('.nav a').click(function() {
+    var navbar_toggle = $('.navbar-toggle');
+    if (navbar_toggle.is(':visible')) {
+        navbar_toggle.trigger('click');
+    }
 });

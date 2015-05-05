@@ -155,7 +155,11 @@ angular.module('Service',[])
 		.factory('Authenticate', function(webservice, sessionService, $rootScope) {
 
 			return {
-
+				uploadapp: function(){
+					return webservice.request('GET', 'uploadapp').success(function(data){
+						return data;
+					});
+				},
 				login: function(data){
 					return webservice.request('POST', 'authenticate', data).success(function(data){
 						sessionService.set('user', data.user);

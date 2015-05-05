@@ -56,13 +56,7 @@
 
         </style>
         <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.10.4/typeahead.bundle.min.js"></script>-->
-        
-        <!--Bootstrap-tagsinput-->
-        <link rel="stylesheet" href="app/lib/bootstrap-tagsinput/src/bootstrap-tagsinput.css">
-        <script src="app/lib/bootstrap-tagsinput/src/bootstrap-tagsinput.js"></script>   
-        <script src="app/lib/bootstrap-tagsinput/src/bsTagsInput.js"></script>        
-        <script src="app/lib/bootstrap-tagsinput/dist/typeahead.min.js"></script>
-        
+       
         <!--ngTagsInput-->
         <link rel="stylesheet" href="app/lib/ngTagsInput/ng-tags-input-bootstrap.min.css">
         <link rel="stylesheet" href="app/lib/ngTagsInput/ng-tags-input.min.css">
@@ -82,7 +76,7 @@
                     <li class="nav-item col-xs-4 "><a ui-sref="root.recientes" ng-class="{'item-nav-mini': isActive('root.recientes')}">Recientes</a></li>
                   </ul>
         </div>
-        <div class="container marketing" anchor="top" ui-view="container">
+        <div class="container marketing" anchor="top" ui-view="container" autoscroll="false" ng-animate="{enter: 'enter', leave: 'leave'}">
         </div>
             <div class="modal" id="modalMsg">
                 <div class="modal-dialog" >

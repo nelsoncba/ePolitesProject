@@ -1,4 +1,4 @@
-angular.module('Polites', ['ui.router', 'ngRoute', 'ngSanitize', 'ngCookies', 'Controllers', 'Service', 'Filters', 'angular-timeago','summernote', 'ngTagsInput'])
+angular.module('Polites', ['ui.router', 'ngRoute', 'ngSanitize', 'ngCookies', 'Controllers', 'Service', 'Filters', 'angular-timeago','summernote','ngTagsInput'])
 		.run(function($rootScope, $state, Authenticate, sessionService, Registration){
 			'use strict';
 
@@ -11,7 +11,6 @@ angular.module('Polites', ['ui.router', 'ngRoute', 'ngSanitize', 'ngCookies', 'C
 			$rootScope.allTags = null;
 			$rootScope.dataToDelete = null;
 
-			console.log($rootScope.allTags)
 			//add current user to global var. 
 			$rootScope.currentUser = sessionService.get('user');
 
@@ -217,6 +216,16 @@ angular.module('Polites', ['ui.router', 'ngRoute', 'ngSanitize', 'ngCookies', 'C
 						'sidebar@root':{
 							templateUrl: 'app/views/account-side.html',
 							controller: 'AccountsideCtrl'
+						}
+					},
+					authenticate: true
+			})
+			.state('root.userOptions',{
+					url: 'user/options',
+					views:{
+						'container@':{
+							templateUrl: 'app/views/account-side.html',
+							controller: 'AccountCtrl'
 						}
 					},
 					authenticate: true

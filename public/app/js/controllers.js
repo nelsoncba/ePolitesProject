@@ -1,5 +1,6 @@
 angular.module('Controllers',[])
 		  .controller('AllpostsCtrl', function($rootScope,$scope, $state, $anchorScroll, Posts) {
+				$anchorScroll();
 		  		//initialize variables 
 		  		//to paginate in server
 		  		$scope.page = 1;
@@ -8,7 +9,7 @@ angular.module('Controllers',[])
 				$scope.more = $scope.more_posts = false;
 				$scope.has_posts = null;
 				$scope.posts = [];
-				$anchorScroll();
+				
 
 				//check if there is a section 
 			  	if($state.params.slug == null){
@@ -388,12 +389,22 @@ angular.module('Controllers',[])
 		  		}
 
 		  })
-		  .controller('AccountCtrl', function ($rootScope, $scope, $state, Account, sessionService, Posts) {
-		  		Account.myPosts(sessionService.get('user').id).success(function(data){
-		  			$scope.myposts = data;
-		  		}).error(function(data){
+		  .controller('AccountCtrl', function($rootScope, $scope, $state, Account, sessionService, Posts, $anchorScroll) {
+		  		$anchorScroll();
+		  		if($rootScope.stateSelected == 'root.account'){
+			  		Account.myPosts(sessionService.get('user').id).success(function(data){
+			  			$scope.myposts = data;
+			  		}).error(function(data){
 
-		  		});
+			  		});
+			  	}
+
+			  	$scope.userOptions = function(){
+			  		$scope.slide =  'slide-left';
+		  			$state.go('root.userOptions');
+		  			
+		  		},
+
 		  		//modal bootstrap to confirm delete post
 		  		$scope.deletePost = function(id, index){
 		  			angular.element('#simpleMsg').modal('show');
@@ -425,7 +436,7 @@ angular.module('Controllers',[])
 		  		}
 
 		  })
-		  .controller('AccountsideCtrl', function ($scope) {
-		  	
+		  .controller('AccountsideCtrl', function ($scope, $anchorScroll) {
+				$anchorScroll();
 		  });
 		  

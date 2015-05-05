@@ -101,12 +101,10 @@ class PostController extends \BaseController {
 			//This is the condition to send success message or error message after save the new post and syncronize the matching $tagsPost 
 			// in the intermediate table Tags_Posts
 			if($post->save()){
-				$message = array('success'=>'El artículo se a creado exitosamente.');
 				$post->tags()->sync($tagsPost);
-				return Response::json($message,200);
+				return Response::json(array('success'=>'El artículo se a creado exitosamente.'),200);
 			}else{
-				$message = array('error'=>'Ha ocurrido un error al intentar crear el artículo.');
-				return Response::json($message,403);
+				return Response::json(array('error'=>'Ha ocurrido un error al intentar crear el artículo.'),403);
 			}
 		}
 	}
@@ -124,7 +122,7 @@ class PostController extends \BaseController {
 		if($post){
 			return Response::json($post, 200);
 		}else{
-			return Response::json(array('message'=>'El artículo no existe'), 403);
+			return Response::json(array('error'=>'El artículo no existe'), 403);
 		}
 	}
 
@@ -196,12 +194,10 @@ class PostController extends \BaseController {
 			//This is the condition to send success message or error message after save the new post and syncronize the matching $tagsPost 
 			// in the intermediate table Tags_Posts
 			if($post->save()){
-				$message = array('success'=>'El artículo se a guardado exitosamente.');
 				$post->tags()->sync($tagsPost);
-				return Response::json($message,200);
+				return Response::json(array('success'=>'El artículo se a guardado exitosamente.'),200);
 			}else{
-				$message = array('error'=>'Ha ocurrido un error al intentar guardar el artículo.');
-				return Response::json($message,403);
+				return Response::json(array('error'=>'Ha ocurrido un error al intentar guardar el artículo.'),403);
 			}
 		}
 	}
@@ -237,6 +233,7 @@ class PostController extends \BaseController {
 		 } catch (Exception $e) {
 		 	return Response::json(array('message' => 'Error al eliminar artículo: '),403);
 		 } 
+
 	}
 
 	public function recentPosts(){
